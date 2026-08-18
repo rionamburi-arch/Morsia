@@ -97,6 +97,9 @@
   --strip-label-size: 11px;   /* letter label font size */
   --strip-label-gap: 11px;    /* space between baseline and labels */
   --strip-pad-x: 12px;        /* horizontal padding inside the strip */
+  --strip-label-tracking: 0.12em; /* letter-spacing of the labels (design) */
+  --bar-glow-outer: 46px;     /* sounding-bar glow radii (design's box-shadow) */
+  --bar-glow-inner: 12px;
   --playhead: rgb(var(--ink-rgb) / 0.75);
   --flash-opacity: 0.1;       /* Light mode flash strength */
 
