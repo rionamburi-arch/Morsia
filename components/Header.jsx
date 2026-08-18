@@ -50,7 +50,7 @@ export default function Header() {
             onClick={() => { if (i !== idx) track('mode_switched', { to: tab.mode }); }}
             style={{
               position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 13, fontWeight: 500, padding: '8px 20px', minWidth: 112, borderRadius: 999,
+              fontSize: 13, fontWeight: 500, padding: '8px 20px', minWidth: 112, borderRadius: 999, flex: '1 1 0',
               transition: 'color 220ms', color: i === idx ? 'var(--on-accent)' : 'var(--muted)', textDecoration: 'none',
             }}
           >
@@ -59,10 +59,10 @@ export default function Header() {
         ))}
       </nav>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.04em' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)', fontFamily: 'var(--font-mono), monospace', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.04em' }}>
         <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ink)', animation: 'cad-breathe 2.6s ease-in-out infinite' }} />
         <span>{settings.wpm} WPM</span>
-        <span style={{ color: 'var(--border)' }}>/</span>
+        <span aria-hidden="true" style={{ color: 'var(--border)' }}>/</span>
         <span>{settings.toneHz} Hz</span>
       </div>
     </header>

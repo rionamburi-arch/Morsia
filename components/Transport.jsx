@@ -1,13 +1,15 @@
 'use client';
 
-const MONO = 'var(--font-mono)';
+const MONO = 'var(--font-mono), monospace';
 
-function ToolButton({ label, active, hover, onClick, children }) {
+function ToolButton({ label, active, hover, onClick, children, ariaProps }) {
+  const pressed = ariaProps && 'aria-expanded' in ariaProps ? undefined : (active === undefined ? undefined : active);
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-pressed={active === undefined ? undefined : active}
+      aria-pressed={pressed}
+      {...ariaProps}
       className={hover}
       style={{
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, width: 72, padding: '8px 6px', borderRadius: 14,
@@ -31,6 +33,7 @@ export default function Transport({
   light, onToggleLight,
   onWav, onShare,
   cfgOpen, onToggleCfg,
+  cfgId,
   children,
 }) {
   return (
@@ -74,7 +77,7 @@ export default function Transport({
         <svg {...icon}><path d="M12 3v11" /><path d="m8 7 4-4 4 4" /><path d="M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5" /></svg>
       </ToolButton>
 
-      <ToolButton label="CONFIG" hover="hv-tint" active={cfgOpen} onClick={onToggleCfg}>
+      <ToolButton label="CONFIG" hover="hv-tint" active={cfgOpen} onClick={onToggleCfg} ariaProps={{ 'aria-expanded': cfgOpen, 'aria-controls': cfgId, 'aria-pressed': undefined }}>
         <svg {...icon}><path d="M4 7h10M18 7h2M4 17h4M12 17h8" /><circle cx="16" cy="7" r="2.2" /><circle cx="10" cy="17" r="2.2" /></svg>
       </ToolButton>
 

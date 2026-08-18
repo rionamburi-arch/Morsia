@@ -1,9 +1,9 @@
 'use client';
 
-import { useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { LIMITS } from '@/lib/settings';
 
-const MONO = 'var(--font-mono)';
+const MONO = 'var(--font-mono), monospace';
 
 function Slider({ label, value, unit, min, max, step, onChange }) {
   const id = useId();
@@ -27,9 +27,30 @@ function Slider({ label, value, unit, min, max, step, onChange }) {
   );
 }
 
-export default function ConfigPopover({ open, settings, setWpm, setEffWpm, setToneHz, setLabels }) {
+export default function ConfigPopover({ id, open, settings, setWpm, setEffWpm, setToneHz, setLabels, onCloseCfg }) {
+  const rootRef = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') onCloseCfg(); };
+    const onDown = (e) => {
+      const root = rootRef.current;
+      if (!root || root.contains(e.target)) return;
+      // clicks on the CONFIG toggle itself are handled by the toggle
+      if (e.target.closest && e.target.closest('[aria-controls="' + id + '"]')) return;
+      onCloseCfg();
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onDown);
+    };
+  }, [open, id, onCloseCfg]);
+
   return (
     <div
+      ref={rootRef}
+      id={id}
       role="group"
       aria-label="Playback settings"
       style={{

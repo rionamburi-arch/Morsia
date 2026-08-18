@@ -37,14 +37,22 @@ function subscribe(listener) {
 const getSnapshot = () => settings;
 const getServerSnapshot = () => DEFAULTS;
 
-export function updateSettings(patch) {
-  settings = sanitise({ ...settings, ...patch });
+let writeTimer = 0;
+const WRITE_DELAY_MS = 200;
+
+function persist() {
   try {
     window.localStorage.setItem(KEY, JSON.stringify(settings));
   } catch {
     /* storage unavailable — keep working for the session */
   }
+}
+
+export function updateSettings(patch) {
+  settings = sanitise({ ...settings, ...patch });
   emit();
+  clearTimeout(writeTimer);
+  writeTimer = setTimeout(persist, WRITE_DELAY_MS);
 }
 
 export function useSettings() {

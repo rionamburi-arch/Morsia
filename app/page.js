@@ -3,9 +3,9 @@
 // Translate. Owns the message (text ⇄ morse) and its playback; every visual
 // region is a props-only component. Timing comes from toSegments() only.
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { encode, decode, normaliseMorse } from '@/lib/morse';
-import { toSegments } from '@/lib/timing';
+import { toSegments, totalMs } from '@/lib/timing';
 import { segmentsToWav, wavFilename } from '@/lib/wav';
 import { encodeSlug } from '@/lib/slug';
 import { track } from '@/lib/track';
@@ -22,6 +22,7 @@ import Flash from '@/components/Flash';
 
 const PLACEHOLDER = 'MORSE';
 const TOAST_MS = 2300;
+const WAV_MAX_MS = 10 * 60 * 1000;
 
 export default function TranslatePage() {
   const { settings, setWpm, setEffWpm, setToneHz, setLabels } = useSettings();
@@ -35,6 +36,7 @@ export default function TranslatePage() {
   const [cfgOpen, setCfgOpen] = useState(false);
   const [toast, setToast] = useState('');
   const toastTimer = useRef(0);
+  const cfgId = useId();
 
   const source = text.trim() ? text.trim().toUpperCase() : PLACEHOLDER;
   const segments = useMemo(() => toSegments(source, { wpm, effWpm }), [source, wpm, effWpm]);
@@ -52,19 +54,23 @@ export default function TranslatePage() {
     try {
       await navigator.clipboard.writeText(str);
       showToast(okMsg);
+      return true;
     } catch {
       showToast("Couldn't copy");
+      return false;
     }
   };
 
   // --- message editing ---
   const onTextChange = (v) => {
+    if (player.playing) player.stop();
     setText(v);
     const r = encode(v);
     setMorse(r.morse);
     setUnknown(r.unknown);
   };
   const onMorseChange = (raw) => {
+    if (player.playing) player.stop();
     const v = normaliseMorse(raw);
     setMorse(v);
     setText(decode(v));
@@ -89,24 +95,41 @@ export default function TranslatePage() {
     player.toggleLight();
   };
   const onWav = () => {
+    if (!segments.length) {
+      showToast('Nothing to export');
+      return;
+    }
+    if (totalMs(segments) > WAV_MAX_MS) {
+      showToast('Message too long to export (10 min max)');
+      return;
+    }
     const blob = segmentsToWav(segments, { toneHz });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = wavFilename(source);
+    document.body.appendChild(a);
     a.click();
+    a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 4000);
     showToast('WAV exported');
     track('wav_downloaded');
   };
-  const onShare = () => {
+  const onShare = async () => {
     const slug = encodeSlug(source);
-    copy(`${window.location.origin}/m/${slug}`, 'Link copied');
-    track('link_shared');
+    if (!slug) {
+      showToast('Nothing to share');
+      return;
+    }
+    if (await copy(`${window.location.origin}/m/${slug}`, 'Link copied')) track('link_shared');
   };
   const onToggleCfg = () => {
     if (!cfgOpen) track('settings_opened');
     setCfgOpen((o) => !o);
+  };
+  const stopThen = (fn) => (v) => {
+    if (player.playing) player.stop();
+    fn(v);
   };
 
   return (
@@ -145,8 +168,18 @@ export default function TranslatePage() {
         onShare={onShare}
         cfgOpen={cfgOpen}
         onToggleCfg={onToggleCfg}
+        cfgId={cfgId}
       >
-        <ConfigPopover open={cfgOpen} settings={settings} setWpm={setWpm} setEffWpm={setEffWpm} setToneHz={setToneHz} setLabels={setLabels} />
+        <ConfigPopover
+          id={cfgId}
+          open={cfgOpen}
+          settings={settings}
+          setWpm={stopThen(setWpm)}
+          setEffWpm={stopThen(setEffWpm)}
+          setToneHz={setToneHz}
+          setLabels={setLabels}
+          onCloseCfg={() => setCfgOpen(false)}
+        />
       </Transport>
 
       <Flash enabled={player.light && player.playing} sounding={player.sounding} />

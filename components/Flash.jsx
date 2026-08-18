@@ -12,9 +12,11 @@ export default function Flash({ enabled, sounding }) {
       return undefined;
     }
     let raf = 0;
+    let last = null;
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      el.style.opacity = sounding() ? 'var(--flash-opacity)' : '0';
+      const next = sounding() ? 'var(--flash-opacity)' : '0';
+      if (next !== last) { last = next; el.style.opacity = next; }
     };
     raf = requestAnimationFrame(tick);
     return () => {

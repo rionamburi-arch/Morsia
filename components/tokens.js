@@ -12,7 +12,7 @@ export function readTokens({ sizes = [], colors = [], strings = [] } = {}) {
   if (colors.length) {
     const probe = document.createElement('span');
     probe.style.display = 'none';
-    root.appendChild(probe);
+    (document.body || root).appendChild(probe);
     for (const name of colors) {
       probe.style.color = cs.getPropertyValue(name).trim();
       out[name] = getComputedStyle(probe).color;

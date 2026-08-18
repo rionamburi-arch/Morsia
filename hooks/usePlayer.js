@@ -53,7 +53,10 @@ export default function usePlayer({ toneHz }) {
       r.timer = setTimeout(() => {
         if (runRef.current !== r) return;
         if (optsRef.current.repeat) {
-          run(segs);
+          if (!run(segs)) {
+            runRef.current = null;
+            setPlaying(false);
+          }
         } else {
           runRef.current = null;
           setPlaying(false);

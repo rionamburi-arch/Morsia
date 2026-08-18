@@ -1,6 +1,6 @@
 'use client';
 
-const MONO = 'var(--font-mono)';
+const MONO = 'var(--font-mono), monospace';
 
 function CopyIcon() {
   return (
@@ -41,7 +41,7 @@ const panelBase = {
 };
 
 const textareaBase = {
-  flex: '1 1 auto', width: '100%', minHeight: 116, resize: 'none', border: 0, outline: 'none',
+  flex: '1 1 auto', width: '100%', minHeight: 116, resize: 'none', border: 0,
   background: 'transparent', color: 'var(--ink)', caretColor: 'var(--interact)',
 };
 
