@@ -1,26 +1,147 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Cadence — colour system
+   Every colour in the app resolves from this file.
+   Source of truth: design/cadence/globals.css (Claude Design export).
+
+   PALETTE
+     ground     Carbon Black    page background
+     surface    lifted carbon   panels + strip box
+     border     Charcoal        borders and dividers ONLY, never text
+     ink        Papaya Whip     primary text + Morse bars at rest
+     muted      light charcoal  secondary text, labels, counts
+     signal     Bubblegum       "transmitting" — sounding bar, Play
+     interact   Cool Sky        "you can touch this" — active tab,
+                                swap circle, focus, sliders
+     on-accent  Carbon Black    text/icons on top of pink or blue
+
+   Pink and blue never appear on the same element.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ---------- PALETTE ---------- */
+  --ground: #1D201F;
+  --surface: #262A29;
+  --border: #575761;
+  --ink: #FDF0D5;
+  --muted: #9A9AA4;
+  --signal: #FF82A9;
+  --interact: #77B6EA;
+  --on-accent: #1D201F;
+
+  /* channels, so alpha variants stay tied to the palette above */
+  --ground-rgb: 29 32 31;
+  --surface-rgb: 38 42 41;
+  --border-rgb: 87 87 97;
+  --ink-rgb: 253 240 213;
+  --muted-rgb: 154 154 164;
+  --signal-rgb: 255 130 169;
+  --interact-rgb: 119 182 234;
+
+  /* ---------- LINES ---------- */
+  --border-soft: rgb(var(--border-rgb) / 0.55);   /* quiet outlines */
+  --rule: rgb(var(--border-rgb) / 0.55);          /* transport separator */
+  --divider: rgb(var(--border-rgb) / 0.70);       /* vertical divider */
+  --baseline: rgb(var(--border-rgb) / 0.85);      /* line the bars sit on */
+
+  /* ---------- FILLS & STATES ---------- */
+  --hover-tint: rgb(var(--border-rgb) / 0.26);
+  --inset-fill: rgb(var(--border-rgb) / 0.20);
+  --pressed-fill: rgb(var(--border-rgb) / 0.45);  /* mute engaged */
+  --placeholder: rgb(var(--muted-rgb) / 0.55);
+  --selection: rgb(var(--interact-rgb) / 0.30);
+
+  /* interaction (blue) — never combined with pink on one element */
+  --interact-fill: rgb(var(--interact-rgb) / 0.14);
+  --interact-border: rgb(var(--interact-rgb) / 0.50);
+  --interact-bright: color-mix(in srgb, var(--interact) 88%, white);
+  --focus: var(--interact);
+
+  /* transmission (pink) */
+  --signal-bright: color-mix(in srgb, var(--signal) 86%, white);
+
+  /* ---------- RHYTHM STRIP ----------
+     The only place glow is allowed, and that glow is pink. */
+  --strip-bloom: rgb(var(--signal-rgb) / 0.12);
+  --bar-rest: var(--ink);
+  --bar-active: var(--signal);
+  --bar-active-glow: rgb(var(--signal-rgb) / 0.70);
+  --bar-active-core: rgb(var(--signal-rgb) / 0.55);
+
+  /* ---------- OSCILLOSCOPE (read by the canvas) ---------- */
+  --wave: rgb(var(--signal-rgb) / 0.95);
+  --wave-ghost: rgb(var(--signal-rgb) / 0.30);
+  --wave-glow: rgb(var(--signal-rgb) / 0.55);
+  --wave-ghost-glow: rgb(var(--signal-rgb) / 0.28);
+
+  /* ---------- MISC ---------- */
+  --flash: var(--signal);                          /* Light mode screen flash */
+  --logo-a: var(--ink);
+  --logo-b: var(--ink);
+  --logo-c: var(--signal);
+  --placeholder-bar: rgb(var(--ink-rgb) / 0.50);
+  --placeholder-bar-dim: rgb(var(--ink-rgb) / 0.26);
+  --placeholder-bar-signal: rgb(var(--signal-rgb) / 0.55);
+
+  /* ============================================================
+     Added for the engine (not in the Claude Design export)
+     ============================================================ */
+
+  /* Rhythm strip geometry — read once by components/Scope.jsx.
+     Bars and gaps are all multiples of --unit: dit 1, dah 3, gap 1 / 3 / 7. */
+  --unit: 22px;               /* one Morse unit; the design's dot width */
+  --bar-h: 78px;              /* bar height (design) */
+  --bar-radius: 7px;          /* design's "Rounded"; 2px for "Sharp" */
+  --strip-bar-top: 6px;       /* headroom above the bars for the glow */
+  --strip-label-size: 11px;   /* letter label font size */
+  --strip-label-gap: 11px;    /* space between baseline and labels */
+  --strip-pad-x: 12px;        /* horizontal padding inside the strip */
+  --playhead: rgb(var(--ink-rgb) / 0.75);
+  --flash-opacity: 0.1;       /* Light mode flash strength */
+
+  /* Fonts are set on <html> by next/font in app/layout.js:
+     --font-sans (Archivo), --font-mono (IBM Plex Mono). */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ---------- base rules (from the design's <style>) ---------- */
+html, body { margin: 0; padding: 0; background: var(--ground); }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Archivo, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }
+a { color: var(--interact); text-decoration: none; }
+a:hover { color: var(--interact-bright); }
+button { font-family: inherit; }
+textarea { font-family: inherit; }
+textarea::placeholder { color: var(--placeholder); }
+::selection { background: var(--selection); }
+input[type="range"] { accent-color: var(--interact); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+@keyframes cad-breathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@keyframes cad-toast { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ---------- hover states ----------
+   The design expressed these as style-hover="…" on inline-styled elements.
+   Inline styles cannot express :hover, so they live here; !important lets
+   them win over the inline state colours they sit on top of. */
+.hv-ink:hover { color: var(--ink) !important; }
+.hv-icon:hover { color: var(--interact) !important; border-color: var(--interact-border) !important; }
+.hv-tint:hover { background: var(--hover-tint) !important; }
+.hv-tint-ink:hover { background: var(--hover-tint) !important; color: var(--ink) !important; }
+.hv-signal:hover { background: var(--signal-bright) !important; }
+.hv-interact:hover { background: var(--interact-bright) !important; }
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
