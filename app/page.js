@@ -1,18 +1,156 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+// Translate. Owns the message (text ⇄ morse) and its playback; every visual
+// region is a props-only component. Timing comes from toSegments() only.
+
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { encode, decode, normaliseMorse } from '@/lib/morse';
 import { toSegments } from '@/lib/timing';
+import { segmentsToWav, wavFilename } from '@/lib/wav';
+import { encodeSlug } from '@/lib/slug';
+import { track } from '@/lib/track';
+import { useSettings } from '@/hooks/useSettings';
+import usePlayer from '@/hooks/usePlayer';
 import Scope from '@/components/Scope';
+import Oscilloscope from '@/components/Oscilloscope';
+import StripHeader from '@/components/StripHeader';
+import TranslatePanels from '@/components/TranslatePanels';
+import Transport from '@/components/Transport';
+import ConfigPopover from '@/components/ConfigPopover';
+import Toast from '@/components/Toast';
+import Flash from '@/components/Flash';
+
+const PLACEHOLDER = 'MORSE';
+const TOAST_MS = 2300;
 
 export default function TranslatePage() {
-  const [text, setText] = useState('PARIS');
-  const segments = useMemo(() => toSegments(text, { wpm: 18 }), [text]);
+  const { settings, setWpm, setEffWpm, setToneHz, setLabels } = useSettings();
+  const { wpm, effWpm, toneHz, labels } = settings;
+  const player = usePlayer({ toneHz });
+
+  const [text, setText] = useState(PLACEHOLDER);
+  const [morse, setMorse] = useState(() => encode(PLACEHOLDER).morse);
+  const [unknown, setUnknown] = useState([]);
+  const [swapDeg, setSwapDeg] = useState(0);
+  const [cfgOpen, setCfgOpen] = useState(false);
+  const [toast, setToast] = useState('');
+  const toastTimer = useRef(0);
+
+  const source = text.trim() ? text.trim().toUpperCase() : PLACEHOLDER;
+  const segments = useMemo(() => toSegments(source, { wpm, effWpm }), [source, wpm, effWpm]);
+  const stripCode = useMemo(() => encode(source).morse, [source]);
+
+  useEffect(() => () => clearTimeout(toastTimer.current), []);
+
+  const showToast = useCallback((msg) => {
+    clearTimeout(toastTimer.current);
+    setToast(msg);
+    toastTimer.current = setTimeout(() => setToast(''), TOAST_MS);
+  }, []);
+
+  const copy = async (str, okMsg) => {
+    try {
+      await navigator.clipboard.writeText(str);
+      showToast(okMsg);
+    } catch {
+      showToast("Couldn't copy");
+    }
+  };
+
+  // --- message editing ---
+  const onTextChange = (v) => {
+    setText(v);
+    const r = encode(v);
+    setMorse(r.morse);
+    setUnknown(r.unknown);
+  };
+  const onMorseChange = (raw) => {
+    const v = normaliseMorse(raw);
+    setMorse(v);
+    setText(decode(v));
+    setUnknown([]);
+  };
+  const onSwap = () => {
+    const t = decode(morse);
+    const m = encode(text).morse;
+    setText(t || text);
+    setMorse(m || morse);
+    setUnknown([]);
+    setSwapDeg((d) => d + 180);
+  };
+
+  // --- transport ---
+  const onPlay = () => {
+    if (player.play(segments)) track('translate_played');
+    else showToast('Audio unavailable in this browser');
+  };
+  const onToggleLight = () => {
+    if (!player.light) track('flash_used');
+    player.toggleLight();
+  };
+  const onWav = () => {
+    const blob = segmentsToWav(segments, { toneHz });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = wavFilename(source);
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    showToast('WAV exported');
+    track('wav_downloaded');
+  };
+  const onShare = () => {
+    const slug = encodeSlug(source);
+    copy(`${window.location.origin}/m/${slug}`, 'Link copied');
+    track('link_shared');
+  };
+  const onToggleCfg = () => {
+    if (!cfgOpen) track('settings_opened');
+    setCfgOpen((o) => !o);
+  };
+
   return (
     <main style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <section style={{ borderRadius: 24, padding: '18px 26px 14px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
-        <Scope segments={segments} wpm={18} clock={null} showLabels />
+      <section
+        aria-label="Rhythm strip"
+        style={{ borderRadius: 24, padding: '18px 26px 14px', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'inset 0 0 100px var(--strip-bloom)' }}
+      >
+        <StripHeader word={source} code={stripCode} muted={player.muted} onToggleMute={player.toggleMute} />
+        <div style={{ marginTop: 14 }}>
+          <Scope segments={segments} wpm={wpm} clock={player.playing ? player.clock : null} showLabels={labels} />
+        </div>
+        <Oscilloscope sounding={player.sounding} />
       </section>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} style={{ color: 'var(--ink)', background: 'var(--surface)', padding: 12 }} />
+
+      <TranslatePanels
+        text={text}
+        morse={morse}
+        unknown={unknown}
+        swapDeg={swapDeg}
+        onTextChange={onTextChange}
+        onMorseChange={onMorseChange}
+        onCopyText={() => copy(text, 'Text copied')}
+        onCopyMorse={() => copy(morse, 'Morse copied')}
+        onSwap={onSwap}
+      />
+
+      <Transport
+        onPlay={onPlay}
+        onStop={player.stop}
+        repeat={player.repeat}
+        onToggleRepeat={player.toggleRepeat}
+        light={player.light}
+        onToggleLight={onToggleLight}
+        onWav={onWav}
+        onShare={onShare}
+        cfgOpen={cfgOpen}
+        onToggleCfg={onToggleCfg}
+      >
+        <ConfigPopover open={cfgOpen} settings={settings} setWpm={setWpm} setEffWpm={setEffWpm} setToneHz={setToneHz} setLabels={setLabels} />
+      </Transport>
+
+      <Flash enabled={player.light && player.playing} sounding={player.sounding} />
+      <Toast message={toast} />
     </main>
   );
 }
