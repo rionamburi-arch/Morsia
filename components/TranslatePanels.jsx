@@ -142,9 +142,10 @@ export default function TranslatePanels({
         aria-pressed={swapped}
         className="hv-interact"
         style={{
-          position: 'absolute', left: swapped ? '40%' : '60%', top: '50%', width: 44, height: 44, display: 'grid', placeItems: 'center', borderRadius: '50%',
+          // The seam between the panels is always at 60%, whichever editor is primary.
+          position: 'absolute', left: '60%', top: '50%', width: 44, height: 44, display: 'grid', placeItems: 'center', borderRadius: '50%',
           cursor: 'pointer', appearance: 'none', background: 'var(--interact)', border: 0, color: 'var(--on-accent)', zIndex: 3,
-          transition: `background 240ms, left ${SWAP_MS}ms ${SWAP_EASE}, transform ${SWAP_MS}ms ${SWAP_EASE}`,
+          transition: `background 240ms, transform ${SWAP_MS}ms ${SWAP_EASE}`,
           transform: `translate(-50%, -50%) rotate(${swapDeg}deg)`,
         }}
       >

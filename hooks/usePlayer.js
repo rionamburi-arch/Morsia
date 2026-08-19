@@ -73,7 +73,8 @@ export default function usePlayer({ toneHz }) {
 
   const toggleMute = useCallback(() => {
     const next = !optsRef.current.muted;
-    if (next) engineRef.current?.stop(); // silence now; the strip keeps moving
+    optsRef.current = { ...optsRef.current, muted: next };
+    engineRef.current?.setMuted(next); // master volume only; the timeline keeps running
     setMuted(next);
   }, []);
 
