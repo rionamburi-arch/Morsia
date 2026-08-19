@@ -1,6 +1,14 @@
 'use client';
 
+// The two editors. `swapped` decides which one sits in the primary (left, 60%,
+// large type) slot; the swap button physically slides them across (FLIP via the
+// Web Animations API) and exchanges their sizes. Content is never re-derived here.
+
+import { useLayoutEffect, useRef } from 'react';
+
 const MONO = 'var(--font-mono), monospace';
+const SWAP_MS = 300;
+const SWAP_EASE = 'cubic-bezier(0.22,1,0.36,1)';
 
 function CopyIcon() {
   return (
@@ -35,27 +43,70 @@ function PanelHead({ label, copyTitle, onCopy }) {
   );
 }
 
-const panelBase = {
+// Slot geometry from the design: primary = left 60%, secondary = right 40%.
+const slotStyle = (primary) => ({
+  flex: '0 0 auto',
+  width: primary ? 'calc(60% - 9px)' : 'calc(40% - 9px)',
+  minWidth: primary ? 320 : 260,
+  order: primary ? 0 : 1,
   display: 'flex', flexDirection: 'column', gap: 14, minHeight: 214, padding: '20px 24px 16px',
   borderRadius: 20, background: 'var(--surface)', border: '1px solid var(--border)',
-};
+});
 
 const textareaBase = {
   flex: '1 1 auto', width: '100%', minHeight: 116, resize: 'none', border: 0,
   background: 'transparent', color: 'var(--ink)', caretColor: 'var(--interact)',
+  transition: `font-size ${SWAP_MS}ms ${SWAP_EASE}`,
 };
 
+const footStyle = { fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--muted)' };
+
 export default function TranslatePanels({
-  text, morse, unknown, swapDeg,
+  text, morse, unknown, swapped, swapDeg,
   onTextChange, onMorseChange, onCopyText, onCopyMorse, onSwap,
 }) {
+  const textRef = useRef(null);
+  const morseRef = useRef(null);
+  const beforeRef = useRef(null); // rects captured on click, consumed after the swap commits
+
   const charCount = text.length;
   const signalCount = (morse.match(/[.-]/g) || []).length;
   const unsupported = unknown.length ? ` · ${unknown.length} UNSUPPORTED (${unknown.join(', ')})` : '';
 
+  const handleSwap = () => {
+    const t = textRef.current;
+    const m = morseRef.current;
+    if (t && m) beforeRef.current = { text: t.getBoundingClientRect(), morse: m.getBoundingClientRect() };
+    onSwap();
+  };
+
+  // FLIP: after the DOM has moved, animate each panel from where it was to where it is.
+  useLayoutEffect(() => {
+    const before = beforeRef.current;
+    beforeRef.current = null;
+    if (!before || typeof Element === 'undefined' || !Element.prototype.animate) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const pairs = [[textRef.current, before.text], [morseRef.current, before.morse]];
+    for (const [el, old] of pairs) {
+      if (!el) continue;
+      const now = el.getBoundingClientRect();
+      const dx = old.left - now.left;
+      if (!dx && old.width === now.width) continue;
+      el.animate(
+        [
+          { transform: `translateX(${dx}px)`, width: `${old.width}px` },
+          { transform: 'none', width: `${now.width}px` },
+        ],
+        { duration: SWAP_MS, easing: SWAP_EASE },
+      );
+    }
+  }, [swapped]);
+
+  const textPrimary = !swapped;
+
   return (
     <section aria-label="Translator" style={{ position: 'relative', display: 'flex', alignItems: 'stretch', flexWrap: 'wrap', gap: 18 }}>
-      <div style={{ ...panelBase, flex: '1 1 calc(60% - 9px)', maxWidth: 'calc(60% - 9px)', minWidth: 320 }}>
+      <div ref={textRef} style={slotStyle(textPrimary)}>
         <PanelHead label="PLAIN TEXT" copyTitle="Copy text" onCopy={onCopyText} />
         <textarea
           value={text}
@@ -63,12 +114,12 @@ export default function TranslatePanels({
           spellCheck={false}
           placeholder="Type anything…"
           aria-label="Plain text"
-          style={{ ...textareaBase, fontSize: 34, fontWeight: 500, lineHeight: 1.3, letterSpacing: '-0.015em' }}
+          style={{ ...textareaBase, fontSize: textPrimary ? 34 : 24, fontWeight: 500, lineHeight: 1.3, letterSpacing: '-0.015em' }}
         />
-        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--muted)' }}>{charCount} CHARS</div>
+        <div style={footStyle}>{charCount} CHARS</div>
       </div>
 
-      <div style={{ ...panelBase, flex: '1 1 calc(40% - 9px)', maxWidth: 'calc(40% - 9px)', minWidth: 260 }}>
+      <div ref={morseRef} style={slotStyle(!textPrimary)}>
         <PanelHead label="MORSE CODE" copyTitle="Copy morse" onCopy={onCopyMorse} />
         <textarea
           value={morse}
@@ -76,23 +127,24 @@ export default function TranslatePanels({
           spellCheck={false}
           placeholder="· − · ·"
           aria-label="Morse code"
-          style={{ ...textareaBase, fontFamily: MONO, fontSize: 21, lineHeight: 1.5, letterSpacing: '0.06em' }}
+          style={{ ...textareaBase, fontFamily: MONO, fontSize: textPrimary ? 21 : 28, lineHeight: 1.5, letterSpacing: '0.06em' }}
         />
-        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--muted)' }}>
+        <div style={footStyle}>
           {signalCount} SIGNALS{unsupported}
         </div>
       </div>
 
       <button
         type="button"
-        onClick={onSwap}
+        onClick={handleSwap}
         title="Swap"
-        aria-label="Swap text and Morse"
+        aria-label="Swap the text and Morse panels"
+        aria-pressed={swapped}
         className="hv-interact"
         style={{
-          position: 'absolute', left: '60%', top: '50%', width: 44, height: 44, display: 'grid', placeItems: 'center', borderRadius: '50%',
+          position: 'absolute', left: swapped ? '40%' : '60%', top: '50%', width: 44, height: 44, display: 'grid', placeItems: 'center', borderRadius: '50%',
           cursor: 'pointer', appearance: 'none', background: 'var(--interact)', border: 0, color: 'var(--on-accent)', zIndex: 3,
-          transition: 'background 240ms, transform 300ms cubic-bezier(0.22,1,0.36,1)',
+          transition: `background 240ms, left ${SWAP_MS}ms ${SWAP_EASE}, transform ${SWAP_MS}ms ${SWAP_EASE}`,
           transform: `translate(-50%, -50%) rotate(${swapDeg}deg)`,
         }}
       >

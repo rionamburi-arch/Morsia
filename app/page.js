@@ -20,7 +20,7 @@ import ConfigPopover from '@/components/ConfigPopover';
 import Toast from '@/components/Toast';
 import Flash from '@/components/Flash';
 
-const PLACEHOLDER = 'MORSE';
+const INITIAL_TEXT = 'MORSE';
 const TOAST_MS = 2300;
 const WAV_MAX_MS = 10 * 60 * 1000;
 
@@ -29,16 +29,17 @@ export default function TranslatePage() {
   const { wpm, effWpm, toneHz, labels } = settings;
   const player = usePlayer({ toneHz });
 
-  const [text, setText] = useState(PLACEHOLDER);
-  const [morse, setMorse] = useState(() => encode(PLACEHOLDER).morse);
+  const [text, setText] = useState(INITIAL_TEXT);
+  const [morse, setMorse] = useState(() => encode(INITIAL_TEXT).morse);
   const [unknown, setUnknown] = useState([]);
+  const [swapped, setSwapped] = useState(false);
   const [swapDeg, setSwapDeg] = useState(0);
   const [cfgOpen, setCfgOpen] = useState(false);
   const [toast, setToast] = useState('');
   const toastTimer = useRef(0);
   const cfgId = useId();
 
-  const source = text.trim() ? text.trim().toUpperCase() : PLACEHOLDER;
+  const source = text.trim().toUpperCase(); // empty text → empty strip
   const segments = useMemo(() => toSegments(source, { wpm, effWpm }), [source, wpm, effWpm]);
   const stripCode = useMemo(() => encode(source).morse, [source]);
 
@@ -77,16 +78,16 @@ export default function TranslatePage() {
     setUnknown([]);
   };
   const onSwap = () => {
-    const t = decode(morse);
-    const m = encode(text).morse;
-    setText(t || text);
-    setMorse(m || morse);
-    setUnknown([]);
+    setSwapped((v) => !v);
     setSwapDeg((d) => d + 180);
   };
 
   // --- transport ---
   const onPlay = () => {
+    if (!segments.length) {
+      showToast('Type something to play');
+      return;
+    }
     if (player.play(segments)) track('translate_played');
     else showToast('Audio unavailable in this browser');
   };
@@ -149,6 +150,7 @@ export default function TranslatePage() {
         text={text}
         morse={morse}
         unknown={unknown}
+        swapped={swapped}
         swapDeg={swapDeg}
         onTextChange={onTextChange}
         onMorseChange={onMorseChange}
