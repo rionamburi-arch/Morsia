@@ -23,8 +23,16 @@ function PanelHead({ label, copyTitle, onCopy }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--ink)' }} />
-        <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.2em', color: 'var(--muted)' }}>{label}</span>
+        <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
+        <span
+          style={{
+            fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
+            color: 'var(--interact)', WebkitTextStroke: 'var(--panel-label-stroke) var(--ground)',
+            paintOrder: 'stroke fill',
+          }}
+        >
+          {label}
+        </span>
       </div>
       <button
         type="button"

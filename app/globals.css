@@ -103,6 +103,10 @@
   --playhead: rgb(var(--ink-rgb) / 0.75);
   --flash-opacity: 0.1;       /* Light mode flash strength */
 
+  /* Panel labels (PLAIN TEXT / MORSE CODE) — blue bold with a dark outline */
+  --panel-label-size: 12px;
+  --panel-label-stroke: 3px;  /* painted under the fill via paint-order */
+
   /* Fonts are set on <html> by next/font in app/layout.js:
      --font-sans (Archivo), --font-mono (IBM Plex Mono). */
 }
