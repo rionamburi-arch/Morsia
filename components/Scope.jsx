@@ -23,6 +23,7 @@ const COLORS = ['--bar-rest', '--bar-active', '--bar-active-glow', '--bar-active
 const STRINGS = ['--font-mono', '--strip-label-tracking'];
 
 const SCROLL_THROTTLE_MS = 250;
+const MANUAL_HOLD_MS = 1500; // after a manual pan, auto-follow stays out of the way this long
 
 function roundedRect(g, x, y, w, h, r) {
   const rr = Math.max(0, Math.min(r, w / 2, h / 2));
@@ -180,7 +181,7 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
   const stickyRef = useRef(null);
   const staticRef = useRef(null);
   const dynRef = useRef(null);
-  const stateRef = useRef({ tokens: null, geom: null, reduced: false, props: { segments, wpm, showLabels } });
+  const stateRef = useRef({ tokens: null, geom: null, reduced: false, manualUntil: 0, props: { segments, wpm, showLabels } });
   const redrawRef = useRef(null);
 
   // Tokens + geometry: read on mount and again on resize / DPR / motion-pref change.
@@ -206,6 +207,7 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
       boxRef.current.style.height = `${geom.height}px`;
       stickyRef.current.style.width = `${viewW}px`;
       stickyRef.current.style.height = `${geom.height}px`;
+      wrap.style.cursor = geom.fullWidth > viewW + 1 ? 'grab' : '';
       sizeCanvas(staticRef.current, geom);
       sizeCanvas(dynRef.current, geom);
       paintStatic();
@@ -227,6 +229,51 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
       dprMq.addEventListener('change', onDprChange);
     };
 
+    // Manual panning: mouse drag (touch pans natively via overflow scroll),
+    // wheel over the strip, and arrow keys when focused.
+    const canPan = () => !!st.geom && st.geom.fullWidth > st.geom.viewW + 1;
+    const markManual = () => {
+      st.manualUntil = performance.now() + MANUAL_HOLD_MS;
+    };
+    let drag = null; // { id, startX, startLeft }
+    const onPointerDown = (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || !canPan()) return;
+      drag = { id: e.pointerId, startX: e.clientX, startLeft: wrap.scrollLeft };
+      wrap.setPointerCapture(e.pointerId);
+      wrap.style.cursor = 'grabbing';
+      markManual();
+    };
+    const onPointerMove = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      wrap.scrollLeft = drag.startLeft - (e.clientX - drag.startX);
+      markManual();
+    };
+    const endDrag = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag = null;
+      wrap.style.cursor = canPan() ? 'grab' : '';
+      markManual();
+    };
+    const onWheel = (e) => {
+      if (!canPan()) return;
+      const d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (!d) return;
+      e.preventDefault();
+      wrap.scrollLeft += d;
+      markManual();
+    };
+    const onKey = (e) => {
+      if (!canPan()) return;
+      const step = st.geom.viewW * 0.25;
+      if (e.key === 'ArrowLeft') wrap.scrollLeft -= step;
+      else if (e.key === 'ArrowRight') wrap.scrollLeft += step;
+      else if (e.key === 'Home') wrap.scrollLeft = 0;
+      else if (e.key === 'End') wrap.scrollLeft = st.geom.fullWidth;
+      else return;
+      e.preventDefault();
+      markManual();
+    };
+
     redrawRef.current = layout;
     refresh();
     armDpr();
@@ -234,11 +281,23 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
     ro.observe(wrap);
     motionMq.addEventListener('change', refresh);
     wrap.addEventListener('scroll', paintStatic, { passive: true });
+    wrap.addEventListener('pointerdown', onPointerDown);
+    wrap.addEventListener('pointermove', onPointerMove);
+    wrap.addEventListener('pointerup', endDrag);
+    wrap.addEventListener('pointercancel', endDrag);
+    wrap.addEventListener('wheel', onWheel, { passive: false });
+    wrap.addEventListener('keydown', onKey);
     return () => {
       ro.disconnect();
       motionMq.removeEventListener('change', refresh);
       if (dprMq) dprMq.removeEventListener('change', onDprChange);
       wrap.removeEventListener('scroll', paintStatic);
+      wrap.removeEventListener('pointerdown', onPointerDown);
+      wrap.removeEventListener('pointermove', onPointerMove);
+      wrap.removeEventListener('pointerup', endDrag);
+      wrap.removeEventListener('pointercancel', endDrag);
+      wrap.removeEventListener('wheel', onWheel);
+      wrap.removeEventListener('keydown', onKey);
       redrawRef.current = null;
     };
   }, []);
@@ -275,7 +334,7 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
       if (geom.fullWidth > geom.viewW + 1) {
         const rel = px - scrollLeft;
         const now = performance.now();
-        if ((rel < geom.viewW * 0.2 || rel > geom.viewW * 0.8) && now - lastScroll > SCROLL_THROTTLE_MS) {
+        if ((rel < geom.viewW * 0.2 || rel > geom.viewW * 0.8) && now - lastScroll > SCROLL_THROTTLE_MS && now > (st.manualUntil || 0)) {
           lastScroll = now;
           wrap.scrollTo({ left: Math.max(0, px - geom.viewW / 2), behavior: st.reduced ? 'auto' : 'smooth' });
         }
