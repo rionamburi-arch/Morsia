@@ -62,7 +62,9 @@ const slotStyle = (primary) => ({
 });
 
 const textareaBase = {
-  flex: '1 1 auto', width: '100%', minHeight: 116, resize: 'none', border: 0,
+  // No focus ring on the editors (owner's call): the blue caret marks focus.
+  // Buttons and links keep their :focus-visible rings.
+  flex: '1 1 auto', width: '100%', minHeight: 116, resize: 'none', border: 0, outline: 'none',
   background: 'transparent', color: 'var(--ink)', caretColor: 'var(--interact)',
   transition: `font-size ${SWAP_MS}ms ${SWAP_EASE}`,
 };
