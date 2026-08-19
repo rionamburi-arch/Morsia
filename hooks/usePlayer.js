@@ -1,7 +1,7 @@
 'use client';
 
 // One audio engine per page. Owns playing / muted / repeat / light and exposes
-// two stable, render-free functions for canvases: clock() and sounding().
+// stable, render-free probes for canvases: clock(), probe() and sounding().
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createEngine } from '@/lib/audio';
@@ -87,14 +87,22 @@ export default function usePlayer({ toneHz }) {
     return engineRef.current.now() - r.start;
   }, []);
 
-  /** True while the segment under the clock is a tone. */
-  const sounding = useCallback(() => {
+  /** The segment under the clock as { on, char, charIndex }, or null when idle. */
+  const probe = useCallback(() => {
     const r = runRef.current;
-    if (!r || !engineRef.current) return false;
+    if (!r || !engineRef.current) return null;
     const ms = (engineRef.current.now() - r.start) * 1000;
     const i = indexAtMs(r.starts, ms);
-    return i >= 0 && r.segments[i].on;
+    if (i < 0) return { on: false, char: null, charIndex: -1 };
+    const s = r.segments[i];
+    return { on: s.on, char: s.char, charIndex: s.charIndex };
   }, []);
 
-  return { playing, muted, repeat, light, play, stop, toggleMute, toggleRepeat, toggleLight, clock, sounding };
+  /** True while the segment under the clock is a tone. */
+  const sounding = useCallback(() => {
+    const p = probe();
+    return !!p && p.on;
+  }, [probe]);
+
+  return { playing, muted, repeat, light, play, stop, toggleMute, toggleRepeat, toggleLight, clock, probe, sounding };
 }

@@ -142,7 +142,7 @@ export default function TranslatePage() {
         <div style={{ marginTop: 14 }}>
           <Scope segments={segments} wpm={wpm} clock={player.playing ? player.clock : null} showLabels={labels} />
         </div>
-        <Oscilloscope sounding={player.sounding} />
+        <Oscilloscope active={player.playing} probe={player.probe} toneHz={toneHz} />
       </section>
 
       <TranslatePanels
