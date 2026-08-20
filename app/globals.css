@@ -107,6 +107,10 @@
   --panel-label-size: 12px;
   --panel-label-stroke: 3px;  /* painted under the fill via paint-order */
 
+  /* Free Mode */
+  --scope-h: clamp(200px, 30vh, 340px);  /* windowed scope height; panels stay visible */
+  --lamp-w: 90px;                        /* lamp panel width when the row stacks tight */
+
   /* Fonts are set on <html> by next/font in app/layout.js:
      --font-sans (Archivo), --font-mono (IBM Plex Mono). */
 }
@@ -131,6 +135,11 @@ input[type="range"] { accent-color: var(--interact); }
 
 @keyframes cad-breathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
 @keyframes cad-toast { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes free-reveal {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  25% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, 30%) scale(0.6); }
+}
 
 /* ---------- hover states ----------
    The design expressed these as style-hover="…" on inline-styled elements.
