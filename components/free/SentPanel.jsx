@@ -8,10 +8,8 @@ function SmallButton({ title, onClick, children }) {
   return (
     <button
       type="button"
-      onClick={(e) => {
-        e.currentTarget.blur(); // a focused button would swallow the spacebar key
-        onClick();
-      }}
+      onClick={onClick}
+      onPointerDown={(e) => e.preventDefault()} // keep focus off the button so Space keeps keying
       title={title}
       aria-label={title}
       className="hv-icon"

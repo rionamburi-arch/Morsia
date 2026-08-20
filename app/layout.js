@@ -18,6 +18,8 @@ const plexMono = IBM_Plex_Mono({
   display: 'swap',
 });
 
+export const viewport = { viewportFit: 'cover' }; // safe-area insets (fullscreen key) need it
+
 export const metadata = {
   title: 'Cadence — Morse code translator',
   description: 'Translate text to Morse code, hear it, and learn to read it by ear.',

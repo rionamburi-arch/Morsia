@@ -19,7 +19,7 @@ const MARK_RISE = 0.42;    // marks rise to 42% of canvas height
 const BASELINE_PAD = 18;   // px from the bottom edge
 
 const SIZES = ['--bar-radius'];
-const COLORS = ['--bar-rest', '--baseline', '--border-soft', '--muted'];
+const COLORS = ['--bar-rest', '--bar-active', '--baseline', '--border-soft', '--muted'];
 
 export default function Scope({ marksRef, keyed, wpm, height }) {
   const canvasRef = useRef(null);
@@ -45,6 +45,7 @@ export default function Scope({ marksRef, keyed, wpm, height }) {
       cv.height = Math.round(st.h * dpr);
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw(performance.now());
+      if (st.start) st.start(); // a resize while parked must not leave marks frozen
     };
 
     const draw = (now) => {
@@ -74,16 +75,18 @@ export default function Scope({ marksRef, keyed, wpm, height }) {
       const cutoff = now - windowMs - 500;
       while (marks.length && marks[0].up != null && marks[0].up < cutoff) marks.shift();
 
-      g.fillStyle = tk['--bar-rest'];
       let visible = false;
       const r = Math.min(tk['--bar-radius'] || 0, 4);
       for (const m of marks) {
+        const open = m.up == null;
         const x0 = w - (now - m.down) * pxPerMs;
         const x1 = w - (now - (m.up ?? now)) * pxPerMs;
         if (x1 < 0) continue;
         visible = true;
         const left = Math.max(-2, x0);
         const width = Math.max(1.5, x1 - left);
+        // The mark being written NOW is signal-pink; settled marks are ink.
+        g.fillStyle = open ? tk['--bar-active'] : tk['--bar-rest'];
         g.beginPath();
         if (typeof g.roundRect === 'function') g.roundRect(left, riseY, width, baseY - riseY, [r, r, 0, 0]);
         else g.rect(left, riseY, width, baseY - riseY);

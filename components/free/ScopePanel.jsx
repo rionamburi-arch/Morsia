@@ -6,20 +6,19 @@
 
 import Scope from '@/components/free/Scope';
 import { unitMs } from '@/lib/timing';
+import { prettyPattern } from '@/lib/morse';
 
 const MONO = 'var(--font-mono), monospace';
-
-export const prettyPattern = (p) => p.replaceAll('.', '·').replaceAll('-', '−');
 
 function IconButton({ title, pressed, onClick, children }) {
   return (
     <button
       type="button"
-      onClick={(e) => {
-        e.currentTarget.blur(); // a focused button would swallow the spacebar key
-        onClick();
+      onClick={onClick}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        e.preventDefault(); // keep focus off the button so Space keeps keying
       }}
-      onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       title={title}
       aria-label={title}

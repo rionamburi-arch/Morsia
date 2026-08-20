@@ -110,6 +110,7 @@
   /* Free Mode */
   --scope-h: clamp(200px, 30vh, 340px);  /* windowed scope height; panels stay visible */
   --lamp-w: 90px;                        /* lamp panel width when the row stacks tight */
+  --lamp-glow: 0 0 28px rgb(var(--ink-rgb) / 0.45); /* the lamp's papaya bloom */
 
   /* Fonts are set on <html> by next/font in app/layout.js:
      --font-sans (Archivo), --font-mono (IBM Plex Mono). */

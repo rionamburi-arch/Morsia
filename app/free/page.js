@@ -67,7 +67,7 @@ export default function FreePage() {
         </span>
       </div>
 
-      <ScopePanel keyer={keyer} wpm={wpm} onExpand={() => setFullscreen(true)} />
+      {!fullscreen && <ScopePanel keyer={keyer} wpm={wpm} onExpand={() => setFullscreen(true)} />}
 
       <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
         <LampPanel lit={keyer.keyedDown} />

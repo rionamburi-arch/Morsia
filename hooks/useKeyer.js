@@ -15,6 +15,8 @@ import { track } from '@/lib/track';
 
 const READOUT_KEEP = 40;   // committed patterns kept for the band
 const TIMEOUT_SLACK_MS = 30;
+const MAX_MARKS = 400;     // safety bound; the scope prunes much sooner
+const SENT_KEEP = 500;     // decoded characters kept on screen
 
 export default function useKeyer({ wpm, toneHz }) {
   const engineRef = useRef(null);
@@ -34,10 +36,6 @@ export default function useKeyer({ wpm, toneHz }) {
     keyerRef.current = createKeyer({ wpm });
   }
 
-  // Live retune — no remount (acceptance #2).
-  useEffect(() => {
-    keyerRef.current.setWpm(wpm);
-  }, [wpm]);
   useEffect(() => {
     engineRef.current?.setTone(toneHz);
   }, [toneHz]);
@@ -57,7 +55,7 @@ export default function useKeyer({ wpm, toneHz }) {
         setPendingPattern(keyerRef.current.pending());
       } else if (ev.type === 'character') {
         setPatterns((p) => [...p, ev.pattern].slice(-READOUT_KEEP));
-        setSent((s) => s + ev.char);
+        setSent((s) => (s + ev.char).slice(-SENT_KEEP));
         setPendingPattern('');
         setLastCharacter({ char: ev.char, at: performance.now() });
         const session = sessionRef.current;
@@ -93,6 +91,13 @@ export default function useKeyer({ wpm, toneHz }) {
     toneHzRef.current = toneHz;
   }, [toneHz]);
 
+  // Live retune — no remount (acceptance #2). A pending character re-arms its
+  // commit timers against the new thresholds.
+  useEffect(() => {
+    keyerRef.current.setWpm(wpm);
+    if (keyerRef.current.pending()) schedule();
+  }, [wpm, schedule]);
+
   const keyDown = useCallback(() => {
     if (keyerRef.current.isDown()) return;
     clearTimers();
@@ -103,13 +108,15 @@ export default function useKeyer({ wpm, toneHz }) {
     const s = sessionRef.current;
     if (!s.startedAt) s.startedAt = now;
     marksRef.current.push({ down: now, up: null });
+    // Bound the buffer even if no scope is mounted to prune it.
+    if (marksRef.current.length > MAX_MARKS) marksRef.current.splice(0, marksRef.current.length - MAX_MARKS);
     setKeyedDown(true);
     apply(keyerRef.current.down(now));
   }, [apply, clearTimers]);
 
   const keyUp = useCallback(() => {
+    engineRef.current?.keyUp(); // always — idempotent, and clear() can desync keyer state from the gate
     if (!keyerRef.current.isDown()) return;
-    engineRef.current?.keyUp();
     const now = performance.now();
     const open = marksRef.current[marksRef.current.length - 1];
     if (open && open.up == null) open.up = now;
@@ -118,16 +125,18 @@ export default function useKeyer({ wpm, toneHz }) {
     schedule();
   }, [apply, schedule]);
 
+  const mutedRef = useRef(false);
   const toggleMute = useCallback(() => {
-    setMuted((m) => {
-      if (!engineRef.current) engineRef.current = createEngine();
-      engineRef.current.setMuted(!m);
-      return !m;
-    });
+    const next = !mutedRef.current;
+    mutedRef.current = next;
+    if (!engineRef.current) engineRef.current = createEngine();
+    engineRef.current.setMuted(next);
+    setMuted(next);
   }, []);
 
   const clear = useCallback(() => {
     clearTimers();
+    engineRef.current?.keyUp(); // never leave the sidetone gated open
     keyerRef.current.reset();
     marksRef.current = [];
     setSent('');
@@ -142,13 +151,17 @@ export default function useKeyer({ wpm, toneHz }) {
   useEffect(() => {
     const interactive = (el) =>
       !!el && !!el.closest && !!el.closest('button, a, input, textarea, select, [contenteditable]');
+    let spaceClaimed = false; // only swallow the key-up for presses WE keyed,
+    // so Space still activates a focused button normally
     const onKeyDown = (e) => {
       if (e.code !== 'Space' || e.repeat || interactive(e.target)) return;
       e.preventDefault();
+      spaceClaimed = true;
       keyDown();
     };
     const onKeyUp = (e) => {
-      if (e.code !== 'Space') return;
+      if (e.code !== 'Space' || !spaceClaimed) return;
+      spaceClaimed = false;
       e.preventDefault();
       keyUp();
     };

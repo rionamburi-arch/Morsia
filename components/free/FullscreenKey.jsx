@@ -8,7 +8,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Scope from '@/components/free/Scope';
-import { prettyPattern, MuteIcon } from '@/components/free/ScopePanel';
+import { MuteIcon } from '@/components/free/ScopePanel';
+import { prettyPattern } from '@/lib/morse';
 
 const MONO = 'var(--font-mono), monospace';
 const EXIT_FADE_MS = 2000;
@@ -82,6 +83,14 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
     <div
       ref={layerRef}
       {...surfaceProps}
+      onPointerDown={(e) => {
+        wake(); // taps produce no pointermove — a touch must also revive the exit affordance
+        surfaceProps.onPointerDown(e);
+      }}
+      onPointerUp={() => {
+        wake();
+        surfaceProps.onPointerUp();
+      }}
       onPointerMove={wake}
       role="application"
       aria-label="Fullscreen Morse key — press anywhere or hold space"
@@ -104,17 +113,17 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
               pointerEvents: 'none', animation: `free-reveal ${REVEAL_MS}ms cubic-bezier(0.22,1,0.36,1) forwards`,
             }}
           >
-            {lastCharacter.char === ' ' ? '' : lastCharacter.char}
+            {lastCharacter.char}
           </div>
         ) : null}
 
         <button
           type="button"
-          onClick={(e) => {
-            e.currentTarget.blur();
-            onExit();
+          onClick={onExit}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
           }}
-          onPointerDown={(e) => e.stopPropagation()}
           onPointerUp={(e) => e.stopPropagation()}
           title="Exit fullscreen"
           aria-label="Exit fullscreen"
@@ -133,11 +142,11 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
 
         <button
           type="button"
-          onClick={(e) => {
-            e.currentTarget.blur();
-            toggleMute();
+          onClick={toggleMute}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
           }}
-          onPointerDown={(e) => e.stopPropagation()}
           onPointerUp={(e) => e.stopPropagation()}
           title={muted ? 'Unmute' : 'Mute'}
           aria-label={muted ? 'Unmute' : 'Mute'}

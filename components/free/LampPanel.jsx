@@ -17,7 +17,7 @@ export default function LampPanel({ lit }) {
           width: 44, height: 44, borderRadius: '50%',
           background: lit ? 'var(--ink)' : 'transparent',
           border: `2px solid ${lit ? 'var(--ink)' : 'var(--border)'}`,
-          boxShadow: lit ? '0 0 28px rgb(var(--ink-rgb) / 0.45)' : 'none',
+          boxShadow: lit ? 'var(--lamp-glow)' : 'none',
           transition: 'background 40ms linear, box-shadow 60ms linear',
         }}
       />
