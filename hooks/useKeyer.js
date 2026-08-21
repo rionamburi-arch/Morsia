@@ -147,14 +147,18 @@ export default function useKeyer({ wpm, toneHz }) {
     endSession();
   }, [clearTimers, endSession]);
 
-  // Global keyboard + safety nets. Space keys unless an interactive element has focus.
+  // Global keyboard + safety nets. Space keys unless focus is somewhere Space
+  // genuinely means something else — a text field, a select, a real button
+  // (whose Space is "activate"). Links are NOT in that list: arriving here by
+  // clicking the "Free Mode" nav link leaves it focused, and Space on a link
+  // does nothing, so it must not swallow the key.
   useEffect(() => {
-    const interactive = (el) =>
-      !!el && !!el.closest && !!el.closest('button, a, input, textarea, select, [contenteditable]');
+    const typesSpace = (el) =>
+      !!el && !!el.closest && !!el.closest('input, textarea, select, [contenteditable="true"], button');
     let spaceClaimed = false; // only swallow the key-up for presses WE keyed,
     // so Space still activates a focused button normally
     const onKeyDown = (e) => {
-      if (e.code !== 'Space' || e.repeat || interactive(e.target)) return;
+      if (e.code !== 'Space' || e.repeat || typesSpace(e.target)) return;
       e.preventDefault();
       spaceClaimed = true;
       keyDown();
