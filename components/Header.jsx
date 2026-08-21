@@ -48,6 +48,9 @@ export default function Header() {
             href={tab.href}
             aria-current={i === idx ? 'page' : undefined}
             onClick={() => { if (i !== idx) track('mode_switched', { to: tab.mode }); }}
+            // A mouse click must not leave the tab focused: Free Mode's spacebar
+            // would then paint a focus ring on it. Tab-to-focus is unaffected.
+            onPointerDown={(e) => e.preventDefault()}
             style={{
               position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 13, fontWeight: 500, padding: '8px 20px', minWidth: 112, borderRadius: 999, flex: '1 1 0',
