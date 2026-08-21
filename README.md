@@ -1,6 +1,6 @@
-# Cadence (Morse)
+# Morsia
 
-Text ⇄ Morse translator that teaches you to read Morse by ear. Next.js App Router, JavaScript, no backend.
+Text ⇄ Morse translator, chart and trainer that teaches you to read Morse by ear. Lives at morsia.app. Next.js App Router, JavaScript, no backend.
 
 ## Develop
 
@@ -18,5 +18,5 @@ npm run build
 - `hooks/` — `useSettings` (localStorage store), `usePlayer` (audio lifecycle, `clock()`, `sounding()`)
 - `components/` — one file per design region; `Scope.jsx` is the two-canvas rhythm strip
 - `app/globals.css` — every colour, radius and size token; `--unit` sets the strip's Morse unit
-- `design/cadence/` — reference export of the Claude Design mockup the UI is ported from
+- `design/cadence/` — reference export of the Claude Design mockup the UI is ported from (that project is still named "Cadence" upstream; the app is Morsia)
 - `docs/superpowers/` — specs and plans

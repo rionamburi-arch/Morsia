@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Cadence — colour system
+   Morsia — colour system
    Every colour in the app resolves from this file.
-   Source of truth: design/cadence/globals.css (Claude Design export).
+   Source of truth: the Claude Design export in design/cadence/
+   (that project is still named "Cadence" upstream).
 
    PALETTE
      ground     Carbon Black    page background
@@ -135,8 +136,8 @@ textarea::placeholder { color: var(--placeholder); }
 input[type="range"] { accent-color: var(--interact); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-@keyframes cad-breathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
-@keyframes cad-toast { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes morsia-breathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@keyframes morsia-toast { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @keyframes free-reveal {
   0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
   10% { opacity: 1; transform: translate(-50%, -50%) scale(1); }

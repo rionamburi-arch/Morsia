@@ -30,7 +30,7 @@ export default function Header() {
           <div style={{ width: 21, height: 18, borderRadius: 2, background: 'var(--logo-b)' }} />
           <div style={{ width: 7, height: 18, borderRadius: 2, background: 'var(--logo-c)' }} />
         </div>
-        <div style={{ fontSize: 27, fontWeight: 600, letterSpacing: '-0.03em', lineHeight: 1, color: 'var(--ink)' }}>Cadence</div>
+        <div style={{ fontSize: 27, fontWeight: 600, letterSpacing: '-0.03em', lineHeight: 1, color: 'var(--ink)' }}>Morsia</div>
       </div>
 
       <nav aria-label="Sections" style={{ position: 'relative', display: 'flex', alignItems: 'stretch', padding: 5, borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
@@ -63,7 +63,7 @@ export default function Header() {
       </nav>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)', fontFamily: 'var(--font-mono), monospace', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.04em' }}>
-        <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ink)', animation: 'cad-breathe 2.6s ease-in-out infinite' }} />
+        <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ink)', animation: 'morsia-breathe 2.6s ease-in-out infinite' }} />
         <span>{settings.wpm} WPM</span>
         <span aria-hidden="true" style={{ color: 'var(--border)' }}>/</span>
         <span>{settings.toneHz} Hz</span>

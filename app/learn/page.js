@@ -1,6 +1,6 @@
 import PlaceholderSection from '@/components/PlaceholderSection';
 
-export const metadata = { title: 'Learn — Cadence' };
+export const metadata = { title: 'Learn — Morsia' };
 
 export default function LearnPage() {
   return (

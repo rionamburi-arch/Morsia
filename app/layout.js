@@ -20,16 +20,35 @@ const plexMono = IBM_Plex_Mono({
 
 export const viewport = { viewportFit: 'cover' }; // safe-area insets (fullscreen key) need it
 
+const SITE = 'https://morsia.app';
+const TITLE = 'Morsia — Morse code translator, chart and trainer';
+const DESCRIPTION =
+  'Translate text to Morse code, hear it, key it yourself, and learn to read it by ear. Free, no sign-up.';
+
 export const metadata = {
-  title: 'Cadence — Morse code translator',
-  description: 'Translate text to Morse code, hear it, and learn to read it by ear.',
+  metadataBase: new URL(SITE),
+  title: { default: TITLE, template: '%s' },
+  description: DESCRIPTION,
+  applicationName: 'Morsia',
+  openGraph: {
+    type: 'website',
+    siteName: 'Morsia',
+    url: SITE,
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body>
-        {/* Shell wrappers ported from design/cadence/Cadence Translate.dc.html */}
+        {/* Shell wrappers ported from the Claude Design export in design/cadence/ */}
         <div style={{ minHeight: '100vh', background: 'var(--ground)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto', padding: '26px 32px 56px', display: 'flex', flexDirection: 'column', gap: 24 }}>
             <Header />
