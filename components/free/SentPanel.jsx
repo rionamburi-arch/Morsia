@@ -29,7 +29,7 @@ export default function SentPanel({ sent, onCopy, onClear }) {
     <section
       aria-label="What you sent"
       style={{
-        flex: '1 1 260px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12, minHeight: 132,
+        flex: '1.6 1 320px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12, minHeight: 220,
         padding: '18px 22px 14px', borderRadius: 20, background: 'var(--surface)', border: '1px solid var(--border)',
       }}
     >

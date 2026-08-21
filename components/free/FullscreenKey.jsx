@@ -13,7 +13,7 @@ import { prettyPattern } from '@/lib/morse';
 
 const MONO = 'var(--font-mono), monospace';
 const EXIT_FADE_MS = 2000;
-const REVEAL_MS = 400;
+const REVEAL_MS = 1200; // pop in fast, hold readable, then fall into the readout
 
 export default function FullscreenKey({ keyer, wpm, onExit }) {
   const layerRef = useRef(null);

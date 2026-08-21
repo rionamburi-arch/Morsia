@@ -22,6 +22,10 @@ import Flash from '@/components/Flash';
 
 const INITIAL_TEXT = 'MORSE';
 const TOAST_MS = 2300;
+
+// The message survives switching sections (client-side nav) — including being
+// deliberately empty. A fresh page load still starts with the MORSE demo.
+let savedMessage = null;
 const WAV_MAX_MS = 10 * 60 * 1000;
 
 export default function TranslatePage() {
@@ -29,11 +33,15 @@ export default function TranslatePage() {
   const { wpm, effWpm, toneHz, labels } = settings;
   const player = usePlayer({ toneHz });
 
-  const [text, setText] = useState(INITIAL_TEXT);
-  const [morse, setMorse] = useState(() => encode(INITIAL_TEXT).morse);
-  const [unknown, setUnknown] = useState([]);
-  const [swapped, setSwapped] = useState(false);
+  const [text, setText] = useState(() => (savedMessage ? savedMessage.text : INITIAL_TEXT));
+  const [morse, setMorse] = useState(() => (savedMessage ? savedMessage.morse : encode(INITIAL_TEXT).morse));
+  const [unknown, setUnknown] = useState(() => (savedMessage ? savedMessage.unknown : []));
+  const [swapped, setSwapped] = useState(() => (savedMessage ? savedMessage.swapped : false));
   const [swapDeg, setSwapDeg] = useState(0);
+
+  useEffect(() => {
+    savedMessage = { text, morse, unknown, swapped };
+  }, [text, morse, unknown, swapped]);
   const [cfgOpen, setCfgOpen] = useState(false);
   const [toast, setToast] = useState('');
   const toastTimer = useRef(0);

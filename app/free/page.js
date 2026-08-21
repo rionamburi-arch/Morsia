@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSettings } from '@/hooks/useSettings';
 import useKeyer from '@/hooks/useKeyer';
 import ScopePanel from '@/components/free/ScopePanel';
-import LampPanel from '@/components/free/LampPanel';
+import KeyPad from '@/components/free/KeyPad';
 import SentPanel from '@/components/free/SentPanel';
 import FullscreenKey from '@/components/free/FullscreenKey';
 import Toast from '@/components/Toast';
@@ -63,14 +63,14 @@ export default function FreePage() {
           </span>
         </div>
         <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.14em', color: 'var(--muted)' }}>
-          HOLD SPACE OR PRESS THE SCOPE
+          HOLD SPACE · PRESS THE KEY OR THE SCOPE
         </span>
       </div>
 
       {!fullscreen && <ScopePanel keyer={keyer} wpm={wpm} onExpand={() => setFullscreen(true)} />}
 
       <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
-        <LampPanel lit={keyer.keyedDown} />
+        <KeyPad lit={keyer.keyedDown} surfaceProps={keyer.surfaceProps} />
         <SentPanel sent={keyer.sent} onCopy={onCopy} onClear={onClear} />
       </div>
 
