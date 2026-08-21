@@ -109,7 +109,8 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
             aria-hidden="true"
             style={{
               position: 'absolute', left: '50%', top: '38%', transform: 'translate(-50%, -50%)',
-              fontSize: 'min(28vw, 220px)', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ink)',
+              fontSize: lastCharacter.char.length > 1 ? 'min(13vw, 110px)' : 'min(28vw, 220px)',
+              fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ink)',
               pointerEvents: 'none', animation: `free-reveal ${REVEAL_MS}ms cubic-bezier(0.22,1,0.36,1) forwards`,
             }}
           >

@@ -6,18 +6,16 @@
 // and the tree are what JavaScript adds on top.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { NUMBERS, PUNCTUATION, SORTS, sortLetters, treeNodes } from '@/lib/chart';
+import { NUMBERS, PUNCTUATION, SORTS, sortLetters } from '@/lib/chart';
 import { PROSIGNS, normaliseMorse, prettyPattern } from '@/lib/morse';
 import { patternToSegments } from '@/lib/timing';
 import { useSettings } from '@/hooks/useSettings';
 import usePlayer from '@/hooks/usePlayer';
 import PatternBars from '@/components/chart/PatternBars';
-import Tree from '@/components/chart/Tree';
 import Toast from '@/components/Toast';
 
 const MONO = 'var(--font-mono), monospace';
 const TOAST_MS = 1800;
-const TREE = treeNodes();
 
 function Eyebrow({ children }) {
   return (
@@ -150,7 +148,6 @@ export default function Chart() {
 
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState('alpha');
-  const [view, setView] = useState('grid');
   const [active, setActive] = useState(null); // { id, pattern }
   const [toast, setToast] = useState('');
 
@@ -218,15 +215,6 @@ export default function Chart() {
       }
     },
     [player, wpm, showToast],
-  );
-
-  const playChar = useCallback(
-    (char, pattern) => {
-      activeElRef.current = null;
-      setActive({ id: char, pattern });
-      player.play(patternToSegments(pattern, { wpm }));
-    },
-    [player, wpm],
   );
 
   const copy = useCallback(
@@ -307,24 +295,8 @@ export default function Chart() {
             </button>
           ) : null}
         </label>
-
-        <Segmented
-          label="View"
-          value={view}
-          onChange={setView}
-          options={[{ id: 'grid', label: 'Grid' }, { id: 'tree', label: 'Tree' }]}
-        />
       </div>
 
-      {view === 'tree' ? (
-        <section style={{ padding: '18px 20px 16px', borderRadius: 24, background: 'var(--surface)', border: '1px solid var(--border)' }}>
-          <div style={{ marginBottom: 14 }}>
-            <Eyebrow>DECODING TREE</Eyebrow>
-          </div>
-          <Tree root={TREE} activePattern={active?.pattern ?? null} onPlay={playChar} />
-        </section>
-      ) : (
-        <>
           {total === 0 ? (
             <p style={{ color: 'var(--muted)', fontSize: 14 }}>
               Nothing matches “{query}”. Try a letter, a number, or a pattern like <span style={{ fontFamily: MONO }}>-.-</span>.
@@ -355,8 +327,6 @@ export default function Chart() {
                 </div>
               </section>
             ) : null,
-          )}
-        </>
       )}
 
       <Toast message={toast} />

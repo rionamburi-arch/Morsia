@@ -197,7 +197,6 @@ input[type="range"] { accent-color: var(--interact); }
 }
 .chart-cell { transition: background 140ms linear; }
 .chart-cell:hover { background: var(--row-hover); }
-.tree-node:hover { background: var(--row-hover); }
 
 /* ---------- nav (four pills; must never wrap at 375px) ---------- */
 .nav-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
@@ -226,7 +225,6 @@ input[type="range"] { accent-color: var(--interact); }
 }
 .chart-cell { transition: background 140ms linear; }
 .chart-cell:hover { background: var(--row-hover); }
-.tree-node:hover { background: var(--row-hover); }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
