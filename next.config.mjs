@@ -5,10 +5,10 @@ const isDev = process.env.NODE_ENV !== 'production';
 // ws: sources are dev-only (HMR).
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://va.vercel-scripts.com`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://va.vercel-scripts.com https://www.clarity.ms https://*.clarity.ms`,
   "style-src 'self' 'unsafe-inline'",
-  `connect-src 'self' https://va.vercel-scripts.com${isDev ? ' ws:' : ''}`,
-  "img-src 'self' data:",
+  `connect-src 'self' https://va.vercel-scripts.com https://*.clarity.ms https://c.bing.com${isDev ? ' ws:' : ''}`,
+  "img-src 'self' data: https://*.clarity.ms",
   "font-src 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",

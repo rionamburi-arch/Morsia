@@ -1,4 +1,5 @@
 import { Archivo, IBM_Plex_Mono } from 'next/font/google';
+import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Header from '@/components/Header';
@@ -20,7 +21,7 @@ const plexMono = IBM_Plex_Mono({
 
 export const viewport = { viewportFit: 'cover' }; // safe-area insets (fullscreen key) need it
 
-const SITE = 'https://morsia.app';
+const SITE = 'https://morsia.app'; // canonical: www.morsia.app 308s to the apex
 const TITLE = 'Morsia — Morse code translator, chart and trainer';
 const DESCRIPTION =
   'Translate text to Morse code, hear it, key it yourself, and learn to read it by ear. Free, no sign-up.';
@@ -44,10 +45,34 @@ export const metadata = {
   },
 };
 
+const siteSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Morsia',
+    url: SITE,
+    description: DESCRIPTION,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Morsia',
+    url: SITE,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    description: DESCRIPTION,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema).replaceAll('<', '\\u003c') }}
+        />
         {/* Shell wrappers ported from the Claude Design export in design/cadence/ */}
         <div style={{ minHeight: '100vh', background: 'var(--ground)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto', padding: '26px 32px 56px', display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -57,6 +82,11 @@ export default function RootLayout({ children }) {
         </div>
         <Analytics />
         <SpeedInsights />
+        {/* Microsoft Clarity. Unlike Vercel Analytics this DOES set cookies and
+            record sessions, so it needs a consent banner before launch. */}
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y6l2qqxkk0");`}
+        </Script>
       </body>
     </html>
   );

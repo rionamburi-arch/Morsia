@@ -6,9 +6,11 @@
 import Chart from '@/components/chart/Chart';
 import { TABLE, PROSIGNS, prettyPattern } from '@/lib/morse';
 
-const TITLE = 'Morse Code Chart — Letters, Numbers, Punctuation and Prosigns';
+const TITLE = 'Morse Code Chart — Full Alphabet with Sound | Morsia';
 const DESCRIPTION =
-  'The full Morse code alphabet as timing bars you can hear: every letter, number, punctuation mark and prosign, with a searchable chart and a decoding tree. Click any character to play it.';
+  'The full Morse code alphabet as timing bars you can hear: every letter, number, punctuation mark and prosign. Click any character to play it.';
+
+export const dynamic = 'force-static';
 
 export const metadata = {
   title: TITLE,

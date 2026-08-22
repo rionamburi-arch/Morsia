@@ -24,7 +24,7 @@ function Eyebrow({ children }) {
       <span
         style={{
           fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-          color: 'var(--interact)', WebkitTextStroke: 'var(--panel-label-stroke) var(--ground)', paintOrder: 'stroke fill',
+          color: 'var(--interact)',
         }}
       >
         {children}
@@ -96,7 +96,7 @@ function Cell({ row, cellRef, onPlay, onCopy }) {
           {row.label}
         </span>
         <PatternBars pattern={row.pattern} />
-        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.12em', color: 'var(--border)' }}>
+        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.12em', color: 'var(--chart-pattern)' }}>
           {prettyPattern(row.pattern)}
         </span>
         {row.meaning ? (

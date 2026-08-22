@@ -39,7 +39,7 @@ export default function SentPanel({ sent, onCopy, onClear }) {
           <span
             style={{
               fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-              color: 'var(--interact)', WebkitTextStroke: 'var(--panel-label-stroke) var(--ground)', paintOrder: 'stroke fill',
+              color: 'var(--interact)',
             }}
           >
             WHAT YOU SENT

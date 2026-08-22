@@ -1,6 +1,15 @@
 import PlaceholderSection from '@/components/PlaceholderSection';
 
-export const metadata = { title: 'Learn — Morsia' };
+const TITLE = 'Learn Morse Code — Lessons Coming Soon | Morsia';
+const DESCRIPTION =
+  'Guided Morse code lessons are on the way. Until they land, hear every character on the full chart and practise sending it yourself on the straight key.';
+
+export const metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: '/learn' },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: '/learn', type: 'website' },
+};
 
 export default function LearnPage() {
   return (

@@ -106,7 +106,6 @@
 
   /* Panel labels (PLAIN TEXT / MORSE CODE) — blue bold with a dark outline */
   --panel-label-size: 12px;
-  --panel-label-stroke: 3px;  /* painted under the fill via paint-order */
 
   /* Free Mode */
   --scope-h: clamp(200px, 30vh, 340px);  /* windowed scope height; panels stay visible */
@@ -118,6 +117,7 @@
   --chart-bar-unit: 6px;                 /* one Morse unit in the chart's bars */
   --chart-bar-h: 14px;
   --chart-bar-radius: 2px;
+  --chart-pattern: rgb(var(--ink-rgb) / 0.7);  /* the ·− notation: secondary to the bars, still legible */
   --row-hover: rgb(var(--ink-rgb) / 0.06);
   --chart-flash: rgb(var(--ink-rgb) / 0.18);
 
@@ -125,6 +125,7 @@
   --chart-bar-unit: 6px;                 /* one Morse unit in the chart's bars */
   --chart-bar-h: 14px;
   --chart-bar-radius: 2px;
+  --chart-pattern: rgb(var(--ink-rgb) / 0.7);  /* the ·− notation: secondary to the bars, still legible */
   --row-hover: rgb(var(--ink-rgb) / 0.06);
   --chart-flash: rgb(var(--ink-rgb) / 0.18);
 
@@ -171,6 +172,9 @@ input[type="range"] { accent-color: var(--interact); }
 .hv-interact:hover { background: var(--interact-bright) !important; }
 
 /* ---------- nav (four pills; must never wrap at 375px) ---------- */
+/* Reserve the header's height so a font swap can't shift the page under it. */
+.hdr-row { min-height: 46px; }
+@media (min-width: 721px) { .hdr-row { min-height: 52px; } }
 .nav-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
 .nav-scroll::-webkit-scrollbar { display: none; }
 .nav-tab { min-width: 106px; }
@@ -199,6 +203,9 @@ input[type="range"] { accent-color: var(--interact); }
 .chart-cell:hover { background: var(--row-hover); }
 
 /* ---------- nav (four pills; must never wrap at 375px) ---------- */
+/* Reserve the header's height so a font swap can't shift the page under it. */
+.hdr-row { min-height: 46px; }
+@media (min-width: 721px) { .hdr-row { min-height: 52px; } }
 .nav-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
 .nav-scroll::-webkit-scrollbar { display: none; }
 .nav-tab { min-width: 106px; }
