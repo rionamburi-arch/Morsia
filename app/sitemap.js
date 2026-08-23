@@ -2,6 +2,9 @@ const SITE = 'https://morsia.app';
 
 // One timestamp per build: these are static pages, so "last modified" is the
 // last deploy rather than anything per-route.
+//
+// /optout is deliberately absent: it is a utility page, noindex, and must not
+// appear in search results.
 export default function sitemap() {
   const lastModified = new Date();
   return [

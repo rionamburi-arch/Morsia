@@ -1,7 +1,6 @@
 import { Archivo, IBM_Plex_Mono } from 'next/font/google';
 import Script from 'next/script';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import AnalyticsProvider from '@/components/AnalyticsProvider';
 import Header from '@/components/Header';
 import './globals.css';
 
@@ -80,8 +79,7 @@ export default function RootLayout({ children }) {
             {children}
           </div>
         </div>
-        <Analytics />
-        <SpeedInsights />
+        <AnalyticsProvider />
         {/* Microsoft Clarity. Unlike Vercel Analytics this DOES set cookies and
             record sessions, so it needs a consent banner before launch. */}
         <Script id="ms-clarity" strategy="afterInteractive">
