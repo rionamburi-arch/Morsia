@@ -3,66 +3,64 @@
 // the page.
 //
 // Rule for every answer: `lead` contains the answer. Explanation goes in `body`.
-// That is what a scanning reader needs, and it is what gets extracted as a
-// snippet or an AI Overview citation.
 
 export const FAQ = [
   {
     q: 'How do I translate text to Morse code?',
     lead: 'Type into the plain text panel above and the Morse appears as you type, as bars and as dots and dashes.',
     body: [
-      'Press Play to hear it at your chosen speed and tone. It runs both ways — paste dots and dashes into the Morse panel and the text side fills in, so the same tool decodes as well as encodes.',
+      'Press Play to hear it. It works both ways — paste dots and dashes into the Morse panel and the text comes back out, so the same tool decodes as well as encodes.',
     ],
   },
   {
     q: 'What is the Morse code for SOS?',
-    lead: 'SOS is · · · — — — · · · — three dits, three dahs, three dits.',
+    lead: 'SOS is · · · − − − · · · — three dots, three dashes, three dots.',
     body: [
-      'It is sent as one continuous signal with no gaps between the letters, which is why it sounds like a single distinctive burst rather than three characters. That run-together form is the whole point: it was chosen in 1906 because the rhythm is unmistakable even through heavy interference.',
+      'It is sent as one continuous run with no gaps between the letters, which is why it sounds like a single burst rather than three characters. That was the point: it was chosen in 1906 because the rhythm is unmistakable even through heavy interference.',
     ],
     bars: 'sos',
   },
   {
     q: 'What does SOS stand for?',
-    lead: 'Nothing. It is not an acronym.',
+    lead: 'Nothing. It isn’t an acronym.',
     body: [
-      '“Save Our Souls” and “Save Our Ship” were both invented afterwards to explain a signal that was picked purely for how it sounds. The letters were chosen because that particular sequence is unambiguous and easy to send under pressure — the meaning was attached later.',
+      '“Save Our Souls” and “Save Our Ship” were both invented afterwards to explain a signal chosen purely for how it sounds. The letters were picked because the sequence is unambiguous and easy to send under pressure. The meaning came later.',
     ],
   },
   {
-    q: 'How fast is 20 words per minute?',
-    lead: 'At 20 wpm a dit lasts 60 milliseconds and a dah lasts 180.',
+    q: 'How do I write my name in Morse code?',
+    lead: 'Type it into the translator above — each letter converts as you type, and Play sends it at your chosen speed.',
     body: [
-      'Speed is measured against the word PARIS, which is exactly 50 units of Morse long, so the dit length is always 1200 divided by the words per minute. Twenty is the usual target for a competent operator; five is a comfortable beginner pace and contest operators work at thirty to forty.',
+      'If you are writing it down or having it tattooed, the spacing is what matters. Leave a gap of one unit between the parts of a letter and three units between letters. Without that difference, there is no way to tell where one letter ends.',
     ],
   },
   {
-    q: 'What is the difference between a dit and a dah?',
-    lead: 'Length, and nothing else — a dit is one unit of time, a dah is exactly three, at identical pitch and volume.',
+    q: 'What is the difference between a dot and a dash?',
+    lead: 'Length, and nothing else. A dot is one unit of time; a dash is exactly three, at the same pitch and volume.',
     body: [
-      'That three-to-one ratio is what your ear learns to hear. It is also why this site draws characters as bars sized by duration rather than printing dots and dashes: the width on screen is the length in time.',
+      'That three-to-one ratio is the thing your ear actually learns. It is why this site draws characters as bars sized by duration — the width on screen is the length in time.',
     ],
-    bars: 'ditdah',
+    bars: 'dotdash',
+  },
+  {
+    q: 'How do I send Morse code with a torch?',
+    lead: 'Short flash for a dot, long flash for a dash, torch off for the gaps between them.',
+    body: [
+      'Keep the dashes visibly three times as long as the dots, and pause noticeably longer between letters than between the flashes inside one. The most common mistake is flashing at an even rhythm, which turns everything into an unreadable string.',
+    ],
   },
   {
     q: 'How long does it take to learn Morse code?',
-    lead: 'Most people can recognise the full alphabet by ear within a few weeks of daily practice, and reach a usable 15–20 words per minute in a few months.',
+    lead: 'Most people recognise the whole alphabet by ear within a few weeks of daily practice, and can hold a slow conversation within a few months.',
     body: [
-      'The variable is not talent, it is method. Practising twenty minutes a day beats two hours at the weekend, and learning characters at full speed with stretched gaps — Farnsworth spacing — is consistently faster than learning slowly and speeding up.',
-    ],
-  },
-  {
-    q: 'Can I learn Morse code from a chart?',
-    lead: 'A chart teaches you what the characters are, but not what they sound like, and Morse is received by ear.',
-    body: [
-      'Use it to hear each character, not to memorise a table of dots. Reading Morse visually is a habit that has to be unlearned later, and it is the single most common reason people stall at a few words a minute.',
+      'Twenty minutes a day beats two hours at the weekend. Learning by sound rather than by reading dots off a page makes a bigger difference than anything else.',
     ],
   },
   {
     q: 'Is Morse code still used?',
-    lead: 'Yes — daily, mostly by amateur radio operators.',
+    lead: 'Yes — mostly by amateur radio operators, who use it daily.',
     body: [
-      'It carries further on less power than voice, so a conversation possible on a few watts of Morse would be inaudible as speech. Aviation and marine beacons still identify themselves in Morse, and it remains a fallback whenever a signal can be switched on and off but nothing more sophisticated is available.',
+      'It travels further on less power than speech, so a Morse conversation is possible on a few watts where a voice would be lost in the noise. It also survives as the universal fallback: anything that can be switched on and off can carry it.',
     ],
   },
 ];

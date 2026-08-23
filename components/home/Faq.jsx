@@ -14,8 +14,8 @@ const BARS = {
     label: '· · · — — — · · ·',
     segments: patternSegments('...---...'),
   },
-  ditdah: {
-    label: 'dit, then dah',
+  dotdash: {
+    label: 'dot, then dash',
     segments: [{ on: true, u: 1 }, { on: false, u: 3, tint: true }, { on: true, u: 3 }],
   },
 };
@@ -41,10 +41,7 @@ function Figure({ kind }) {
 
 export default function Faq() {
   return (
-    <section
-      aria-labelledby="faq"
-      style={{ padding: '26px 30px 28px', borderRadius: 24, background: 'var(--surface)', border: '1px solid var(--border)' }}
-    >
+    <section aria-labelledby="faq" className="content-panel">
       <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 16 }}>
         <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
         <span

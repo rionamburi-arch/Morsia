@@ -52,7 +52,7 @@ export default function ChartPage() {
           Morse code chart
         </h1>
         <p style={{ margin: 0, maxWidth: '62ch', fontSize: 14, lineHeight: 1.6, color: 'var(--muted)' }}>
-          Every character as proportional bars — a dit is one unit, a dah is three, and the gap between them is one.
+          Every character as proportional bars — a dot is one unit, a dash is three, and the gap between them is one.
           That is what Morse actually sounds like, so click any character to hear it.
         </p>
       </header>
