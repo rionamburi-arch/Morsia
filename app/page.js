@@ -3,7 +3,8 @@
 
 import TranslateApp from '@/components/translate/TranslateApp';
 import AboutMorse from '@/components/home/AboutMorse';
-import { FAQ } from '@/components/home/faq';
+import Faq from '@/components/home/Faq';
+import { FAQ, answerText } from '@/components/home/faq';
 
 const TITLE = 'Morse Code Translator — Text to Morse with Sound | Morsia';
 const DESCRIPTION =
@@ -23,7 +24,7 @@ const faqSchema = {
   mainEntity: FAQ.map((item) => ({
     '@type': 'Question',
     name: item.q,
-    acceptedAnswer: { '@type': 'Answer', text: item.a },
+    acceptedAnswer: { '@type': 'Answer', text: answerText(item) },
   })),
 };
 
@@ -36,6 +37,7 @@ export default function TranslatePage() {
       />
       <TranslateApp />
       <AboutMorse />
+      <Faq />
     </>
   );
 }

@@ -118,6 +118,10 @@
   --chart-bar-h: 14px;
   --chart-bar-radius: 2px;
   --chart-pattern: rgb(var(--ink-rgb) / 0.7);  /* the ·− notation: secondary to the bars, still legible */
+  --diagram-unit: 10px;                  /* one Morse unit in the teaching diagrams */
+  --diagram-unit-sm: 7px;
+  --diagram-bar-h: 22px;
+  --gap-tint: rgb(var(--border-rgb) / 0.18);  /* so a 7-unit silence is visible as width */
   --row-hover: rgb(var(--ink-rgb) / 0.06);
   --chart-flash: rgb(var(--ink-rgb) / 0.18);
 
@@ -126,6 +130,10 @@
   --chart-bar-h: 14px;
   --chart-bar-radius: 2px;
   --chart-pattern: rgb(var(--ink-rgb) / 0.7);  /* the ·− notation: secondary to the bars, still legible */
+  --diagram-unit: 10px;                  /* one Morse unit in the teaching diagrams */
+  --diagram-unit-sm: 7px;
+  --diagram-bar-h: 22px;
+  --gap-tint: rgb(var(--border-rgb) / 0.18);  /* so a 7-unit silence is visible as width */
   --row-hover: rgb(var(--ink-rgb) / 0.06);
   --chart-flash: rgb(var(--ink-rgb) / 0.18);
 
@@ -232,6 +240,22 @@ input[type="range"] { accent-color: var(--interact); }
 }
 .chart-cell { transition: background 140ms linear; }
 .chart-cell:hover { background: var(--row-hover); }
+
+/* ---------- long-form prose: figures beside the text, never a void ---------- */
+.prose-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin-bottom: 34px; }
+.prose-row:last-child { margin-bottom: 0; }
+.prose-col { max-width: 68ch; }
+.prose-aside { min-width: 0; }
+@media (min-width: 1024px) {
+  .prose-row { grid-template-columns: minmax(0, 1fr) minmax(280px, 360px); gap: 40px; align-items: start; }
+}
+
+.faq-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+.faq-item { max-width: 68ch; padding: 20px 0; border-top: 1px solid var(--border-soft); }
+@media (min-width: 1024px) {
+  .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 44px; }
+  .faq-item { max-width: none; }
+}
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
