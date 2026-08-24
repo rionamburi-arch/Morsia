@@ -67,6 +67,7 @@ export default function ScopePanel({ keyer, wpm, onExpand }) {
   return (
     <section
       aria-label="Keying scope"
+      data-clarity-unmask="true"
       {...surfaceProps}
       style={{
         borderRadius: 24, background: 'var(--surface)', border: '1px solid var(--border)',

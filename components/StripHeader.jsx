@@ -1,9 +1,12 @@
 'use client';
 
+// The word and its pattern are whatever the visitor typed, so they carry the
+// same privacy promise as the textareas: masked in session recordings. Only
+// the bars themselves (Scope, in TranslateApp) are left visible.
 export default function StripHeader({ word, code, muted, onToggleMute }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, minWidth: 0 }}>
+      <div data-clarity-mask="true" style={{ display: 'flex', alignItems: 'baseline', gap: 12, minWidth: 0 }}>
         <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: '0.12em', color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{word}</div>
         <div style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 12, color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{code}</div>
       </div>

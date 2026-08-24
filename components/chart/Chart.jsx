@@ -13,6 +13,8 @@ import { useSettings } from '@/hooks/useSettings';
 import usePlayer from '@/hooks/usePlayer';
 import PatternBars from '@/components/chart/PatternBars';
 import Toast from '@/components/Toast';
+import { track } from '@/lib/analytics';
+import useSessionSummary from '@/hooks/useSessionSummary';
 
 const MONO = 'var(--font-mono), monospace';
 const TOAST_MS = 1800;
@@ -151,6 +153,8 @@ export default function Chart() {
   const [active, setActive] = useState(null); // { id, pattern }
   const [toast, setToast] = useState('');
 
+  const { count: countPlay } = useSessionSummary('chart');
+  const playedOnce = useRef(false);
   const cellsRef = useRef(new Map());
   const activeElRef = useRef(null);
   const searchRef = useRef(null);
@@ -210,11 +214,18 @@ export default function Chart() {
       const key = `${row.id}`;
       activeElRef.current = cellsRef.current.get(key) || null;
       setActive({ id: key, pattern: row.pattern });
+      // One event for the first play, then only counts — playing through the
+      // whole alphabet must not become 61 events.
+      countPlay(1);
+      if (!playedOnce.current) {
+        playedOnce.current = true;
+        track('chart_character_played');
+      }
       if (!player.play(patternToSegments(row.pattern, { wpm }))) {
         showToast('Audio unavailable in this browser');
       }
     },
-    [player, wpm, showToast],
+    [player, wpm, showToast, countPlay],
   );
 
   const copy = useCallback(
@@ -314,7 +325,7 @@ export default function Chart() {
                   <Eyebrow>{section.label}</Eyebrow>
                   {section.sortable ? <Segmented label="Sort letters" options={SORTS} value={sort} onChange={setSort} /> : null}
                 </div>
-                <div className={section.wide ? 'chart-grid-wide' : 'chart-grid'} onKeyDown={onGridKeyDown}>
+                <div data-clarity-unmask="true" className={section.wide ? 'chart-grid-wide' : 'chart-grid'} onKeyDown={onGridKeyDown}>
                   {section.rows.map((row) => (
                     <Cell
                       key={`${section.id}:${row.id}`}

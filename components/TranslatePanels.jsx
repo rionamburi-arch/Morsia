@@ -118,6 +118,7 @@ export default function TranslatePanels({
       <div ref={textRef} style={slotStyle(textPrimary)}>
         <PanelHead label="PLAIN TEXT" copyTitle="Copy text" onCopy={onCopyText} />
         <textarea
+          data-clarity-mask="true"
           value={text}
           onChange={(e) => onTextChange(e.target.value)}
           spellCheck={false}
@@ -131,6 +132,7 @@ export default function TranslatePanels({
       <div ref={morseRef} style={slotStyle(!textPrimary)}>
         <PanelHead label="MORSE CODE" copyTitle="Copy morse" onCopy={onCopyMorse} />
         <textarea
+          data-clarity-mask="true"
           value={morse}
           onChange={(e) => onMorseChange(e.target.value)}
           spellCheck={false}

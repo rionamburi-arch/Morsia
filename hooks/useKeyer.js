@@ -11,7 +11,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createKeyer } from '@/lib/keyer';
 import { createEngine } from '@/lib/audio';
-import { track } from '@/lib/track';
+import useSessionSummary from '@/hooks/useSessionSummary';
 
 const READOUT_KEEP = 40;   // committed patterns kept for the band
 const TIMEOUT_SLACK_MS = 30;
@@ -23,7 +23,6 @@ export default function useKeyer({ wpm, toneHz }) {
   const keyerRef = useRef(null);
   const marksRef = useRef([]);          // [{ down, up|null }] — pruned by the scope
   const timersRef = useRef([]);
-  const sessionRef = useRef({ startedAt: 0, chars: 0, keyedTracked: false });
 
   const [keyedDown, setKeyedDown] = useState(false);
   const [pendingPattern, setPendingPattern] = useState('');
@@ -40,14 +39,9 @@ export default function useKeyer({ wpm, toneHz }) {
     engineRef.current?.setTone(toneHz);
   }, [toneHz]);
 
-  const endSession = useCallback(() => {
-    const s = sessionRef.current;
-    if (s.chars > 0) {
-      track('characters_sent', { count: s.chars, mode: 'free' });
-      track('session_duration', { seconds: Math.round((performance.now() - s.startedAt) / 1000), mode: 'free' });
-    }
-    sessionRef.current = { startedAt: 0, chars: 0, keyedTracked: false };
-  }, []);
+  // One summary per session, never an event per character. Both callbacks are
+  // stable, so they can be used directly as dependencies.
+  const { count: countCharacter, flush: endSession } = useSessionSummary('free');
 
   const apply = useCallback((events) => {
     for (const ev of events) {
@@ -58,17 +52,12 @@ export default function useKeyer({ wpm, toneHz }) {
         setSent((s) => (s + ev.char).slice(-SENT_KEEP));
         setPendingPattern('');
         setLastCharacter({ char: ev.char, at: performance.now() });
-        const session = sessionRef.current;
-        session.chars += 1;
-        if (!session.keyedTracked) {
-          session.keyedTracked = true;
-          track('free_keyed');
-        }
+        countCharacter(1);
       } else if (ev.type === 'word') {
         setSent((s) => (s && !s.endsWith(' ') ? `${s} ` : s));
       }
     }
-  }, []);
+  }, [countCharacter]);
 
   const clearTimers = useCallback(() => {
     for (const t of timersRef.current) clearTimeout(t);
@@ -105,8 +94,6 @@ export default function useKeyer({ wpm, toneHz }) {
     engineRef.current.setTone(toneHzRef.current);
     engineRef.current.keyDown();
     const now = performance.now();
-    const s = sessionRef.current;
-    if (!s.startedAt) s.startedAt = now;
     marksRef.current.push({ down: now, up: null });
     // Bound the buffer even if no scope is mounted to prune it.
     if (marksRef.current.length > MAX_MARKS) marksRef.current.splice(0, marksRef.current.length - MAX_MARKS);

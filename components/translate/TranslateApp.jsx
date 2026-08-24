@@ -8,7 +8,7 @@ import { encode, decode, normaliseMorse } from '@/lib/morse';
 import { toSegments, totalMs } from '@/lib/timing';
 import { segmentsToWav, wavFilename } from '@/lib/wav';
 import { encodeSlug } from '@/lib/slug';
-import { track } from '@/lib/track';
+import { track } from '@/lib/analytics';
 import { useSettings } from '@/hooks/useSettings';
 import usePlayer from '@/hooks/usePlayer';
 import Scope from '@/components/Scope';
@@ -96,11 +96,9 @@ export default function TranslateApp() {
       showToast('Type something to play');
       return;
     }
-    if (player.play(segments)) track('translate_played');
-    else showToast('Audio unavailable in this browser');
+    if (!player.play(segments)) showToast('Audio unavailable in this browser');
   };
   const onToggleLight = () => {
-    if (!player.light) track('flash_used');
     player.toggleLight();
   };
   const onWav = () => {
@@ -130,10 +128,9 @@ export default function TranslateApp() {
       showToast('Nothing to share');
       return;
     }
-    if (await copy(`${window.location.origin}/m/${slug}`, 'Link copied')) track('link_shared');
+    if (await copy(`${window.location.origin}/m/${slug}`, 'Link copied')) track('share_clicked');
   };
   const onToggleCfg = () => {
-    if (!cfgOpen) track('settings_opened');
     setCfgOpen((o) => !o);
   };
   const stopThen = (fn) => (v) => {
@@ -148,7 +145,7 @@ export default function TranslateApp() {
         style={{ borderRadius: 24, padding: '18px 26px 14px', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'inset 0 0 100px var(--strip-bloom)' }}
       >
         <StripHeader word={source} code={stripCode} muted={player.muted} onToggleMute={player.toggleMute} />
-        <div style={{ marginTop: 14 }}>
+        <div data-clarity-unmask="true" style={{ marginTop: 14 }}>
           <Scope segments={segments} wpm={wpm} clock={player.playing ? player.clock : null} showLabels={labels} />
         </div>
         <Oscilloscope active={player.playing} probe={player.probe} toneHz={toneHz} />

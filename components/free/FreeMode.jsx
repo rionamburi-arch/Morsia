@@ -13,6 +13,7 @@ import KeyPad from '@/components/free/KeyPad';
 import SentPanel from '@/components/free/SentPanel';
 import FullscreenKey from '@/components/free/FullscreenKey';
 import Toast from '@/components/Toast';
+import { track } from '@/lib/analytics';
 
 const MONO = 'var(--font-mono), monospace';
 const TOAST_MS = 2300;
@@ -67,7 +68,7 @@ export default function FreeMode() {
         </span>
       </div>
 
-      {!fullscreen && <ScopePanel keyer={keyer} wpm={wpm} onExpand={() => setFullscreen(true)} />}
+      {!fullscreen && <ScopePanel keyer={keyer} wpm={wpm} onExpand={() => { track('fullscreen_entered'); setFullscreen(true); }} />}
 
       <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
         <KeyPad lit={keyer.keyedDown} surfaceProps={keyer.surfaceProps} />

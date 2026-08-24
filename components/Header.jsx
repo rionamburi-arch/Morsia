@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSettings } from '@/hooks/useSettings';
-import { track } from '@/lib/track';
 
 const TABS = [
   { href: '/', label: 'Translate', mode: 'translate' },
@@ -66,7 +65,6 @@ export default function Header() {
             ref={i === idx ? activeRef : null}
             className="nav-tab"
             aria-current={i === idx ? 'page' : undefined}
-            onClick={() => { if (i !== idx) track('mode_switched', { to: tab.mode }); }}
             // A mouse click must not leave the tab focused: Free Mode's spacebar
             // would then paint a focus ring on it. Tab-to-focus is unaffected.
             onPointerDown={(e) => e.preventDefault()}
