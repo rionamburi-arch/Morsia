@@ -41,3 +41,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .superpowers/
+
+# Impeccable session artifacts (review captures, decision-page state).
+# The design system itself (.impeccable/design.json) stays tracked.
+.impeccable/review/
+.impeccable/questions/
