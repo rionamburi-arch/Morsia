@@ -12,11 +12,14 @@ const TABS = [
   { href: '/learn', label: 'Learn', mode: 'learn' },
 ];
 
+// -1 for a route that is not one of the four tabs (/optout, /m/<slug>): the
+// nav then marks nothing, rather than claiming Translate is the current page.
 function activeIndex(pathname) {
+  if (pathname === '/') return 0;
   if (pathname.startsWith('/free')) return 1;
   if (pathname.startsWith('/chart')) return 2;
   if (pathname.startsWith('/learn')) return 3;
-  return 0;
+  return -1;
 }
 
 // The wordmark is itself a measured object: three blocks at 1 / 3 / 1 units
@@ -78,11 +81,13 @@ export default function Header() {
 
       <div className="nav-scroll">
         <nav ref={navRef} aria-label="Sections" className="nav-rail">
-          <span
-            aria-hidden="true"
-            className="nav-mark"
-            style={{ transform: `translateX(${mark.left}px) scaleX(${mark.width})` }}
-          />
+          {idx >= 0 ? (
+            <span
+              aria-hidden="true"
+              className="nav-mark"
+              style={{ transform: `translateX(${mark.left}px) scaleX(${mark.width})` }}
+            />
+          ) : null}
           {TABS.map((tab, i) => (
             <Link
               key={tab.href}

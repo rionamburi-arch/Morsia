@@ -179,6 +179,31 @@ function drawStatic(canvas, geom, tk, segments, showLabels, scrollLeft) {
   }
 
   g.restore();
+
+  // Continuation marks. Platform overlay scrollbars are hidden until the user
+  // scrolls, so a truncated message would otherwise end mid-word with no cue
+  // that there is more of it.
+  const moreRight = scrollLeft + viewW < geom.fullWidth - 1;
+  const moreLeft = scrollLeft > 1;
+  if (moreLeft || moreRight) {
+    g.save();
+    g.strokeStyle = tk['--muted'];
+    g.lineWidth = 1;
+    g.setLineDash([3, 4]);
+    if (moreRight) {
+      g.beginPath();
+      g.moveTo(viewW - 0.5, barTop);
+      g.lineTo(viewW - 0.5, baseY);
+      g.stroke();
+    }
+    if (moreLeft) {
+      g.beginPath();
+      g.moveTo(0.5, barTop);
+      g.lineTo(0.5, baseY);
+      g.stroke();
+    }
+    g.restore();
+  }
 }
 
 /**

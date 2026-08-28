@@ -7,53 +7,42 @@ import UnitBars from '@/components/home/UnitBars';
 const MONO = 'var(--font-mono), ui-monospace, monospace';
 const KEY_UNIT = 'var(--diagram-unit)'; // 10px — legible at reading distance
 
-const ruleRow = {
-  display: 'flex', alignItems: 'center', gap: 12, whiteSpace: 'nowrap',
-};
 const value = {
   fontFamily: MONO, fontSize: 11, color: 'var(--ink)', fontVariantNumeric: 'tabular-nums',
-  letterSpacing: '0.04em',
+  letterSpacing: '0.04em', whiteSpace: 'nowrap',
 };
 
 /**
  * The unit key. It sits above the grid so every bar in the table below has a
  * stated scale to be measured against, rather than being a bar of no known size.
+ *
+ * The three specimens share a left origin at every width — a scale key whose
+ * samples cannot be compared against a common origin has lost the one thing it
+ * exists to show, which is exactly what happened when the row simply wrapped.
  */
+function Row({ segments, quantity, name }) {
+  return (
+    <span className="chart-key-row">
+      <span className="chart-key-swatch">
+        <UnitBars segments={segments} unit={KEY_UNIT} height="16px" />
+      </span>
+      <span style={value}>{quantity}</span>
+      <span className="t-readout" style={{ textTransform: 'none' }}>{name}</span>
+    </span>
+  );
+}
+
 export function UnitKey() {
   return (
-    <div
-      className="chart-key"
-      style={{
-        display: 'flex', alignItems: 'center', gap: 26, flexWrap: 'wrap',
-        padding: '12px 16px', background: 'var(--field)', border: '1px solid var(--rule)',
-      }}
-    >
-      <span className="field-label">The scale</span>
-
-      <span style={ruleRow}>
-        <UnitBars segments={[{ on: true, u: 1 }]} unit={KEY_UNIT} height="16px" />
-        <span style={value}>1 unit</span>
-        <span style={{ color: 'var(--g3)' }}>·</span>
-        <span className="t-readout" style={{ textTransform: 'none' }}>a dot</span>
-      </span>
-
-      <span style={ruleRow}>
-        <UnitBars segments={[{ on: true, u: 3 }]} unit={KEY_UNIT} height="16px" />
-        <span style={value}>3 units</span>
-        <span style={{ color: 'var(--g3)' }}>·</span>
-        <span className="t-readout" style={{ textTransform: 'none' }}>a dash</span>
-      </span>
-
-      <span style={ruleRow}>
-        <UnitBars
-          segments={[{ on: true, u: 1 }, { on: false, u: 1, tint: true }, { on: true, u: 1 }]}
-          unit={KEY_UNIT}
-          height="16px"
-        />
-        <span style={value}>1 unit</span>
-        <span style={{ color: 'var(--g3)' }}>·</span>
-        <span className="t-readout" style={{ textTransform: 'none' }}>the gap between them</span>
-      </span>
+    <div className="chart-key">
+      <span className="field-label chart-key-label">The scale</span>
+      <Row segments={[{ on: true, u: 1 }]} quantity="1 unit" name="a dot" />
+      <Row segments={[{ on: true, u: 3 }]} quantity="3 units" name="a dash" />
+      <Row
+        segments={[{ on: true, u: 1 }, { on: false, u: 1, tint: true }, { on: true, u: 1 }]}
+        quantity="1 unit"
+        name="the gap between them"
+      />
     </div>
   );
 }

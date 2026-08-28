@@ -421,6 +421,34 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 @media (max-width: 460px) {
   .chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* The scale key. Wide, it reads as one line. Narrow, it becomes a grid whose
+   swatch column is a fixed width, so the dot, the dash and the gap keep a
+   common left origin and stay comparable — a key whose samples cannot be
+   compared against each other has lost its only job. */
+.chart-key {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--field);
+  border: var(--hair) solid var(--rule);
+}
+.chart-key-row { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+.chart-key-swatch { display: flex; align-items: center; width: 34px; }
+
+@media (max-width: 860px) {
+  .chart-key {
+    display: grid;
+    grid-template-columns: 34px max-content 1fr;
+    column-gap: 12px;
+    row-gap: 10px;
+    align-items: center;
+  }
+  .chart-key-label { grid-column: 1 / -1; }
+  .chart-key-row { display: contents; }
+}
 /* Cells sit in a hairline lattice — the grid's own rules, not gaps. */
 .chart-cell { background: var(--field); transition: background 140ms linear; }
 .chart-cell:hover { background: var(--field-2); }
