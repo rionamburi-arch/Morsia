@@ -39,7 +39,8 @@
   --g7: #DCE3E4;
 
   --ink: var(--g7);       /* primary text and resting Morse blocks */
-  --muted: var(--g5);     /* secondary text, labels — 5.3:1 on ground */
+  --muted: var(--g5);     /* secondary text and labels; g5 is the text floor:
+                             5.30:1 on --ground, 4.99:1 on --field */
   --rule: var(--g2);      /* hairlines */
   --rule-strong: var(--g3);
 
@@ -92,7 +93,7 @@
      drawn at real contrast rather than hinted. */
   --grat-minor: var(--g4);   /* every unit */
   --grat-major: var(--g5);   /* every 5 units */
-  --scale-label: var(--g5);  /* 4.99:1 — these numerals are read */
+  --scale-label: var(--g5);  /* the numerals are read, so they sit at the floor */
 
   /* ---------- OSCILLOSCOPE (read by the canvas) ---------- */
   --wave: var(--reference);
@@ -173,20 +174,6 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
    Human text is Chivo. Every measured value is Martian Mono, with
    tabular figures so a changing readout never reflows.
    ============================================================ */
-
-.t-display {
-  font-size: clamp(28px, 4.2vw, 40px);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
-}
-.t-heading {
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: -0.018em;
-  line-height: 1.25;
-}
-.t-body { font-size: 15px; line-height: 1.7; color: var(--g6); }
 
 /* The machine voice. Used for readouts, scales, units and Morse —
    measurement, which is what monospace is actually for. */
@@ -332,8 +319,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 /* ============================================================
    NAVIGATION
    Tabs are drawn as positions on a scale: a rule runs under the row
-   and the active tab is marked by a solid amber underline, the way a
-   reading is marked on an instrument.
+   and the current tab is marked by a solid ink underline, the way a
+   reading is marked on an instrument. The mark is deliberately NOT amber:
+   a current page is not a live measurement.
    ============================================================ */
 
 /* The header is styled entirely from here: inline styles outrank the
@@ -350,7 +338,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 @media (min-width: 721px) { .hdr-row { min-height: 52px; } }
 
 .hdr-logo { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
-.hdr-mark { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+.hdr-mark { font-size: 21px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
 .hdr-badge { display: flex; align-items: center; gap: 10px; white-space: nowrap; flex: 0 0 auto; }
 
 .nav-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
@@ -386,7 +374,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .nav-tab[aria-current='page'] { color: var(--ink); }
 @media (max-width: 720px) {
   .nav-tab { padding: 10px 12px 12px; font-size: 10px; }
-  .hdr-mark { font-size: 19px; }
+  .hdr-mark { font-size: 17px; }
   .hdr-logo { gap: 9px; }
   .hdr-row { gap: 12px; }
 }

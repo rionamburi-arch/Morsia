@@ -1,262 +1,92 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-28T20:59:53.889Z",
+  "generatedAt": "2026-08-28T00:00:00.000Z",
   "title": "Design System: Morsia",
   "extensions": {
     "colorMeta": {
-      "carbon-black": {
+      "ground": {
         "role": "neutral",
-        "displayName": "Carbon Black",
-        "canonical": "#1D201F",
-        "purpose": "The chassis: page ground, and the text colour on top of either accent.",
-        "tonalRamp": [
-          "#242827",
-          "#404744",
-          "#5C6562",
-          "#778480",
-          "#96A09C",
-          "#B4BBB9",
-          "#D3D7D6",
-          "#F2F3F2"
-        ]
+        "displayName": "Instrument Ground",
+        "canonical": "#0C0E0F",
+        "purpose": "The instrument's dark field: the page background on every route.",
+        "tonalRamp": ["#0C0E0F", "#1B2123", "#293134", "#3C4649", "#566266", "#7C888C", "#A7B2B5", "#DCE3E4"]
       },
-      "panel-carbon": {
+      "field": {
         "role": "neutral",
-        "displayName": "Panel Carbon",
-        "canonical": "#262A29",
-        "purpose": "Every lifted surface, exactly one tonal step above the ground.",
-        "tonalRamp": [
-          "#242827",
-          "#404745",
-          "#5C6563",
-          "#778481",
-          "#96A09D",
-          "#B4BCBA",
-          "#D3D7D6",
-          "#F2F3F3"
-        ]
+        "displayName": "Measuring Field",
+        "canonical": "#121618",
+        "purpose": "One step up from ground: every ruled region, editor, popover, key pad and chart cell.",
+        "tonalRamp": ["#0C0E0F", "#121618", "#1B2123", "#293134", "#3C4649", "#566266", "#7C888C", "#A7B2B5"]
       },
-      "charcoal": {
+      "field-2": {
         "role": "neutral",
-        "displayName": "Charcoal",
-        "canonical": "#575761",
-        "purpose": "Borders and dividers ONLY. Never a text colour.",
-        "tonalRamp": [
-          "#242428",
-          "#404047",
-          "#5B5B66",
-          "#777785",
-          "#9595A0",
-          "#B4B4BC",
-          "#D3D3D7",
-          "#F2F2F3"
-        ]
+        "displayName": "Inset Well",
+        "canonical": "#171D1F",
+        "purpose": "Inset wells and row/control hover.",
+        "tonalRamp": ["#0C0E0F", "#121618", "#171D1F", "#293134", "#3C4649", "#566266", "#7C888C", "#A7B2B5"]
       },
-      "papaya-whip": {
+      "g1": { "role": "neutral", "displayName": "Wedge Step 1", "canonical": "#1B2123", "purpose": "Darkest wedge step; printed on the chart's tone scale." },
+      "g2": { "role": "neutral", "displayName": "Wedge Step 2 — Hairline", "canonical": "#293134", "purpose": "The resting 1px rule and the engaged-control fill." },
+      "g3": { "role": "neutral", "displayName": "Wedge Step 3 — Strong Rule", "canonical": "#3C4649", "purpose": "Strong hairlines, control borders, dividers, scrollbar thumb, the strip baseline." },
+      "g4": { "role": "neutral", "displayName": "Wedge Step 4 — Tick", "canonical": "#566266", "purpose": "Minor graticule, unit tick strips, hover borders, link underlines. Lines only, never text." },
+      "g5": { "role": "neutral", "displayName": "Wedge Step 5 — Label", "canonical": "#7C888C", "purpose": "The darkest permitted text colour: labels, readouts, scale numerals, major graticule." },
+      "g6": { "role": "neutral", "displayName": "Wedge Step 6 — Prose", "canonical": "#A7B2B5", "purpose": "Running prose and default control text." },
+      "g7": {
         "role": "neutral",
-        "displayName": "Papaya Whip",
-        "canonical": "#FDF0D5",
-        "purpose": "Primary content: full-emphasis text and the resting colour of every Morse bar.",
-        "tonalRamp": [
-          "#493203",
-          "#815906",
-          "#B87F09",
-          "#F0A60B",
-          "#F6BB40",
-          "#F9CF77",
-          "#FBE2AF",
-          "#FEF6E7"
-        ]
+        "displayName": "Wedge Step 7 — Data Ink",
+        "canonical": "#DCE3E4",
+        "purpose": "Primary text, headings, the current nav mark, and Morse blocks at rest.",
+        "tonalRamp": ["#1B2123", "#293134", "#3C4649", "#566266", "#7C888C", "#A7B2B5", "#DCE3E4", "#F1F5F5"]
       },
-      "muted-charcoal": {
-        "role": "neutral",
-        "displayName": "Muted Charcoal",
-        "canonical": "#9A9AA4",
-        "purpose": "Secondary text: prose, labels, counts, inactive controls.",
-        "tonalRamp": [
-          "#242428",
-          "#404047",
-          "#5C5C66",
-          "#777784",
-          "#9696A0",
-          "#B4B4BC",
-          "#D3D3D7",
-          "#F2F2F3"
-        ]
-      },
-      "bubblegum-tint": {
+      "reference": {
         "role": "primary",
-        "displayName": "Bubblegum Tint",
-        "canonical": "#FF82A9",
-        "purpose": "Transmission. Sounding bar, Play, oscilloscope trace, selected filter.",
-        "tonalRamp": [
-          "#4D0018",
-          "#87002A",
-          "#C1003C",
-          "#FB004E",
-          "#FF3775",
-          "#FF719D",
-          "#FFABC5",
-          "#FFE6ED"
-        ]
+        "displayName": "Tungsten Amber",
+        "canonical": "#E8A33C",
+        "purpose": "The value being measured right now — sounding block, registration gate, live trace, lit key, focus ring, caret — plus the Play control that starts a measurement.",
+        "tonalRamp": ["#2E1F08", "#4A3211", "#67461A", "#8A5F23", "#B27C2E", "#E8A33C", "#F2B457", "#F7D2A0"]
       },
-      "cool-sky": {
+      "reference-hover": { "role": "primary", "displayName": "Amber Hover", "canonical": "#F2B457", "purpose": "One lighter step, used only as the primary button's hover fill." },
+      "on-reference": { "role": "primary", "displayName": "Amber Ink", "canonical": "#17120A", "purpose": "Text and marks on top of amber. Never white on amber." },
+      "alert": {
         "role": "secondary",
-        "displayName": "Cool Sky",
-        "canonical": "#77B6EA",
-        "purpose": "State and interaction. Active tab, eyebrow labels, caret, focus rings.",
-        "tonalRamp": [
-          "#0A2942",
-          "#124875",
-          "#1A67A7",
-          "#2286DA",
-          "#51A2E4",
-          "#84BDEC",
-          "#B6D8F4",
-          "#E9F3FC"
-        ]
-      },
-      "on-accent": {
-        "role": "neutral",
-        "displayName": "On Accent",
-        "canonical": "#1D201F",
-        "purpose": "Text and icons placed on top of pink or blue.",
-        "tonalRamp": [
-          "#242827",
-          "#404744",
-          "#5C6562",
-          "#778480",
-          "#96A09C",
-          "#B4BBB9",
-          "#D3D7D6",
-          "#F2F3F2"
-        ]
+        "displayName": "Signal Red",
+        "canonical": "#E2482F",
+        "purpose": "Out of range: characters with no Morse equivalent, and errors. Never decorative.",
+        "tonalRamp": ["#2C0E08", "#4A1710", "#6B2118", "#8F2C1F", "#B93A27", "#E2482F", "#EE7A66", "#F6BDB2"]
       }
     },
     "typographyMeta": {
-      "display": {
-        "displayName": "Display",
-        "purpose": "The plain-text editor while it holds primacy; drops to 24px when Morse leads."
-      },
-      "headline": {
-        "displayName": "Headline",
-        "purpose": "Section headings in long-form content."
-      },
-      "title": {
-        "displayName": "Title",
-        "purpose": "The current word above the rhythm strip; positive tracking separates characters to match the bars."
-      },
-      "body": {
-        "displayName": "Body",
-        "purpose": "All prose, set in Muted Charcoal, capped at a 596px measure (~68 characters)."
-      },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Mono eyebrows, transport captions, chart filters and readouts."
-      },
-      "code": {
-        "displayName": "Code",
-        "purpose": "The Morse editor. Wider tracking because gaps between groups carry meaning."
-      }
+      "display": { "displayName": "Display", "purpose": "The page title on a full section page (/chart)." },
+      "headline": { "displayName": "Headline", "purpose": "Long-form section heads in the prose beneath the tool." },
+      "title": { "displayName": "Title", "purpose": "A mode's own heading (Free Mode) and sub-section heads." },
+      "subtitle": { "displayName": "Subtitle", "purpose": "Chart section heads and prose sub-heads." },
+      "body": { "displayName": "Body", "purpose": "Running prose in wedge step 6, capped at the 604px measure (~68 characters)." },
+      "body-small": { "displayName": "Body Small", "purpose": "Standfirsts and captions directly under a heading." },
+      "readout-lg": { "displayName": "Readout Large", "purpose": "Toast text, decoded output and slider values. Tabular." },
+      "readout": { "displayName": "Readout", "purpose": "Every measured value (ms/unit, s, WPM, Hz) plus button and nav captions. Uppercase, tabular." },
+      "label": { "displayName": "Region Label", "purpose": "A mono label set into a field's head rule. Names a region or a control, never sits above a heading." },
+      "scale-numeral": { "displayName": "Scale Numeral", "purpose": "The printed unit numerals on the measuring field, every five units." }
     },
     "shadows": [
       {
-        "name": "none",
-        "value": "none",
-        "purpose": "System default. Depth is tonal layering plus one hairline border, never a drop shadow."
-      },
-      {
         "name": "floating-banner",
         "value": "0 12px 40px rgb(0 0 0 / 0.35)",
-        "purpose": "The single documented exception: the consent banner, which genuinely floats over the page."
-      },
-      {
-        "name": "bar-bloom-outer",
-        "value": "0 0 46px rgb(255 130 169 / 0.70)",
-        "purpose": "The sounding bar glow. A readout, not a material — only ever on a bar that is playing right now."
-      },
-      {
-        "name": "bar-bloom-inner",
-        "value": "0 0 12px rgb(255 130 169 / 0.55)",
-        "purpose": "Inner core of the sounding bar bloom."
-      },
-      {
-        "name": "strip-bloom",
-        "value": "rgb(255 130 169 / 0.12)",
-        "purpose": "Faint pink wash behind the rhythm strip; the only ambient glow in the system."
-      },
-      {
-        "name": "lamp-glow",
-        "value": "0 0 28px rgb(253 240 213 / 0.45)",
-        "purpose": "Free Mode key pad while held. The one glow that is not pink."
+        "purpose": "The consent banner only — the single element that genuinely floats over the page. No other surface in this system takes a shadow."
       }
     ],
     "motion": [
-      {
-        "name": "ease-instrument",
-        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "The nav pill slide (380ms) and the consent banner entrance (260ms). Decisive, no overshoot."
-      },
-      {
-        "name": "state-fast",
-        "value": "140-180ms linear",
-        "purpose": "Hover and press feedback on chart cells, transport and icon buttons."
-      },
-      {
-        "name": "state-slow",
-        "value": "220ms",
-        "purpose": "Nav tab colour change, slower than the pill it sits under so the fill leads."
-      },
-      {
-        "name": "reduced-motion",
-        "value": "0.01ms, iteration-count 1",
-        "purpose": "Global prefers-reduced-motion override on all animation, transition and scroll-behavior."
-      }
+      { "name": "state-linear", "value": "140ms linear", "purpose": "Default control state change: colour, border-colour, background on buttons, tools and chart cells." },
+      { "name": "nav-color", "value": "180ms linear", "purpose": "Nav tab colour on hover." },
+      { "name": "key-response", "value": "40ms linear", "purpose": "The Free Mode key pad lighting and unlighting — fast enough to feel like a switch." },
+      { "name": "ease-instrument", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The one easing curve: nav mark (320ms), editor swap FLIP (300ms), toast and consent entry (240ms), toggle knob (200ms)." },
+      { "name": "live-pulse", "value": "morsia-live 2.6s ease-in-out infinite (opacity 0.35 → 1)", "purpose": "The header's live pip and the key's signal-present indicator: a measured pulse, not a glow." }
     ],
     "breakpoints": [
-      {
-        "name": "chart-wide",
-        "value": "900px"
-      },
-      {
-        "name": "nav-compact",
-        "value": "720px"
-      },
-      {
-        "name": "chart-narrow",
-        "value": "560px"
-      },
-      {
-        "name": "badge-drop",
-        "value": "520px"
-      }
-    ],
-    "morseGeometry": [
-      {
-        "name": "--unit",
-        "value": "22px",
-        "purpose": "One Morse unit on the rhythm strip. Bars and gaps are exact integer multiples: dit 1, dah 3, gaps 1/3/7."
-      },
-      {
-        "name": "--chart-bar-unit",
-        "value": "6px",
-        "purpose": "One Morse unit in the chart bars."
-      },
-      {
-        "name": "--diagram-unit",
-        "value": "10px",
-        "purpose": "One Morse unit in the teaching diagrams."
-      },
-      {
-        "name": "--bar-h",
-        "value": "78px",
-        "purpose": "Rhythm strip bar height."
-      },
-      {
-        "name": "--measure",
-        "value": "596px",
-        "purpose": "Content column width, measured at ~68 characters per line."
-      }
+      { "name": "chart-wide", "value": "900px" },
+      { "name": "scale-key", "value": "860px" },
+      { "name": "stack", "value": "720px" },
+      { "name": "compact", "value": "560px" },
+      { "name": "chart-min", "value": "460px" }
     ]
   },
   "components": [
@@ -264,150 +94,113 @@
       "name": "Primary Button (Play)",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Transmission action. The only pink-filled control on Translate.",
-      "html": "<button class=\"ds-btn-primary\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M8 5v14l11-7z\"/></svg>PLAY</button>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:9px;padding:11px 20px 11px 17px;border:0;border-radius:999px;background:#FF82A9;color:#1D201F;font-family:Archivo,sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background 180ms}.ds-btn-primary:hover{background:#FF9AB8}.ds-btn-primary:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+      "description": "The one live control: the action that starts a measurement. Nothing else earns amber.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M7 4l13 8-13 8z\"/></svg><span>Play</span></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; border-radius: 2px; border: 1px solid #3C4649; background: transparent; color: #A7B2B5; cursor: pointer; transition: color 140ms linear, border-color 140ms linear, background 140ms linear; } .ds-btn-primary { background: #E8A33C; border-color: #E8A33C; color: #17120A; font-weight: 700; padding: 11px 18px; } .ds-btn-primary:hover { background: #F2B457; border-color: #F2B457; } .ds-btn-primary:focus-visible { outline: 2px solid #E8A33C; outline-offset: 2px; } .ds-btn-primary:disabled { background: #293134; border-color: #293134; color: #566266; cursor: not-allowed; }"
     },
     {
-      "name": "Transport Button",
+      "name": "Default Button",
       "kind": "button",
-      "refersTo": "button-transport",
-      "description": "Stacked icon-over-caption control. Fills 14% Cool Sky when active.",
-      "html": "<button class=\"ds-btn-transport\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg><span>LOOP</span></button>",
-      "css": ".ds-btn-transport{display:flex;flex-direction:column;align-items:center;gap:6px;width:72px;padding:8px 6px;border:0;border-radius:14px;background:transparent;color:#9A9AA4;cursor:pointer;transition:color 180ms,background 180ms}.ds-btn-transport span{font-family:\"IBM Plex Mono\",monospace;font-size:9px;letter-spacing:.14em}.ds-btn-transport:hover{background:rgb(87 87 97 / .26);color:#FDF0D5}.ds-btn-transport[aria-pressed=\"true\"]{background:rgb(119 182 234 / .14);color:#77B6EA}.ds-btn-transport:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+      "refersTo": "button-default",
+      "description": "Every non-live action. Engaged state is a wedge step, never colour.",
+      "html": "<button class=\"ds-btn2\">Copy</button> <button class=\"ds-btn2 ds-btn2-on\">Repeat</button>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; border-radius: 2px; border: 1px solid #3C4649; background: transparent; color: #A7B2B5; cursor: pointer; transition: color 140ms linear, border-color 140ms linear, background 140ms linear; } .ds-btn2:hover { color: #DCE3E4; border-color: #566266; background: #171D1F; } .ds-btn2:focus-visible { outline: 2px solid #E8A33C; outline-offset: 2px; } .ds-btn2-on { color: #DCE3E4; border-color: #566266; background: #293134; }"
     },
     {
-      "name": "Icon Button",
+      "name": "Tool Switch",
       "kind": "button",
-      "refersTo": "button-icon",
-      "description": "28px square utility control. Border and glyph both move to Cool Sky on hover.",
-      "html": "<button class=\"ds-btn-icon\" aria-label=\"Copy\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"/><path d=\"M5 15V5a2 2 0 0 1 2-2h10\"/></svg></button>",
-      "css": ".ds-btn-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:transparent;border:1px solid #575761;color:#9A9AA4;cursor:pointer;transition:color 180ms,border-color 180ms}.ds-btn-icon:hover{color:#77B6EA;border-color:rgb(119 182 234 / .5)}.ds-btn-icon:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+      "refersTo": "tool-button",
+      "description": "A transport control: an icon over a measured caption, the way an instrument labels its own switches.",
+      "html": "<button class=\"ds-tool\" data-on=\"false\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><rect x=\"6\" y=\"6\" width=\"12\" height=\"12\"/></svg><span class=\"ds-tool-cap\">Stop</span></button><button class=\"ds-tool\" data-on=\"true\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M17 2l3 3-3 3\"/><path d=\"M20 5H8a4 4 0 0 0-4 4v1\"/><path d=\"M7 22l-3-3 3-3\"/><path d=\"M4 19h12a4 4 0 0 0 4-4v-1\"/></svg><span class=\"ds-tool-cap\">Repeat</span></button>",
+      "css": ".ds-tool { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: 66px; padding: 8px 4px; border-radius: 2px; cursor: pointer; background: transparent; border: 1px solid transparent; color: #7C888C; transition: color 140ms linear, background 140ms linear, border-color 140ms linear; } .ds-tool:hover { color: #DCE3E4; background: #171D1F; } .ds-tool:focus-visible { outline: 2px solid #E8A33C; outline-offset: 2px; } .ds-tool[data-on='true'] { color: #DCE3E4; background: #293134; border-color: #566266; } .ds-tool-cap { font-family: var(--font-mono), ui-monospace, monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }"
     },
     {
-      "name": "Filter Chip",
-      "kind": "chip",
-      "refersTo": "chip-filter",
-      "description": "Chart category filter. Selected state fills Bubblegum Tint.",
-      "html": "<button class=\"ds-chip\" aria-pressed=\"false\">LETTERS</button><button class=\"ds-chip\" aria-pressed=\"true\">NUMBERS</button>",
-      "css": ".ds-chip{appearance:none;cursor:pointer;border-radius:999px;padding:6px 13px;font-family:\"IBM Plex Mono\",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:transparent;border:1px solid #575761;color:#9A9AA4;transition:background 160ms,color 160ms,border-color 160ms}.ds-chip[aria-pressed=\"true\"]{background:#FF82A9;border-color:#FF82A9;color:#1D201F}.ds-chip:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+      "name": "Ruled Field (editor)",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "The system's card replacement: a hairline box with a labelled head rule and a counted foot rule. Focus is marked by the amber caret, not a ring.",
+      "html": "<div class=\"ds-field\"><div class=\"ds-field-head\"><span class=\"ds-field-label\">Plain text</span><button class=\"ds-icon-btn\" aria-label=\"Copy text\"><svg width=\"13\" height=\"13\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"12\" height=\"12\"/><path d=\"M15 5H3v12\"/></svg></button></div><textarea class=\"ds-editor\" spellcheck=\"false\" aria-label=\"Plain text\">MORSE</textarea><div class=\"ds-field-foot\">5 chars</div></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; min-height: 218px; background: #121618; border: 1px solid #293134; border-radius: 0; } .ds-field-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #293134; } .ds-field-label { font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #7C888C; } .ds-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 2px; border: 1px solid #3C4649; background: transparent; color: #7C888C; cursor: pointer; transition: color 140ms linear, border-color 140ms linear; } .ds-icon-btn:hover { color: #DCE3E4; border-color: #566266; } .ds-editor { flex: 1 1 auto; width: 100%; min-height: 112px; resize: none; border: 0; outline: none; background: transparent; color: #DCE3E4; caret-color: #E8A33C; padding: 14px 14px 0; font-family: var(--font-sans), system-ui, sans-serif; font-size: 32px; font-weight: 500; line-height: 1.3; letter-spacing: -0.02em; } .ds-editor::placeholder { color: #7C888C; opacity: 1; } .ds-field-foot { font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: #7C888C; padding: 10px 14px; border-top: 1px solid #293134; }"
     },
     {
-      "name": "Panel with Eyebrow",
-      "kind": "card",
-      "refersTo": "panel",
-      "description": "The system signature: a lifted panel introduced by a Cool Sky dot and a tracked mono label.",
-      "html": "<section class=\"ds-panel\"><div class=\"ds-eyebrow\"><span class=\"ds-eyebrow-dot\" aria-hidden=\"true\"></span><span class=\"ds-eyebrow-label\">PLAIN TEXT</span></div><div class=\"ds-panel-body\">HELLO WORLD</div></section>",
-      "css": ".ds-panel{padding:20px 24px 16px;border-radius:20px;background:#262A29;border:1px solid #575761;min-height:214px;display:flex;flex-direction:column;gap:14px}.ds-eyebrow{display:flex;align-items:center;gap:9px}.ds-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:#77B6EA}.ds-eyebrow-label{font-family:\"IBM Plex Mono\",monospace;font-size:12px;font-weight:700;letter-spacing:.2em;color:#77B6EA}.ds-panel-body{font-family:Archivo,sans-serif;font-size:34px;font-weight:500;line-height:1.3;letter-spacing:-.015em;color:#FDF0D5}"
-    },
-    {
-      "name": "Navigation Rail",
+      "name": "Section Navigation",
       "kind": "nav",
       "refersTo": "nav-tab",
-      "description": "Four pills in a Panel Carbon rail with a sliding Cool Sky indicator.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Sections\"><span class=\"ds-nav-pill\" aria-hidden=\"true\"></span><a class=\"ds-nav-tab ds-nav-tab-active\" href=\"#\" aria-current=\"page\">Translate</a><a class=\"ds-nav-tab\" href=\"#\">Free Mode</a><a class=\"ds-nav-tab\" href=\"#\">Chart</a><a class=\"ds-nav-tab\" href=\"#\">Learn</a></nav>",
-      "css": ".ds-nav{position:relative;display:flex;align-items:stretch;width:max-content;padding:5px;border-radius:999px;background:#262A29;border:1px solid rgb(87 87 97 / .55)}.ds-nav-pill{position:absolute;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/4);border-radius:999px;background:#77B6EA;transition:transform 380ms cubic-bezier(.22,1,.36,1)}.ds-nav-tab{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:106px;padding:8px 20px;border-radius:999px;font-family:Archivo,sans-serif;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;color:#9A9AA4;transition:color 220ms}.ds-nav-tab-active{color:#1D201F}.ds-nav-tab:hover:not(.ds-nav-tab-active){color:#FDF0D5}"
+      "description": "Tabs drawn as positions on a scale: a rule under the row, the current position marked by a solid data-ink block underline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Sections\"><span class=\"ds-nav-mark\" aria-hidden=\"true\"></span><a class=\"ds-nav-tab\" href=\"#\" aria-current=\"page\">Translate</a><a class=\"ds-nav-tab\" href=\"#\">Free Mode</a><a class=\"ds-nav-tab\" href=\"#\">Chart</a><a class=\"ds-nav-tab\" href=\"#\">Learn</a></nav>",
+      "css": ".ds-nav { position: relative; display: inline-flex; align-items: stretch; width: max-content; } .ds-nav::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #293134; } .ds-nav-mark { position: absolute; bottom: 0; left: 0; height: 2px; width: 1px; background: #DCE3E4; transform-origin: left center; transform: translateX(0px) scaleX(103); transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1); z-index: 1; } .ds-nav-tab { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px 12px; white-space: nowrap; color: #7C888C; text-decoration: none; transition: color 180ms linear; } .ds-nav-tab:hover { color: #DCE3E4; } .ds-nav-tab[aria-current='page'] { color: #DCE3E4; } .ds-nav-tab:focus-visible { outline: 2px solid #E8A33C; outline-offset: 2px; }"
     },
     {
-      "name": "Search Field",
-      "kind": "input",
-      "refersTo": "input-search",
-      "description": "The one bordered input in the system; the editors are borderless by design.",
-      "html": "<label class=\"ds-search\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg><input type=\"search\" placeholder=\"Search characters\"></label>",
-      "css": ".ds-search{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:#262A29;border:1px solid #575761;color:#9A9AA4}.ds-search input{flex:1;border:0;outline:none;background:transparent;color:#FDF0D5;font-family:Archivo,sans-serif;font-size:15px;caret-color:#77B6EA}.ds-search input::placeholder{color:rgb(154 154 164 / .55)}.ds-search:focus-within{border-color:rgb(119 182 234 / .5)}"
-    },
-    {
-      "name": "Rhythm Strip Bars",
+      "name": "Measured Bars",
       "kind": "custom",
-      "refersTo": null,
-      "description": "The signature: width equals duration. Dit 1 unit, dah 3 units, gaps 1/3/7. The third bar is sounding.",
-      "html": "<div class=\"ds-strip\"><span class=\"ds-bar ds-dit\"></span><span class=\"ds-gap-1\"></span><span class=\"ds-bar ds-dah\"></span><span class=\"ds-gap-1\"></span><span class=\"ds-bar ds-dit ds-live\"></span><span class=\"ds-gap-3\"></span><span class=\"ds-bar ds-dah\"></span><div class=\"ds-baseline\"></div></div>",
-      "css": ".ds-strip{--unit:22px;position:relative;display:flex;align-items:flex-end;padding:6px 12px 18px;border-radius:20px;background:#262A29;border:1px solid #575761;box-shadow:inset 0 0 60px rgb(255 130 169 / .12)}.ds-bar{height:78px;border-radius:7px;background:#FDF0D5;flex:0 0 auto}.ds-dit{width:var(--unit)}.ds-dah{width:calc(var(--unit)*3)}.ds-gap-1{width:var(--unit);flex:0 0 auto}.ds-gap-3{width:calc(var(--unit)*3);flex:0 0 auto}.ds-live{background:#FF82A9;box-shadow:0 0 46px rgb(255 130 169 / .7),0 0 12px rgb(255 130 169 / .55)}.ds-baseline{position:absolute;left:12px;right:12px;bottom:18px;height:1px;background:rgb(87 87 97 / .85)}"
+      "refersTo": "field",
+      "description": "The product's atom: a pattern drawn at true unit proportion (dit 1, dah 3, gap 1) over a unit tick strip. Width is duration.",
+      "html": "<div class=\"ds-bars-wrap\"><div class=\"ds-bars\" aria-hidden=\"true\"><i class=\"ds-dit\"></i><i class=\"ds-dah\"></i><i class=\"ds-dit\"></i></div><div class=\"ds-ticks\" aria-hidden=\"true\"></div><span class=\"ds-bars-cap\">R — 1 · 3 · 1 units</span></div>",
+      "css": ".ds-bars-wrap { display: inline-flex; flex-direction: column; gap: 6px; } .ds-bars { display: flex; align-items: center; gap: 10px; height: 22px; } .ds-dit { display: block; width: 10px; height: 100%; background: #DCE3E4; border-radius: 0; } .ds-dah { display: block; width: 30px; height: 100%; background: #DCE3E4; border-radius: 0; } .ds-ticks { height: 3px; background-image: repeating-linear-gradient(to right, #566266 0 1px, transparent 1px 10px); } .ds-bars-cap { font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #7C888C; }"
+    },
+    {
+      "name": "Tone Wedge",
+      "kind": "custom",
+      "refersTo": "field",
+      "description": "The seven calibrated steps every neutral is drawn from, printed as a real device at the foot of the chart page.",
+      "html": "<figure class=\"ds-wedge\"><figcaption class=\"ds-wedge-cap\">Tone scale</figcaption><span class=\"ds-wedge-strip\" aria-hidden=\"true\"><i style=\"background:#1B2123\"></i><i style=\"background:#293134\"></i><i style=\"background:#3C4649\"></i><i style=\"background:#566266\"></i><i style=\"background:#7C888C\"></i><i style=\"background:#A7B2B5\"></i><i style=\"background:#DCE3E4\"></i></span><span class=\"ds-wedge-note\">seven steps, darkest to lightest — every grey on this site is one of them</span></figure>",
+      "css": ".ds-wedge { margin: 0; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 16px; background: #121618; border: 1px solid #293134; } .ds-wedge-cap { font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #7C888C; } .ds-wedge-strip { display: flex; height: 16px; } .ds-wedge-strip i { display: block; width: 34px; height: 100%; } .ds-wedge-note { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.02em; color: #7C888C; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Key Pad",
+      "kind": "custom",
+      "refersTo": "field",
+      "description": "Free Mode's physical key: six units square, ruled at the unit, amber while the key is down because amber is what a live reading looks like everywhere else.",
+      "html": "<div class=\"ds-key\" data-lit=\"false\"><div class=\"ds-key-pad\"><span class=\"ds-key-rule ds-key-rule-top\"></span><span class=\"ds-key-rule ds-key-rule-bottom\"></span><span class=\"ds-key-unit\"></span></div><div class=\"ds-key-cap\">HOLD / SPACE</div></div>",
+      "css": ".ds-key { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; min-height: 220px; min-width: 240px; padding: 24px; background: #121618; border: 1px solid #293134; border-radius: 0; cursor: pointer; user-select: none; } .ds-key-pad { position: relative; width: 132px; height: 132px; background: #171D1F; border: 1px solid #566266; display: grid; place-items: center; transition: background 40ms linear, border-color 40ms linear; } .ds-key-rule { position: absolute; left: 0; right: 0; height: 4px; background-image: repeating-linear-gradient(to right, #566266 0 1px, transparent 1px 22px); } .ds-key-rule-top { top: 0; } .ds-key-rule-bottom { bottom: 0; } .ds-key-unit { width: 22px; height: 22px; background: #7C888C; transition: background 40ms linear; } .ds-key:hover .ds-key-pad, .ds-key:active .ds-key-pad { background: #E8A33C; border-color: #E8A33C; } .ds-key:hover .ds-key-unit, .ds-key:active .ds-key-unit { background: #17120A; } .ds-key-cap { font-family: var(--font-mono), ui-monospace, monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.3em; color: #7C888C; transition: color 80ms linear; } .ds-key:hover .ds-key-cap, .ds-key:active .ds-key-cap { color: #E8A33C; }"
+    },
+    {
+      "name": "Toast",
+      "kind": "custom",
+      "refersTo": "button-default",
+      "description": "A transient machine report, fixed at the foot of the viewport with a 5px amber pip.",
+      "html": "<div class=\"ds-toast\" role=\"status\"><span class=\"ds-toast-pip\" aria-hidden=\"true\"></span><span>Copied the Morse</span></div>",
+      "css": ".ds-toast { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 2px; background: #121618; border: 1px solid #3C4649; color: #DCE3E4; font-family: var(--font-mono), ui-monospace, monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; animation: ds-toast-in 240ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-toast-pip { width: 5px; height: 5px; background: #E8A33C; } @keyframes ds-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }"
     }
   ],
   "narrative": {
-    "northStar": "The Bench Instrument",
-    "overview": "Morsia is drawn as a piece of lab equipment, not as a web page. The reference is a signal generator or a bench oscilloscope: a dark chassis, panels milled into it, a readout that is the point of the object, and a small number of coloured indicators that mean something specific. Nothing here is decorative. Every colour, every glow and every label is reporting a state.\n\nThis matters because the product's whole claim is that Morse is time, not notation. Every character is drawn as proportional bars whose on-screen width equals their duration. A dah is exactly three times the width of a dit, because it is exactly three times as long. The gaps are drawn to scale too, so a seven-unit word gap is visibly seven units of silence. The interface is a measuring instrument pointed at a rhythm, and it earns the instrument look by actually being one.\n\nThe system is flat and dark. Depth comes from tonal layering — a lighter panel lifted off a darker ground by one hairline border — never from drop shadows. The one exception is glow, which is not decoration but the readout: a bar blooms pink at the exact moment it is sounding. Type is quiet and functional, with monospace reserved for anything the machine is reporting and a humanist sans for anything a person wrote.",
+    "northStar": "The Calibration Chart",
+    "overview": "Morsia is drawn as an instrument's reference chart rather than as an app. Morse is a measurement — a dah is exactly three dits, and every duration in the product derives from one constant — so the interface is a ruled measuring field with a printed unit scale, hard-edged blocks sitting on a baseline, and a registration gate that rides the scale while the message plays. Nothing glows, nothing floats, nothing is rounded off. The screen is a surface you take a reading from.\n\nThe field is near-black (#0C0E0F) and the only neutral ramp is a seven-step grey wedge that the product prints on its own chart page rather than keeping as a private convention. Colour is rationed to two jobs: one tungsten amber for the value being measured right now, one red for a value out of range. Every other distinction — selection, engagement, hover, hierarchy — is made with a step of the wedge and a hairline rule. Depth is one tonal step plus a 1px rule; there are no cards and no shadows.\n\nTwo voices carry the content. Chivo sets what a person wrote; Martian Mono, with tabular figures, sets everything the machine reports — units, milliseconds, WPM, Hz, scale numerals and the Morse itself. The result is dense, quiet and technical without being cold: a workhorse grotesque keeps the instrument from reading as clinical.",
     "keyCharacteristics": [
-      "Width equals duration, everywhere, without exception",
-      "Dark chassis, lifted panels, hairline borders, no drop shadows",
-      "Two accent colours with strictly separated jobs, never on the same element",
-      "Monospace eyebrow labels with a leading dot, letterspaced and small",
-      "Generous corner radii (20-24px) on panels, full pills on controls",
-      "Glow used only as a live state readout, and only in pink"
+      "Near-black field with a seven-step calibrated grey wedge as the only neutral ramp",
+      "One accent (tungsten amber) reserved for live measurement; one red for out of range",
+      "Square corners everywhere; 2px only on pressable controls",
+      "Hairline rules and one tonal step in place of cards, borders-with-radius and shadows",
+      "Anything representing Morse is an exact integer multiple of its unit token",
+      "Chivo for human text, Martian Mono with tabular figures for every measured value"
     ],
     "rules": [
-      {
-        "name": "The Separation Rule",
-        "body": "Pink and blue never appear on the same element. Pink is transmission; blue is state and interaction. An element that is both sounding and selected resolves to pink, because what it is doing outranks where it is.",
-        "section": "colors"
-      },
-      {
-        "name": "The Line-Colour Rule",
-        "body": "Charcoal (#575761) draws lines and nothing else. Muted text is Muted Charcoal (#9A9AA4), a full step lighter. Setting text in the border colour is the fastest way to make this interface look broken.",
-        "section": "colors"
-      },
-      {
-        "name": "The Channel Rule",
-        "body": "Every translucent value derives from a --*-rgb channel triple of a palette colour. No alpha variant is ever hand-mixed, so re-tinting the palette re-tints every derived line, fill and glow with it.",
-        "section": "colors"
-      },
-      {
-        "name": "The Two Voices Rule",
-        "body": "Archivo for what a human wrote, IBM Plex Mono for what the machine reports. A monospace label on human content, or a sans label on a readout, breaks the instrument fiction.",
-        "section": "typography"
-      },
-      {
-        "name": "The Eyebrow Rule",
-        "body": "Every panel is introduced by a 5px Cool Sky dot followed by a mono, 700-weight, 0.2em-tracked uppercase label in the same blue. The dot is aria-hidden; it is punctuation, not content.",
-        "section": "typography"
-      },
-      {
-        "name": "The Tracking-Is-Timing Rule",
-        "body": "Letterspacing is positive and generous on anything representing Morse or a machine state (0.06em to 0.2em) and negative on human display type (-0.015em to -0.03em). Tight type is a person talking; loose type is a signal.",
-        "section": "typography"
-      },
-      {
-        "name": "The Integer-Unit Rule",
-        "body": "Anything representing Morse is an exact multiple of its unit token. Never a fraction, never an eyeballed value. Width is duration, so an arbitrary width is a lie about time.",
-        "section": "layout"
-      },
-      {
-        "name": "The Glow-Means-Live Rule",
-        "body": "Glow appears only where something is happening right now, and outside Free Mode lamp it is always pink. A glow on a resting element is a false reading.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Flat-Chassis Rule",
-        "body": "Surfaces are flat. Lift comes from one tonal step plus one hairline border. Reach for a shadow and you have left the instrument.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Pill-Or-Panel Rule",
-        "body": "Interactive controls are pills (999px). Content containers are 20-24px panels. A 999px content card or a 20px nav tab reads as a mistake in this system.",
-        "section": "shapes"
-      }
+      { "name": "The Wedge Rule", "body": "Every neutral in the product is one of the seven calibrated steps g1–g7. g4 and below are line, tick and fill colours only; text is g5 or above. The working hierarchy is g7 for values and headings, g6 for prose, g5 for labels and readouts. No off-ramp greys, no rgba(255,255,255,0.6), no new mid-tone.", "section": "colors" },
+      { "name": "The Live-Measure Rule", "body": "Amber marks a live measurement and the action that starts one — and nothing else. Selection, engaged state, current tab, hover and emphasis are all marked with the wedge. This is the system's most easily broken rule: it was violated in the first build and corrected. If a thing is not being measured at this instant, it is grey.", "section": "colors" },
+      { "name": "The Out-of-Range Rule", "body": "Red means a value the instrument cannot read. Unsupported characters and errors. If it is not an error, it is not red.", "section": "colors" },
+      { "name": "The Two Voices Rule", "body": "Chivo sets what a person wrote; Martian Mono sets what the machine reports. Units, milliseconds, WPM, Hz, dot-dash notation, scale numerals, control captions and region labels are all mono. Prose and headings never are.", "section": "typography" },
+      { "name": "The Tabular Readout Rule", "body": "Every mono readout carries font-variant-numeric: tabular-nums, so a value that changes while playing never reflows the row it sits in.", "section": "typography" },
+      { "name": "The One Step and a Hairline Rule", "body": "Any surface that needs to separate from what is behind it gets one tonal step and a 1px rule — never a shadow, never a radius, never a gradient. If two steps are needed to read the separation, the layout is wrong.", "section": "elevation" },
+      { "name": "The Unit-Multiple Rule", "body": "Anything representing Morse is an exact integer multiple of its unit token: --unit (22px) on the measuring strip, --chart-bar-unit (6px) on the chart, --diagram-unit (10px) in teaching figures. A dit is 1, a dah is 3, gaps are 1 / 3 / 7. Width is duration; an eyeballed width is a false reading.", "section": "shapes" }
     ],
     "dos": [
-      "Do derive every Morse dimension from its unit token — --unit (22px) on the strip, --chart-bar-unit (6px) on the chart, --diagram-unit (10px) in diagrams — as exact integer multiples.",
-      "Do introduce every panel with the eyebrow: 5px Cool Sky dot, 9px gap, mono 12px 700 0.2em uppercase Cool Sky label.",
-      "Do set human-written content in Archivo and machine-reported content in IBM Plex Mono.",
-      "Do build translucency from the --*-rgb channel triples so alpha variants stay tied to the palette.",
-      "Do lift surfaces with one tonal step plus one 1px hairline border.",
-      "Do reserve Bubblegum Tint for transmission and Cool Sky for state, interaction and focus.",
-      "Do read canvas tokens once per mount/resize via readTokens().",
-      "Do keep the content column at --measure (596px) and identical across breakpoints."
+      "Do take every grey from the wedge (g1–g7), keep g4 and below for lines and ticks, and set text at g5 or above.",
+      "Do reserve amber (#E8A33C) for a live measurement and the control that starts one, and mark selection, engagement and hover with a wedge step instead.",
+      "Do size anything representing Morse as an exact integer multiple of its unit token (22px strip, 6px chart, 10px diagram): dit 1, dah 3, gaps 1 / 3 / 7.",
+      "Do separate surfaces with one tonal step plus a 1px hairline rule.",
+      "Do set every measured value in Martian Mono with tabular-nums, and everything a person wrote in Chivo.",
+      "Do label a region with a mono 10px/0.14em uppercase label set into its head rule.",
+      "Do put header and responsive geometry in the stylesheet; inline styles outrank it and silently disable breakpoints.",
+      "Do cap long-form prose at the measure (604px) and rule it above and between."
     ],
     "donts": [
-      "Don't set text in Charcoal (#575761). It is a line colour. Muted text is #9A9AA4.",
-      "Don't put pink and blue on the same element.",
-      "Don't add drop shadows. The consent banner is the one documented exception.",
-      "Don't glow anything that is not live right now.",
-      "Don't use pure black or pure white — the ground is warm-tinted carbon and the ink is Papaya Whip.",
-      "Don't draw a Morse element at an arbitrary width. Width is duration; an eyeballed width is a false reading.",
-      "Don't add a focus ring to the editors — the Cool Sky caret is the indicator, by owner's decision.",
-      "Don't let the four nav pills wrap; the rail scrolls instead.",
-      "Don't introduce a third accent colour. Two accents with separated jobs is the system."
+      "Don't put an eyebrow, kicker or dot-and-caps label above a heading. If a label is a section's only heading, make it a real h1/h2.",
+      "Don't add a card, a drop shadow or a glow. The consent banner's 0 12px 40px rgb(0 0 0 / 0.35) is the single documented exception because it genuinely floats.",
+      "Don't round a corner. 2px on pressable controls; 0 everywhere else, and 0 on every measured block.",
+      "Don't use amber for hover, for the current nav tab, for emphasis, or for a decorative dot on something that isn't live.",
+      "Don't use red for anything except a value the instrument cannot read.",
+      "Don't introduce a grey outside the wedge, including translucent whites.",
+      "Don't eyeball a bar width or a gap; if it isn't a unit multiple it is a false reading."
     ]
   }
 }
