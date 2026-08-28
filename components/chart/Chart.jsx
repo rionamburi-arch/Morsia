@@ -45,9 +45,9 @@ function Segmented({ label, options, value, onChange }) {
             style={{
               appearance: 'none', cursor: 'pointer', borderRadius: 'var(--r-1)', padding: '6px 12px',
               fontFamily: MONO, fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase',
-              background: on ? 'var(--reference)' : 'transparent',
-              border: `1px solid ${on ? 'var(--reference)' : 'var(--rule-strong)'}`,
-              color: on ? '#17120A' : 'var(--muted)',
+              background: on ? 'var(--ink)' : 'transparent',
+              border: `1px solid ${on ? 'var(--ink)' : 'var(--rule-strong)'}`,
+              color: on ? 'var(--ground)' : 'var(--muted)',
               transition: 'background 140ms linear, color 140ms linear, border-color 140ms linear',
             }}
           >
@@ -92,7 +92,7 @@ function Cell({ row, cellRef, onPlay, onCopy }) {
         <span style={{ fontFamily: MONO, fontSize: row.label.length > 2 ? 20 : 24, fontWeight: 600, lineHeight: 1, color: 'var(--ink)' }}>
           {row.label}
         </span>
-        <PatternBars pattern={row.pattern} />
+        <PatternBars pattern={row.pattern} ruled />
         <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.12em', color: 'var(--chart-pattern)' }}>
           {prettyPattern(row.pattern)}
         </span>

@@ -12,8 +12,10 @@
 
    Three laws:
      1. Neutrals come from the step wedge (--g1..--g7). Nothing else.
-     2. Amber means "being measured right now". Red means out of range.
-        Nothing else is coloured, ever.
+     2. Amber marks a live measurement — the sounding block, the gate,
+        the live trace — plus the action that starts one and the focus
+        ring. Selection, state and hover are marked with the wedge,
+        never with colour. Red means out of range.
      3. Anything representing Morse is an exact integer multiple of its
         unit token. Width is duration; an eyeballed width is a lie.
    ============================================================ */
@@ -85,10 +87,12 @@
   --baseline: var(--g3);
   --playhead: var(--reference);
 
-  /* graticule: the ruled field behind the blocks */
-  --grat-minor: rgb(60 70 73 / 0.55);   /* every unit */
-  --grat-major: rgb(86 98 102 / 0.85);  /* every 5 units */
-  --scale-label: var(--g4);
+  /* graticule: the ruled field behind the blocks. These are the device
+     that separates a calibration chart from a bar chart, so they are
+     drawn at real contrast rather than hinted. */
+  --grat-minor: var(--g4);   /* every unit */
+  --grat-major: var(--g5);   /* every 5 units */
+  --scale-label: var(--g5);  /* 4.99:1 — these numerals are read */
 
   /* ---------- OSCILLOSCOPE (read by the canvas) ---------- */
   --wave: var(--reference);
@@ -110,7 +114,7 @@
   /* ---------- FREE MODE ---------- */
   --scope-h: clamp(200px, 30vh, 340px);
   --lamp-w: 90px;
-  --keypad-circle: 120px;
+  --keypad-size: calc(var(--unit) * 6);   /* 6 units square */
 
   /* ---------- MISC ---------- */
   --flash: var(--reference);
@@ -151,11 +155,11 @@ textarea, input { caret-color: var(--caret); }
 a {
   color: var(--ink);
   text-decoration: underline;
-  text-decoration-color: var(--reference-line);
+  text-decoration-color: var(--g4);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
-a:hover { text-decoration-color: var(--reference); }
+a:hover { text-decoration-color: var(--ink); }
 
 button { font-family: inherit; color: inherit; }
 textarea { font-family: inherit; }
@@ -204,7 +208,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   color: var(--ink);
 }
 .t-value { color: var(--ink); }
-.t-unit { color: var(--g4); }
+.t-unit { color: var(--g5); }
 
 /* ============================================================
    CHASSIS & FIELDS
@@ -238,7 +242,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--g4);
+  color: var(--g5);
 }
 
 .hr { height: var(--hair); background: var(--rule); border: 0; margin: 0; }
@@ -278,7 +282,8 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .btn-primary:hover { background: #F2B457; border-color: #F2B457; color: #17120A; }
 .btn-primary:disabled { background: var(--g2); border-color: var(--g2); color: var(--g4); }
 
-.btn-on { color: var(--reference); border-color: var(--reference-line); background: var(--reference-dim); }
+/* Engaged, not live: the wedge marks it. */
+.btn-on { color: var(--ink); border-color: var(--g4); background: var(--g2); }
 
 /* Transport controls: an icon over a measured caption, the way an instrument
    labels its own switches. */
@@ -297,7 +302,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   transition: color 140ms linear, background 140ms linear, border-color 140ms linear;
 }
 .tool:hover { color: var(--ink); background: var(--field-2); }
-.tool[data-on='true'] { color: var(--reference); background: var(--reference-dim); border-color: var(--reference-line); }
+.tool[data-on='true'] { color: var(--ink); background: var(--g2); border-color: var(--g4); }
 .tool-cap {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 9px;
@@ -318,7 +323,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   cursor: pointer;
   transition: color 140ms linear, border-color 140ms linear;
 }
-.icon-btn:hover { color: var(--reference); border-color: var(--reference-line); }
+.icon-btn:hover { color: var(--ink); border-color: var(--g4); }
 
 /* Fullscreen Free Mode carries its own inline state colours, so its hover has
    to outrank them. */
@@ -361,7 +366,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
    layout every frame, and the mark is a solid block so scaleX is exact. */
 .nav-mark {
   position: absolute; bottom: 0; left: 0; height: 2px; width: 1px;
-  background: var(--reference);
+  background: var(--ink);
   transform-origin: left center;
   transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1;
@@ -378,7 +383,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   transition: color 180ms linear;
 }
 .nav-tab:hover { color: var(--g7); text-decoration: none; }
-.nav-tab[aria-current='page'] { color: var(--reference); }
+.nav-tab[aria-current='page'] { color: var(--ink); }
 @media (max-width: 720px) {
   .nav-tab { padding: 10px 12px 12px; font-size: 10px; }
   .hdr-mark { font-size: 19px; }
@@ -410,6 +415,11 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 @media (max-width: 560px) {
   .chart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .chart-grid-wide { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+}
+/* The widest pattern is the digit 0 — five dahs, 142px at --chart-bar-unit.
+   Below this it does not fit a third of the column and the cell overflows. */
+@media (max-width: 460px) {
+  .chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 /* Cells sit in a hairline lattice — the grid's own rules, not gaps. */
 .chart-cell { background: var(--field); transition: background 140ms linear; }

@@ -20,20 +20,38 @@ export default function KeyPad({ lit, surfaceProps }) {
         touchAction: 'none', overscrollBehavior: 'none',
       }}
     >
+      {/* Six units square, ruled at the unit so the pad states its own size the
+          way every other object in this product does. */}
       <div
         aria-hidden="true"
         style={{
-          width: 'var(--keypad-circle)', height: 'var(--keypad-circle)', borderRadius: 'var(--r-1)',
-          background: lit ? 'var(--reference)' : 'transparent',
-          border: `1px solid ${lit ? 'var(--reference)' : 'var(--rule-strong)'}`,
+          position: 'relative',
+          width: 'var(--keypad-size)', height: 'var(--keypad-size)', borderRadius: 'var(--r-0)',
+          background: lit ? 'var(--reference)' : 'var(--field-2)',
+          border: `1px solid ${lit ? 'var(--reference)' : 'var(--g4)'}`,
           transition: 'background 40ms linear, border-color 40ms linear',
           display: 'grid', placeItems: 'center',
         }}
       >
         <span
           style={{
-            width: 22, height: 22,
-            background: lit ? '#17120A' : 'var(--g3)',
+            position: 'absolute', left: 0, right: 0, top: 0, height: 4,
+            backgroundImage: `repeating-linear-gradient(to right, ${lit ? 'rgb(23 18 10 / 0.55)' : 'var(--g4)'} 0 1px, transparent 1px var(--unit))`,
+            transition: 'background-image 40ms linear',
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute', left: 0, right: 0, bottom: 0, height: 4,
+            backgroundImage: `repeating-linear-gradient(to right, ${lit ? 'rgb(23 18 10 / 0.55)' : 'var(--g4)'} 0 1px, transparent 1px var(--unit))`,
+            transition: 'background-image 40ms linear',
+          }}
+        />
+        <span
+          style={{
+            // One unit square: the smallest mark the key can make.
+            width: 'var(--unit)', height: 'var(--unit)',
+            background: lit ? '#17120A' : 'var(--g5)',
             transition: 'background 40ms linear',
           }}
         />

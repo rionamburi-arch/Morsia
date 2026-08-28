@@ -397,7 +397,7 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
       role="region"
       aria-label="Measuring field: the message drawn as timing blocks against a unit scale"
       tabIndex={0}
-      style={{ position: 'relative', overflowX: 'auto', overflowY: 'hidden', scrollbarWidth: 'none', padding: '14px 0 4px' }}
+      style={{ position: 'relative', overflowX: 'auto', overflowY: 'hidden', padding: '14px 0 4px' }}
     >
       <div
         ref={boxRef}

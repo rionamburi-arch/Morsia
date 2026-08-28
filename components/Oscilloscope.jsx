@@ -124,11 +124,23 @@ export default function Oscilloscope({ active, probe, toneHz }) {
     };
   }, [active, probe, toneHz]);
 
+  // An unlabelled empty band under the signature field reads as a render
+  // failure. The scope states what it is and whether it is reading, the same
+  // way Free Mode's does.
   return (
-    <canvas
-      ref={ref}
-      aria-hidden="true"
-      style={{ display: 'block', width: '100%', height: '56px', borderTop: '1px solid var(--rule)' }}
-    />
+    <div style={{ borderTop: '1px solid var(--rule)' }}>
+      <div
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: 12, padding: '8px 14px 0',
+        }}
+      >
+        <span className="field-label">Sidetone</span>
+        <span className="t-readout" style={{ color: active ? 'var(--reference)' : 'var(--g5)' }}>
+          {active ? '— sounding —' : '— idle —'}
+        </span>
+      </div>
+      <canvas ref={ref} aria-hidden="true" style={{ display: 'block', width: '100%', height: '52px' }} />
+    </div>
   );
 }

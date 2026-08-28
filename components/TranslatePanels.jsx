@@ -65,7 +65,7 @@ const textareaBase = {
 };
 
 const footStyle = {
-  fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--g4)',
+  fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--g5)',
   textTransform: 'uppercase', fontVariantNumeric: 'tabular-nums',
   padding: '10px 14px', borderTop: '1px solid var(--rule)',
 };
@@ -158,8 +158,8 @@ export default function TranslatePanels({
           // The seam between the panels is always at 60%, whichever editor is primary.
           position: 'absolute', left: '60%', top: '50%', width: 38, height: 38, display: 'grid', placeItems: 'center',
           borderRadius: 'var(--r-1)', cursor: 'pointer', appearance: 'none',
-          background: 'var(--reference)', border: 0, color: '#17120A', zIndex: 3,
-          transition: `background 200ms linear, transform ${SWAP_MS}ms ${SWAP_EASE}`,
+          background: 'var(--field-2)', border: '1px solid var(--g4)', color: 'var(--ink)', zIndex: 3,
+          transition: `border-color 140ms linear, transform ${SWAP_MS}ms ${SWAP_EASE}`,
           transform: `translate(-50%, -50%) rotate(${swapDeg}deg)`,
         }}
       >

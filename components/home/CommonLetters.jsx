@@ -61,7 +61,7 @@ export default function CommonLetters() {
       }}
     >
       <figcaption
-        style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', color: 'var(--g4)', textTransform: 'uppercase', marginBottom: 12 }}
+        style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', color: 'var(--g5)', textTransform: 'uppercase', marginBottom: 12 }}
       >
         Click to hear
       </figcaption>

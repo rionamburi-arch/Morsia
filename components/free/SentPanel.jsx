@@ -57,7 +57,7 @@ export default function SentPanel({ sent, onCopy, onClear }) {
       >
         {sent || <span style={{ color: 'var(--placeholder)' }}>Key something…</span>}
       </div>
-      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--g4)', textTransform: 'uppercase', fontVariantNumeric: 'tabular-nums' }}>{count} chars</div>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--g5)', textTransform: 'uppercase', fontVariantNumeric: 'tabular-nums' }}>{count} chars</div>
     </section>
   );
 }

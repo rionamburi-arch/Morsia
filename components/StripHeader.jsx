@@ -34,7 +34,7 @@ export default function StripHeader({ word, code, muted, onToggleMute, wpm, tota
         </span>
         <span
           style={{
-            fontFamily: 'var(--font-mono), ui-monospace, monospace', fontSize: 11, color: 'var(--g4)',
+            fontFamily: 'var(--font-mono), ui-monospace, monospace', fontSize: 11, color: 'var(--g5)',
             whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: '0.06em',
           }}
         >

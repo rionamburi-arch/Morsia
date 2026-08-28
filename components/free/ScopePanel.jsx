@@ -80,7 +80,7 @@ export default function ScopePanel({ keyer, wpm, onExpand }) {
           {status}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.06em', color: 'var(--g4)', fontVariantNumeric: 'tabular-nums' }}>
+          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.06em', color: 'var(--g5)', fontVariantNumeric: 'tabular-nums' }}>
             UNIT {Math.round(unitMs(wpm))} MS
           </span>
           <IconButton title={muted ? 'Unmute' : 'Mute'} pressed={muted} onClick={toggleMute}>

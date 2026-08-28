@@ -11,14 +11,14 @@ const figure = {
   padding: '16px 18px', borderRadius: 'var(--r-0)', border: '1px solid var(--rule)', background: 'var(--field)',
 };
 const caption = {
-  fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', color: 'var(--g4)', textTransform: 'uppercase',
+  fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', color: 'var(--g5)', textTransform: 'uppercase',
 };
 const rowLabel = { fontSize: 13, color: 'var(--ink)' };
 const units = {
   fontFamily: MONO, fontSize: 11, color: 'var(--muted)', whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums',
 };
 // Longer captions must wrap rather than clip inside the scrollable figure.
-const note = { fontFamily: MONO, fontSize: 10.5, color: 'var(--g4)', lineHeight: 1.6 };
+const note = { fontFamily: MONO, fontSize: 10.5, color: 'var(--g5)', lineHeight: 1.6 };
 
 const RULES = [
   { label: 'dot', n: 1, segments: [{ on: true, u: 1 }] },

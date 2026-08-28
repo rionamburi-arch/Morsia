@@ -26,7 +26,7 @@ function Slider({ label, value, unit, min, max, step, onChange, note }) {
         onChange={(e) => onChange(Number(e.target.value))}
         style={{ width: '100%', height: 4 }}
       />
-      {note ? <span className="t-readout" style={{ fontSize: 9.5, color: 'var(--g4)', textTransform: 'none', letterSpacing: 0 }}>{note}</span> : null}
+      {note ? <span className="t-readout" style={{ fontSize: 9.5, color: 'var(--g5)', textTransform: 'none', letterSpacing: 0 }}>{note}</span> : null}
     </div>
   );
 }
@@ -102,15 +102,15 @@ export default function ConfigPopover({ id, open, settings, setWpm, setEffWpm, s
           aria-hidden="true"
           style={{
             width: 32, height: 16, borderRadius: 'var(--r-1)', position: 'relative',
-            background: settings.labels ? 'var(--reference)' : 'var(--g2)',
-            border: `1px solid ${settings.labels ? 'var(--reference)' : 'var(--g3)'}`,
+            background: settings.labels ? 'var(--ink)' : 'var(--g2)',
+            border: `1px solid ${settings.labels ? 'var(--ink)' : 'var(--g3)'}`,
             transition: 'background 180ms linear, border-color 180ms linear',
           }}
         >
           <span
             style={{
               position: 'absolute', top: 1, left: 1, width: 12, height: 12,
-              background: settings.labels ? '#17120A' : 'var(--g5)',
+              background: settings.labels ? 'var(--ground)' : 'var(--g5)',
               transition: 'transform 200ms cubic-bezier(0.16,1,0.3,1)',
               transform: `translateX(${settings.labels ? 16 : 0}px)`,
             }}
