@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-28T20:59:53.889Z",
+  "title": "Design System: Morsia",
+  "extensions": {
+    "colorMeta": {
+      "carbon-black": {
+        "role": "neutral",
+        "displayName": "Carbon Black",
+        "canonical": "#1D201F",
+        "purpose": "The chassis: page ground, and the text colour on top of either accent.",
+        "tonalRamp": [
+          "#242827",
+          "#404744",
+          "#5C6562",
+          "#778480",
+          "#96A09C",
+          "#B4BBB9",
+          "#D3D7D6",
+          "#F2F3F2"
+        ]
+      },
+      "panel-carbon": {
+        "role": "neutral",
+        "displayName": "Panel Carbon",
+        "canonical": "#262A29",
+        "purpose": "Every lifted surface, exactly one tonal step above the ground.",
+        "tonalRamp": [
+          "#242827",
+          "#404745",
+          "#5C6563",
+          "#778481",
+          "#96A09D",
+          "#B4BCBA",
+          "#D3D7D6",
+          "#F2F3F3"
+        ]
+      },
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Charcoal",
+        "canonical": "#575761",
+        "purpose": "Borders and dividers ONLY. Never a text colour.",
+        "tonalRamp": [
+          "#242428",
+          "#404047",
+          "#5B5B66",
+          "#777785",
+          "#9595A0",
+          "#B4B4BC",
+          "#D3D3D7",
+          "#F2F2F3"
+        ]
+      },
+      "papaya-whip": {
+        "role": "neutral",
+        "displayName": "Papaya Whip",
+        "canonical": "#FDF0D5",
+        "purpose": "Primary content: full-emphasis text and the resting colour of every Morse bar.",
+        "tonalRamp": [
+          "#493203",
+          "#815906",
+          "#B87F09",
+          "#F0A60B",
+          "#F6BB40",
+          "#F9CF77",
+          "#FBE2AF",
+          "#FEF6E7"
+        ]
+      },
+      "muted-charcoal": {
+        "role": "neutral",
+        "displayName": "Muted Charcoal",
+        "canonical": "#9A9AA4",
+        "purpose": "Secondary text: prose, labels, counts, inactive controls.",
+        "tonalRamp": [
+          "#242428",
+          "#404047",
+          "#5C5C66",
+          "#777784",
+          "#9696A0",
+          "#B4B4BC",
+          "#D3D3D7",
+          "#F2F2F3"
+        ]
+      },
+      "bubblegum-tint": {
+        "role": "primary",
+        "displayName": "Bubblegum Tint",
+        "canonical": "#FF82A9",
+        "purpose": "Transmission. Sounding bar, Play, oscilloscope trace, selected filter.",
+        "tonalRamp": [
+          "#4D0018",
+          "#87002A",
+          "#C1003C",
+          "#FB004E",
+          "#FF3775",
+          "#FF719D",
+          "#FFABC5",
+          "#FFE6ED"
+        ]
+      },
+      "cool-sky": {
+        "role": "secondary",
+        "displayName": "Cool Sky",
+        "canonical": "#77B6EA",
+        "purpose": "State and interaction. Active tab, eyebrow labels, caret, focus rings.",
+        "tonalRamp": [
+          "#0A2942",
+          "#124875",
+          "#1A67A7",
+          "#2286DA",
+          "#51A2E4",
+          "#84BDEC",
+          "#B6D8F4",
+          "#E9F3FC"
+        ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "On Accent",
+        "canonical": "#1D201F",
+        "purpose": "Text and icons placed on top of pink or blue.",
+        "tonalRamp": [
+          "#242827",
+          "#404744",
+          "#5C6562",
+          "#778480",
+          "#96A09C",
+          "#B4BBB9",
+          "#D3D7D6",
+          "#F2F3F2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The plain-text editor while it holds primacy; drops to 24px when Morse leads."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings in long-form content."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "The current word above the rhythm strip; positive tracking separates characters to match the bars."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All prose, set in Muted Charcoal, capped at a 596px measure (~68 characters)."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Mono eyebrows, transport captions, chart filters and readouts."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "The Morse editor. Wider tracking because gaps between groups carry meaning."
+      }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "System default. Depth is tonal layering plus one hairline border, never a drop shadow."
+      },
+      {
+        "name": "floating-banner",
+        "value": "0 12px 40px rgb(0 0 0 / 0.35)",
+        "purpose": "The single documented exception: the consent banner, which genuinely floats over the page."
+      },
+      {
+        "name": "bar-bloom-outer",
+        "value": "0 0 46px rgb(255 130 169 / 0.70)",
+        "purpose": "The sounding bar glow. A readout, not a material — only ever on a bar that is playing right now."
+      },
+      {
+        "name": "bar-bloom-inner",
+        "value": "0 0 12px rgb(255 130 169 / 0.55)",
+        "purpose": "Inner core of the sounding bar bloom."
+      },
+      {
+        "name": "strip-bloom",
+        "value": "rgb(255 130 169 / 0.12)",
+        "purpose": "Faint pink wash behind the rhythm strip; the only ambient glow in the system."
+      },
+      {
+        "name": "lamp-glow",
+        "value": "0 0 28px rgb(253 240 213 / 0.45)",
+        "purpose": "Free Mode key pad while held. The one glow that is not pink."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-instrument",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "The nav pill slide (380ms) and the consent banner entrance (260ms). Decisive, no overshoot."
+      },
+      {
+        "name": "state-fast",
+        "value": "140-180ms linear",
+        "purpose": "Hover and press feedback on chart cells, transport and icon buttons."
+      },
+      {
+        "name": "state-slow",
+        "value": "220ms",
+        "purpose": "Nav tab colour change, slower than the pill it sits under so the fill leads."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms, iteration-count 1",
+        "purpose": "Global prefers-reduced-motion override on all animation, transition and scroll-behavior."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "chart-wide",
+        "value": "900px"
+      },
+      {
+        "name": "nav-compact",
+        "value": "720px"
+      },
+      {
+        "name": "chart-narrow",
+        "value": "560px"
+      },
+      {
+        "name": "badge-drop",
+        "value": "520px"
+      }
+    ],
+    "morseGeometry": [
+      {
+        "name": "--unit",
+        "value": "22px",
+        "purpose": "One Morse unit on the rhythm strip. Bars and gaps are exact integer multiples: dit 1, dah 3, gaps 1/3/7."
+      },
+      {
+        "name": "--chart-bar-unit",
+        "value": "6px",
+        "purpose": "One Morse unit in the chart bars."
+      },
+      {
+        "name": "--diagram-unit",
+        "value": "10px",
+        "purpose": "One Morse unit in the teaching diagrams."
+      },
+      {
+        "name": "--bar-h",
+        "value": "78px",
+        "purpose": "Rhythm strip bar height."
+      },
+      {
+        "name": "--measure",
+        "value": "596px",
+        "purpose": "Content column width, measured at ~68 characters per line."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Play)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Transmission action. The only pink-filled control on Translate.",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M8 5v14l11-7z\"/></svg>PLAY</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:9px;padding:11px 20px 11px 17px;border:0;border-radius:999px;background:#FF82A9;color:#1D201F;font-family:Archivo,sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background 180ms}.ds-btn-primary:hover{background:#FF9AB8}.ds-btn-primary:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+    },
+    {
+      "name": "Transport Button",
+      "kind": "button",
+      "refersTo": "button-transport",
+      "description": "Stacked icon-over-caption control. Fills 14% Cool Sky when active.",
+      "html": "<button class=\"ds-btn-transport\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg><span>LOOP</span></button>",
+      "css": ".ds-btn-transport{display:flex;flex-direction:column;align-items:center;gap:6px;width:72px;padding:8px 6px;border:0;border-radius:14px;background:transparent;color:#9A9AA4;cursor:pointer;transition:color 180ms,background 180ms}.ds-btn-transport span{font-family:\"IBM Plex Mono\",monospace;font-size:9px;letter-spacing:.14em}.ds-btn-transport:hover{background:rgb(87 87 97 / .26);color:#FDF0D5}.ds-btn-transport[aria-pressed=\"true\"]{background:rgb(119 182 234 / .14);color:#77B6EA}.ds-btn-transport:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "28px square utility control. Border and glyph both move to Cool Sky on hover.",
+      "html": "<button class=\"ds-btn-icon\" aria-label=\"Copy\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"/><path d=\"M5 15V5a2 2 0 0 1 2-2h10\"/></svg></button>",
+      "css": ".ds-btn-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:transparent;border:1px solid #575761;color:#9A9AA4;cursor:pointer;transition:color 180ms,border-color 180ms}.ds-btn-icon:hover{color:#77B6EA;border-color:rgb(119 182 234 / .5)}.ds-btn-icon:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Chart category filter. Selected state fills Bubblegum Tint.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"false\">LETTERS</button><button class=\"ds-chip\" aria-pressed=\"true\">NUMBERS</button>",
+      "css": ".ds-chip{appearance:none;cursor:pointer;border-radius:999px;padding:6px 13px;font-family:\"IBM Plex Mono\",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:transparent;border:1px solid #575761;color:#9A9AA4;transition:background 160ms,color 160ms,border-color 160ms}.ds-chip[aria-pressed=\"true\"]{background:#FF82A9;border-color:#FF82A9;color:#1D201F}.ds-chip:focus-visible{outline:2px solid #77B6EA;outline-offset:3px}"
+    },
+    {
+      "name": "Panel with Eyebrow",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The system signature: a lifted panel introduced by a Cool Sky dot and a tracked mono label.",
+      "html": "<section class=\"ds-panel\"><div class=\"ds-eyebrow\"><span class=\"ds-eyebrow-dot\" aria-hidden=\"true\"></span><span class=\"ds-eyebrow-label\">PLAIN TEXT</span></div><div class=\"ds-panel-body\">HELLO WORLD</div></section>",
+      "css": ".ds-panel{padding:20px 24px 16px;border-radius:20px;background:#262A29;border:1px solid #575761;min-height:214px;display:flex;flex-direction:column;gap:14px}.ds-eyebrow{display:flex;align-items:center;gap:9px}.ds-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:#77B6EA}.ds-eyebrow-label{font-family:\"IBM Plex Mono\",monospace;font-size:12px;font-weight:700;letter-spacing:.2em;color:#77B6EA}.ds-panel-body{font-family:Archivo,sans-serif;font-size:34px;font-weight:500;line-height:1.3;letter-spacing:-.015em;color:#FDF0D5}"
+    },
+    {
+      "name": "Navigation Rail",
+      "kind": "nav",
+      "refersTo": "nav-tab",
+      "description": "Four pills in a Panel Carbon rail with a sliding Cool Sky indicator.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Sections\"><span class=\"ds-nav-pill\" aria-hidden=\"true\"></span><a class=\"ds-nav-tab ds-nav-tab-active\" href=\"#\" aria-current=\"page\">Translate</a><a class=\"ds-nav-tab\" href=\"#\">Free Mode</a><a class=\"ds-nav-tab\" href=\"#\">Chart</a><a class=\"ds-nav-tab\" href=\"#\">Learn</a></nav>",
+      "css": ".ds-nav{position:relative;display:flex;align-items:stretch;width:max-content;padding:5px;border-radius:999px;background:#262A29;border:1px solid rgb(87 87 97 / .55)}.ds-nav-pill{position:absolute;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/4);border-radius:999px;background:#77B6EA;transition:transform 380ms cubic-bezier(.22,1,.36,1)}.ds-nav-tab{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:106px;padding:8px 20px;border-radius:999px;font-family:Archivo,sans-serif;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;color:#9A9AA4;transition:color 220ms}.ds-nav-tab-active{color:#1D201F}.ds-nav-tab:hover:not(.ds-nav-tab-active){color:#FDF0D5}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "The one bordered input in the system; the editors are borderless by design.",
+      "html": "<label class=\"ds-search\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg><input type=\"search\" placeholder=\"Search characters\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:#262A29;border:1px solid #575761;color:#9A9AA4}.ds-search input{flex:1;border:0;outline:none;background:transparent;color:#FDF0D5;font-family:Archivo,sans-serif;font-size:15px;caret-color:#77B6EA}.ds-search input::placeholder{color:rgb(154 154 164 / .55)}.ds-search:focus-within{border-color:rgb(119 182 234 / .5)}"
+    },
+    {
+      "name": "Rhythm Strip Bars",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The signature: width equals duration. Dit 1 unit, dah 3 units, gaps 1/3/7. The third bar is sounding.",
+      "html": "<div class=\"ds-strip\"><span class=\"ds-bar ds-dit\"></span><span class=\"ds-gap-1\"></span><span class=\"ds-bar ds-dah\"></span><span class=\"ds-gap-1\"></span><span class=\"ds-bar ds-dit ds-live\"></span><span class=\"ds-gap-3\"></span><span class=\"ds-bar ds-dah\"></span><div class=\"ds-baseline\"></div></div>",
+      "css": ".ds-strip{--unit:22px;position:relative;display:flex;align-items:flex-end;padding:6px 12px 18px;border-radius:20px;background:#262A29;border:1px solid #575761;box-shadow:inset 0 0 60px rgb(255 130 169 / .12)}.ds-bar{height:78px;border-radius:7px;background:#FDF0D5;flex:0 0 auto}.ds-dit{width:var(--unit)}.ds-dah{width:calc(var(--unit)*3)}.ds-gap-1{width:var(--unit);flex:0 0 auto}.ds-gap-3{width:calc(var(--unit)*3);flex:0 0 auto}.ds-live{background:#FF82A9;box-shadow:0 0 46px rgb(255 130 169 / .7),0 0 12px rgb(255 130 169 / .55)}.ds-baseline{position:absolute;left:12px;right:12px;bottom:18px;height:1px;background:rgb(87 87 97 / .85)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Bench Instrument",
+    "overview": "Morsia is drawn as a piece of lab equipment, not as a web page. The reference is a signal generator or a bench oscilloscope: a dark chassis, panels milled into it, a readout that is the point of the object, and a small number of coloured indicators that mean something specific. Nothing here is decorative. Every colour, every glow and every label is reporting a state.\n\nThis matters because the product's whole claim is that Morse is time, not notation. Every character is drawn as proportional bars whose on-screen width equals their duration. A dah is exactly three times the width of a dit, because it is exactly three times as long. The gaps are drawn to scale too, so a seven-unit word gap is visibly seven units of silence. The interface is a measuring instrument pointed at a rhythm, and it earns the instrument look by actually being one.\n\nThe system is flat and dark. Depth comes from tonal layering — a lighter panel lifted off a darker ground by one hairline border — never from drop shadows. The one exception is glow, which is not decoration but the readout: a bar blooms pink at the exact moment it is sounding. Type is quiet and functional, with monospace reserved for anything the machine is reporting and a humanist sans for anything a person wrote.",
+    "keyCharacteristics": [
+      "Width equals duration, everywhere, without exception",
+      "Dark chassis, lifted panels, hairline borders, no drop shadows",
+      "Two accent colours with strictly separated jobs, never on the same element",
+      "Monospace eyebrow labels with a leading dot, letterspaced and small",
+      "Generous corner radii (20-24px) on panels, full pills on controls",
+      "Glow used only as a live state readout, and only in pink"
+    ],
+    "rules": [
+      {
+        "name": "The Separation Rule",
+        "body": "Pink and blue never appear on the same element. Pink is transmission; blue is state and interaction. An element that is both sounding and selected resolves to pink, because what it is doing outranks where it is.",
+        "section": "colors"
+      },
+      {
+        "name": "The Line-Colour Rule",
+        "body": "Charcoal (#575761) draws lines and nothing else. Muted text is Muted Charcoal (#9A9AA4), a full step lighter. Setting text in the border colour is the fastest way to make this interface look broken.",
+        "section": "colors"
+      },
+      {
+        "name": "The Channel Rule",
+        "body": "Every translucent value derives from a --*-rgb channel triple of a palette colour. No alpha variant is ever hand-mixed, so re-tinting the palette re-tints every derived line, fill and glow with it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Archivo for what a human wrote, IBM Plex Mono for what the machine reports. A monospace label on human content, or a sans label on a readout, breaks the instrument fiction.",
+        "section": "typography"
+      },
+      {
+        "name": "The Eyebrow Rule",
+        "body": "Every panel is introduced by a 5px Cool Sky dot followed by a mono, 700-weight, 0.2em-tracked uppercase label in the same blue. The dot is aria-hidden; it is punctuation, not content.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tracking-Is-Timing Rule",
+        "body": "Letterspacing is positive and generous on anything representing Morse or a machine state (0.06em to 0.2em) and negative on human display type (-0.015em to -0.03em). Tight type is a person talking; loose type is a signal.",
+        "section": "typography"
+      },
+      {
+        "name": "The Integer-Unit Rule",
+        "body": "Anything representing Morse is an exact multiple of its unit token. Never a fraction, never an eyeballed value. Width is duration, so an arbitrary width is a lie about time.",
+        "section": "layout"
+      },
+      {
+        "name": "The Glow-Means-Live Rule",
+        "body": "Glow appears only where something is happening right now, and outside Free Mode lamp it is always pink. A glow on a resting element is a false reading.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Flat-Chassis Rule",
+        "body": "Surfaces are flat. Lift comes from one tonal step plus one hairline border. Reach for a shadow and you have left the instrument.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Pill-Or-Panel Rule",
+        "body": "Interactive controls are pills (999px). Content containers are 20-24px panels. A 999px content card or a 20px nav tab reads as a mistake in this system.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do derive every Morse dimension from its unit token — --unit (22px) on the strip, --chart-bar-unit (6px) on the chart, --diagram-unit (10px) in diagrams — as exact integer multiples.",
+      "Do introduce every panel with the eyebrow: 5px Cool Sky dot, 9px gap, mono 12px 700 0.2em uppercase Cool Sky label.",
+      "Do set human-written content in Archivo and machine-reported content in IBM Plex Mono.",
+      "Do build translucency from the --*-rgb channel triples so alpha variants stay tied to the palette.",
+      "Do lift surfaces with one tonal step plus one 1px hairline border.",
+      "Do reserve Bubblegum Tint for transmission and Cool Sky for state, interaction and focus.",
+      "Do read canvas tokens once per mount/resize via readTokens().",
+      "Do keep the content column at --measure (596px) and identical across breakpoints."
+    ],
+    "donts": [
+      "Don't set text in Charcoal (#575761). It is a line colour. Muted text is #9A9AA4.",
+      "Don't put pink and blue on the same element.",
+      "Don't add drop shadows. The consent banner is the one documented exception.",
+      "Don't glow anything that is not live right now.",
+      "Don't use pure black or pure white — the ground is warm-tinted carbon and the ink is Papaya Whip.",
+      "Don't draw a Morse element at an arbitrary width. Width is duration; an eyeballed width is a false reading.",
+      "Don't add a focus ring to the editors — the Cool Sky caret is the indicator, by owner's decision.",
+      "Don't let the four nav pills wrap; the rail scrolls instead.",
+      "Don't introduce a third accent colour. Two accents with separated jobs is the system."
+    ]
+  }
+}

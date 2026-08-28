@@ -126,19 +126,6 @@
   --row-hover: rgb(var(--ink-rgb) / 0.06);
   --chart-flash: rgb(var(--ink-rgb) / 0.18);
 
-  /* Chart */
-  --chart-bar-unit: 6px;                 /* one Morse unit in the chart's bars */
-  --chart-bar-h: 14px;
-  --chart-bar-radius: 2px;
-  --chart-pattern: rgb(var(--ink-rgb) / 0.7);  /* the ·− notation: secondary to the bars, still legible */
-  --diagram-unit: 10px;                  /* one Morse unit in the teaching diagrams */
-  --diagram-unit-sm: 7px;
-  --diagram-bar-h: 22px;
-  --gap-tint: rgb(var(--border-rgb) / 0.18);  /* so a 7-unit silence is visible as width */
-  --measure: 596px;                      /* content panel: measures 68 characters per line plus padding */
-  --row-hover: rgb(var(--ink-rgb) / 0.06);
-  --chart-flash: rgb(var(--ink-rgb) / 0.18);
-
   /* Fonts are set on <html> by next/font in app/layout.js:
      --font-sans (Archivo), --font-mono (IBM Plex Mono). */
 }
@@ -180,37 +167,6 @@ input[type="range"] { accent-color: var(--interact); }
 .hv-tint-ink:hover { background: var(--hover-tint) !important; color: var(--ink) !important; }
 .hv-signal:hover { background: var(--signal-bright) !important; }
 .hv-interact:hover { background: var(--interact-bright) !important; }
-
-/* ---------- nav (four pills; must never wrap at 375px) ---------- */
-/* Reserve the header's height so a font swap can't shift the page under it. */
-.hdr-row { min-height: 46px; }
-@media (min-width: 721px) { .hdr-row { min-height: 52px; } }
-.nav-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
-.nav-scroll::-webkit-scrollbar { display: none; }
-.nav-tab { min-width: 106px; }
-/* These elements carry inline styles (ported from the design), which outrank a
-   plain rule — !important is how a breakpoint gets a say at all. */
-@media (max-width: 720px) {
-  .nav-tab { min-width: 0 !important; padding: 8px 13px !important; font-size: 12px !important; }
-  .hdr-mark { font-size: 21px !important; }
-  .hdr-logo { gap: 9px !important; }
-  .hdr-row { gap: 12px !important; }
-}
-@media (max-width: 520px) { .hdr-badge { display: none !important; } }
-
-/* ---------- chart ---------- */
-.chart-grid { display: grid; gap: 10px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.chart-grid-wide { display: grid; gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 900px) {
-  .chart-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .chart-grid-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 560px) {
-  .chart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .chart-grid-wide { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-}
-.chart-cell { transition: background 140ms linear; }
-.chart-cell:hover { background: var(--row-hover); }
 
 /* ---------- nav (four pills; must never wrap at 375px) ---------- */
 /* Reserve the header's height so a font swap can't shift the page under it. */
