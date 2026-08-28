@@ -6,13 +6,14 @@ export default function Toast({ message }) {
       {message ? (
         <div
           key={message}
+          className="t-readout-lg"
           style={{
-            position: 'fixed', left: '50%', bottom: 32, transform: 'translate(-50%, 0)', display: 'flex', alignItems: 'center', gap: 9,
-            padding: '11px 18px', borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border)', fontSize: 12.5,
-            color: 'var(--ink)', animation: 'morsia-toast 260ms cubic-bezier(0.22,1,0.36,1)', zIndex: 40,
+            position: 'fixed', left: '50%', bottom: 28, transform: 'translate(-50%, 0)', display: 'flex', alignItems: 'center', gap: 10,
+            padding: '10px 16px', borderRadius: 'var(--r-1)', background: 'var(--field)', border: '1px solid var(--rule-strong)',
+            color: 'var(--ink)', animation: 'morsia-toast 240ms cubic-bezier(0.16,1,0.3,1)', zIndex: 40,
           }}
         >
-          <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
+          <span aria-hidden="true" style={{ width: 5, height: 5, background: 'var(--reference)' }} />
           <span>{message}</span>
         </div>
       ) : null}

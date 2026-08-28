@@ -15,11 +15,11 @@ import { readTokens } from '@/components/tokens';
 
 const WINDOW_UNITS = 42;   // visible time = 42 units, scales with WPM
 const GRID_UNITS = 3;      // one gridline per dah width
-const MARK_RISE = 0.42;    // marks rise to 42% of canvas height
+const MARK_RISE = 0.6;     // marks rise to 60% of canvas height
 const BASELINE_PAD = 18;   // px from the bottom edge
 
 const SIZES = ['--bar-radius'];
-const COLORS = ['--bar-rest', '--bar-active', '--baseline', '--border-soft', '--muted'];
+const COLORS = ['--bar-rest', '--bar-active', '--baseline', '--grat-minor', '--muted'];
 
 export default function Scope({ marksRef, keyed, wpm, height }) {
   const canvasRef = useRef(null);
@@ -60,15 +60,27 @@ export default function Scope({ marksRef, keyed, wpm, height }) {
       g.clearRect(0, 0, w, h);
 
       // Ruler grid: one line per dah, anchored to the write head (right edge).
-      g.fillStyle = tk['--border-soft'];
+      // It spans only the band the marks occupy — a ruler drawn over the whole
+      // canvas turns an idle scope into an empty table — and each line carries
+      // a tick below the baseline, the way the translate scale is ruled.
       const gridPx = GRID_UNITS * unit * pxPerMs;
+      const gridTop = riseY - 8;
       for (let x = w; x >= 0; x -= gridPx) {
-        g.fillRect(Math.round(x) - 1, 6, 1, baseY - 6);
+        const gx = Math.round(x) - 1;
+        g.fillStyle = tk['--grat-minor'];
+        g.fillRect(gx, gridTop, 1, baseY - gridTop);
+        g.fillStyle = tk['--muted'];
+        g.fillRect(gx, baseY + 1, 1, 4);
       }
 
       // Baseline.
       g.fillStyle = tk['--baseline'];
       g.fillRect(0, baseY, w, 1);
+
+      // The write head. Marks appear at the right edge and scroll left, so the
+      // edge is marked as a structural line rather than left to be inferred.
+      g.fillStyle = tk['--muted'];
+      g.fillRect(w - 1, gridTop - 8, 1, baseY - gridTop + 8);
 
       // Marks: prune what has scrolled off, draw the rest rising from the baseline.
       const marks = marksRef.current;
@@ -85,7 +97,7 @@ export default function Scope({ marksRef, keyed, wpm, height }) {
         visible = true;
         const left = Math.max(-2, x0);
         const width = Math.max(1.5, x1 - left);
-        // The mark being written NOW is signal-pink; settled marks are ink.
+        // The mark being written NOW is the reference amber; settled marks are ink.
         g.fillStyle = open ? tk['--bar-active'] : tk['--bar-rest'];
         g.beginPath();
         if (typeof g.roundRect === 'function') g.roundRect(left, riseY, width, baseY - riseY, [r, r, 0, 0]);

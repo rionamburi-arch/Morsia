@@ -49,7 +49,7 @@ export function useConsent() {
 }
 
 const button = {
-  minHeight: 44, padding: '11px 20px', borderRadius: 999, cursor: 'pointer', appearance: 'none',
+  minHeight: 44, padding: '11px 20px', borderRadius: 'var(--r-1)', cursor: 'pointer', appearance: 'none',
   fontFamily: 'inherit', fontSize: 13, fontWeight: 600, letterSpacing: '0.04em',
 };
 
@@ -71,8 +71,8 @@ export default function ConsentBanner() {
         position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 50,
         maxWidth: 620, marginLeft: 'auto', marginRight: 'auto',
         display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14,
-        padding: '16px 20px', borderRadius: 24,
-        background: 'var(--surface)', border: '1px solid var(--border)',
+        padding: '16px 20px', borderRadius: 'var(--r-0)',
+        background: 'var(--field)', border: '1px solid var(--rule-strong)',
         boxShadow: '0 12px 40px rgb(0 0 0 / 0.35)',
       }}
     >
@@ -84,14 +84,14 @@ export default function ConsentBanner() {
         <button
           type="button"
           onClick={accept}
-          style={{ ...button, background: 'var(--signal)', border: '1px solid var(--signal)', color: 'var(--on-accent)' }}
+          style={{ ...button, background: 'var(--reference)', border: '1px solid var(--reference)', color: '#17120A' }}
         >
           Accept
         </button>
         <button
           type="button"
           onClick={() => write('declined')}
-          style={{ ...button, background: 'transparent', border: '1px solid var(--border)', color: 'var(--muted)' }}
+          style={{ ...button, background: 'transparent', border: '1px solid var(--rule-strong)', color: 'var(--muted)' }}
         >
           Decline
         </button>

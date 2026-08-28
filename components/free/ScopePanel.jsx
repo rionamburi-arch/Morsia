@@ -8,7 +8,7 @@ import Scope from '@/components/free/Scope';
 import { unitMs } from '@/lib/timing';
 import { prettyPattern } from '@/lib/morse';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 
 function IconButton({ title, pressed, onClick, children }) {
   return (
@@ -23,12 +23,12 @@ function IconButton({ title, pressed, onClick, children }) {
       title={title}
       aria-label={title}
       aria-pressed={pressed}
-      className="hv-ink"
+      className="icon-btn"
       style={{
-        width: 34, height: 34, display: 'grid', placeItems: 'center', borderRadius: 11, cursor: 'pointer',
-        appearance: 'none', background: pressed ? 'var(--pressed-fill)' : 'transparent',
-        border: '1px solid var(--border)', color: pressed ? 'var(--ink)' : 'var(--muted)',
-        transition: 'color 200ms, background 200ms', flex: '0 0 auto',
+        width: 32, height: 32, flex: '0 0 auto',
+        background: pressed ? 'var(--reference-dim)' : 'transparent',
+        borderColor: pressed ? 'var(--reference-line)' : 'var(--rule-strong)',
+        color: pressed ? 'var(--reference)' : 'var(--g5)',
       }}
     >
       {children}
@@ -70,17 +70,17 @@ export default function ScopePanel({ keyer, wpm, onExpand }) {
       data-clarity-unmask="true"
       {...surfaceProps}
       style={{
-        borderRadius: 24, background: 'var(--surface)', border: '1px solid var(--border)',
+        borderRadius: 'var(--r-0)', background: 'var(--field)', border: '1px solid var(--rule)',
         overflow: 'hidden', userSelect: 'none', WebkitUserSelect: 'none',
         touchAction: 'none', overscrollBehavior: 'none', cursor: 'pointer',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '14px 18px 0' }}>
-        <div aria-live="off" style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.14em', color: keyedDown ? 'var(--ink)' : 'var(--muted)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '12px 16px 0' }}>
+        <div aria-live="off" style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.14em', color: keyedDown ? 'var(--reference)' : 'var(--g5)', fontVariantNumeric: 'tabular-nums' }}>
           {status}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.1em', color: 'var(--muted)' }}>
+          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.06em', color: 'var(--g4)', fontVariantNumeric: 'tabular-nums' }}>
             UNIT {Math.round(unitMs(wpm))} MS
           </span>
           <IconButton title={muted ? 'Unmute' : 'Mute'} pressed={muted} onClick={toggleMute}>
@@ -96,8 +96,8 @@ export default function ScopePanel({ keyer, wpm, onExpand }) {
 
       <div
         style={{
-          padding: '10px 18px 12px', borderTop: '1px solid var(--border-soft)',
-          fontFamily: MONO, fontSize: 14, letterSpacing: '0.14em', color: 'var(--signal)',
+          padding: '10px 18px 12px', borderTop: '1px solid var(--rule)',
+          fontFamily: MONO, fontSize: 13, letterSpacing: '0.1em', color: 'var(--reference)',
           whiteSpace: 'nowrap', overflow: 'hidden', direction: 'rtl', textAlign: 'left', minHeight: 40,
         }}
       >

@@ -7,30 +7,18 @@ import Link from 'next/link';
 import { TimingRules, WorkedExample } from '@/components/home/TimingDiagram';
 import CommonLetters from '@/components/home/CommonLetters';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 
-const h2 = { margin: '0 0 14px', fontSize: 24, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ink)' };
-const h3 = { margin: '30px 0 12px', fontSize: 17, fontWeight: 600, color: 'var(--ink)' };
-const p = { margin: '0 0 14px', fontSize: 15, lineHeight: 1.7, color: 'var(--muted)' };
+const h2 = { margin: '0 0 16px', fontSize: 26, fontWeight: 600, letterSpacing: '-0.025em', lineHeight: 1.2, color: 'var(--ink)' };
+const h3 = { margin: '34px 0 12px', fontSize: 17, fontWeight: 600, letterSpacing: '-0.015em', color: 'var(--ink)' };
+const p = { margin: '0 0 14px', fontSize: 15, lineHeight: 1.7, color: 'var(--g6)' };
 const strong = { color: 'var(--ink)', fontWeight: 600 };
-const card = { margin: '18px 0 20px' };
-const code = { fontFamily: MONO, color: 'var(--ink)' };
+const card = { margin: '20px 0 22px' };
+const code = { fontFamily: MONO, color: 'var(--ink)', fontSize: '0.92em' };
 
 export default function AboutMorse() {
   return (
     <section className="content-panel" aria-labelledby="about-morse">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 16 }}>
-        <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
-        <span
-          style={{
-            fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-            color: 'var(--interact)',
-          }}
-        >
-          ABOUT MORSE CODE
-        </span>
-      </div>
-
       <h2 id="about-morse" style={h2}>Morse code is made of time</h2>
       <p style={p}>
         Everyone writes Morse as dots and dashes, and that notation hides the thing that actually matters. A dot and a

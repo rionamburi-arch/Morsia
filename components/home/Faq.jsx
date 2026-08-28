@@ -6,7 +6,7 @@
 import UnitBars, { patternSegments } from '@/components/home/UnitBars';
 import { FAQ } from '@/components/home/faq';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 
 const BARS = {
   // SOS is keyed as one run-together signal, so no letter gaps.
@@ -26,8 +26,8 @@ function Figure({ kind }) {
   return (
     <div
       style={{
-        marginTop: 12, padding: '12px 14px', borderRadius: 12,
-        border: '1px solid var(--border-soft)', background: 'var(--inset-fill)',
+        marginTop: 12, padding: '12px 14px', borderRadius: 'var(--r-0)',
+        border: '1px solid var(--rule)', background: 'var(--field)',
         display: 'flex', flexDirection: 'column', gap: 8, overflowX: 'auto',
       }}
     >
@@ -42,18 +42,7 @@ function Figure({ kind }) {
 export default function Faq() {
   return (
     <section aria-labelledby="faq" className="content-panel">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 16 }}>
-        <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
-        <span
-          style={{
-            fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-            color: 'var(--interact)',
-          }}
-        >
-          QUESTIONS
-        </span>
-      </div>
-      <h2 id="faq" style={{ margin: '0 0 6px', fontSize: 21, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink)' }}>
+      <h2 id="faq" style={{ margin: '0 0 6px', fontSize: 26, fontWeight: 600, letterSpacing: '-0.025em', lineHeight: 1.2, color: 'var(--ink)' }}>
         Common questions
       </h2>
 
@@ -66,7 +55,7 @@ export default function Faq() {
             <dd style={{ margin: 0 }}>
               <p style={{ margin: '0 0 10px', fontSize: 15, lineHeight: 1.6, color: 'var(--ink)' }}>{item.lead}</p>
               {item.body.map((para) => (
-                <p key={para.slice(0, 24)} style={{ margin: '0 0 10px', fontSize: 14.5, lineHeight: 1.7, color: 'var(--muted)' }}>
+                <p key={para.slice(0, 24)} style={{ margin: '0 0 10px', fontSize: 14.5, lineHeight: 1.7, color: 'var(--g6)' }}>
                   {para}
                 </p>
               ))}

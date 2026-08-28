@@ -2,7 +2,7 @@
 
 // Decoded output. Copy + clear are the owner's addition to the spec (2026-08-20).
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 
 function SmallButton({ title, onClick, children }) {
   return (
@@ -12,10 +12,9 @@ function SmallButton({ title, onClick, children }) {
       onPointerDown={(e) => e.preventDefault()} // keep focus off the button so Space keeps keying
       title={title}
       aria-label={title}
-      className="hv-icon"
+      className="icon-btn"
       style={{
-        width: 28, height: 28, display: 'grid', placeItems: 'center', borderRadius: 9, cursor: 'pointer', appearance: 'none',
-        background: 'transparent', border: '1px solid var(--border)', color: 'var(--muted)', transition: 'color 180ms, border-color 180ms',
+        width: 28, height: 28,
       }}
     >
       {children}
@@ -31,21 +30,11 @@ export default function SentPanel({ sent, onCopy, onClear }) {
       data-clarity-unmask="true"
       style={{
         flex: '1.6 1 320px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12, minHeight: 220,
-        padding: '18px 22px 14px', borderRadius: 20, background: 'var(--surface)', border: '1px solid var(--border)',
+        padding: '16px 18px 14px', borderRadius: 'var(--r-0)', background: 'var(--field)', border: '1px solid var(--rule)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-          <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
-          <span
-            style={{
-              fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-              color: 'var(--interact)',
-            }}
-          >
-            WHAT YOU SENT
-          </span>
-        </div>
+        <h2 style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink)' }}>What you sent</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <SmallButton title="Copy sent text" onClick={onCopy}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -62,13 +51,13 @@ export default function SentPanel({ sent, onCopy, onClear }) {
       </div>
       <div
         style={{
-          flex: '1 1 auto', fontSize: 28, fontWeight: 500, letterSpacing: '0.04em', lineHeight: 1.3,
+          flex: '1 1 auto', fontSize: 26, fontWeight: 500, letterSpacing: '0.02em', lineHeight: 1.35,
           color: 'var(--ink)', overflowWrap: 'anywhere', userSelect: 'text',
         }}
       >
         {sent || <span style={{ color: 'var(--placeholder)' }}>Key something…</span>}
       </div>
-      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--muted)' }}>{count} CHARS</div>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.1em', color: 'var(--g4)', textTransform: 'uppercase', fontVariantNumeric: 'tabular-nums' }}>{count} chars</div>
     </section>
   );
 }

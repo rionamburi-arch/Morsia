@@ -19,7 +19,9 @@ export default function UnitBars({ segments, height, unit, color = 'var(--bar-re
             height: s.on ? '100%' : '100%',
             borderRadius: s.on ? 'var(--chart-bar-radius)' : 0,
             background: s.on ? color : s.tint ? 'var(--gap-tint)' : 'transparent',
-            border: s.on || !s.tint ? 0 : '1px dashed var(--border)',
+            // A dashed edge marks a silence the way a drawing marks an implied
+            // edge — the prose calls it "the dashed space", so it stays dashed.
+            border: s.on || !s.tint ? 0 : '1px dashed var(--g3)',
             boxSizing: 'border-box',
           }}
         />

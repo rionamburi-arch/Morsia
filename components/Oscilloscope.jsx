@@ -12,7 +12,8 @@
 import { useEffect, useRef } from 'react';
 import { readTokens } from '@/components/tokens';
 
-const COLORS = ['--wave', '--wave-ghost', '--wave-glow', '--wave-ghost-glow'];
+const COLORS = ['--wave', '--wave-ghost', '--wave-grid'];
+const DIVISIONS = 8; // vertical graticule divisions, as on a scope screen
 const ATTACK = 0.45;   // per-frame easing toward 1 when a tone starts
 const RELEASE = 0.22;  // per-frame easing toward 0 when it stops
 const SETTLED = 0.01;  // below this the line is drawn flat
@@ -63,7 +64,21 @@ export default function Oscilloscope({ active, probe, toneHz }) {
       if (!w || !h) return;
       g.clearRect(0, 0, w, h);
       const mid = h / 2;
-      const amp = env < SETTLED ? 0 : h * 0.4 * env;
+
+      // The zero axis with its division ticks. Full-height division lines turn
+      // an idle scope into an empty table, so the divisions are ticks on the
+      // axis instead — which is what a scope graticule actually looks like.
+      g.fillStyle = tk['--wave-grid'];
+      const step = w / DIVISIONS;
+      const axis = Math.round(mid);
+      g.fillRect(0, axis, w, 1);
+      for (let i = 1; i < DIVISIONS; i++) g.fillRect(Math.round(i * step), axis - 3, 1, 7);
+
+      // Nothing is sounding: the axis alone, flat. Colour marks a live reading,
+      // so an idle scope shows no trace rather than a flat coloured line.
+      if (env < SETTLED) return;
+
+      const amp = h * 0.4 * env;
       const k = freq * fl.mul;
       for (let pass = 1; pass >= 0; pass--) {
         g.beginPath();
@@ -75,13 +90,11 @@ export default function Oscilloscope({ active, probe, toneHz }) {
           if (x === 0) g.moveTo(x, y);
           else g.lineTo(x, y);
         }
-        g.lineWidth = pass ? 1 : 2;
+        // No bloom: the trace is a measurement, drawn as a clean line.
+        g.lineWidth = pass ? 1 : 1.75;
         g.strokeStyle = pass ? tk['--wave-ghost'] : tk['--wave'];
-        g.shadowColor = pass ? tk['--wave-ghost-glow'] : tk['--wave-glow'];
-        g.shadowBlur = pass ? 8 : 6 + 16 * env;
         g.stroke();
       }
-      g.shadowBlur = 0;
     };
 
     const tick = () => {
@@ -111,5 +124,11 @@ export default function Oscilloscope({ active, probe, toneHz }) {
     };
   }, [active, probe, toneHz]);
 
-  return <canvas ref={ref} aria-hidden="true" style={{ display: 'block', width: '100%', height: '56px', marginTop: '6px' }} />;
+  return (
+    <canvas
+      ref={ref}
+      aria-hidden="true"
+      style={{ display: 'block', width: '100%', height: '56px', borderTop: '1px solid var(--rule)' }}
+    />
+  );
 }

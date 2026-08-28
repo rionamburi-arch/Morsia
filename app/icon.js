@@ -6,8 +6,8 @@ import { ImageResponse } from 'next/og';
 export const size = { width: 32, height: 32 };
 export const contentType = 'image/png';
 
-const GROUND = '#1D201F';
-const INK = '#FDF0D5';
+const GROUND = '#0C0E0F';
+const INK = '#DCE3E4';
 
 export default function Icon() {
   return new ImageResponse(
@@ -18,8 +18,8 @@ export default function Icon() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
         }}
       >
-        <div style={{ width: 11, height: 19, background: INK, borderRadius: 2 }} />
-        <div style={{ width: 11, height: 19, background: INK, borderRadius: 2 }} />
+        <div style={{ width: 11, height: 19, background: INK }} />
+        <div style={{ width: 11, height: 19, background: INK }} />
       </div>
     ),
     size,

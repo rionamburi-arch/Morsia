@@ -10,7 +10,7 @@ import { useSettings } from '@/hooks/useSettings';
 import usePlayer from '@/hooks/usePlayer';
 import PatternBars from '@/components/chart/PatternBars';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 const LETTERS = ['E', 'T', 'A', 'I', 'N', 'M', 'S', 'O'];
 
 export default function CommonLetters() {
@@ -40,7 +40,7 @@ export default function CommonLetters() {
     let last = null;
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      const next = sounding() ? 'var(--chart-flash)' : 'transparent';
+      const next = sounding() ? 'var(--reference-dim)' : 'transparent';
       if (next !== last) {
         last = next;
         el.style.background = next;
@@ -56,12 +56,12 @@ export default function CommonLetters() {
   return (
     <figure
       style={{
-        margin: 0, padding: '16px 18px', borderRadius: 16,
-        border: '1px solid var(--border-soft)', background: 'var(--inset-fill)',
+        margin: 0, padding: '16px 18px', borderRadius: 'var(--r-0)',
+        border: '1px solid var(--rule)', background: 'var(--field)',
       }}
     >
       <figcaption
-        style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.16em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 12 }}
+        style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', color: 'var(--g4)', textTransform: 'uppercase', marginBottom: 12 }}
       >
         Click to hear
       </figcaption>
@@ -80,8 +80,8 @@ export default function CommonLetters() {
               className="chart-cell"
               style={{
                 width: '100%', minHeight: 62, display: 'flex', flexDirection: 'column', alignItems: 'center',
-                justifyContent: 'center', gap: 8, padding: '10px 6px', borderRadius: 11, cursor: 'pointer',
-                appearance: 'none', background: 'transparent', border: '1px solid var(--border-soft)',
+                justifyContent: 'center', gap: 8, padding: '10px 6px', borderRadius: 'var(--r-1)', cursor: 'pointer',
+                appearance: 'none', background: 'transparent', border: '1px solid var(--rule-strong)',
               }}
             >
               <PatternBars pattern={TABLE[char]} />

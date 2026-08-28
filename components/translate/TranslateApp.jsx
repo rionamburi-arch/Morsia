@@ -140,12 +140,16 @@ export default function TranslateApp() {
 
   return (
     <main style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <section
-        aria-label="Rhythm strip"
-        style={{ borderRadius: 24, padding: '18px 26px 14px', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'inset 0 0 100px var(--strip-bloom)' }}
-      >
-        <StripHeader word={source} code={stripCode} muted={player.muted} onToggleMute={player.toggleMute} />
-        <div data-clarity-unmask="true" style={{ marginTop: 14 }}>
+      <section aria-label="Rhythm strip" className="field">
+        <StripHeader
+          word={source}
+          code={stripCode}
+          muted={player.muted}
+          onToggleMute={player.toggleMute}
+          wpm={wpm}
+          totalMs={totalMs(segments)}
+        />
+        <div data-clarity-unmask="true">
           <Scope segments={segments} wpm={wpm} clock={player.playing ? player.clock : null} showLabels={labels} />
         </div>
         <Oscilloscope active={player.playing} probe={player.probe} toneHz={toneHz} />

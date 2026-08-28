@@ -15,7 +15,7 @@ import FullscreenKey from '@/components/free/FullscreenKey';
 import Toast from '@/components/Toast';
 import { track } from '@/lib/analytics';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 const TOAST_MS = 2300;
 
 export default function FreeMode() {
@@ -52,18 +52,8 @@ export default function FreeMode() {
   return (
     <main style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-          <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
-          <span
-            style={{
-              fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-              color: 'var(--interact)',
-            }}
-          >
-            FREE MODE
-          </span>
-        </div>
-        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.14em', color: 'var(--muted)' }}>
+        <h1 style={{ fontSize: 21, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ink)' }}>Free Mode</h1>
+        <span className="t-readout" style={{ letterSpacing: '0.1em' }}>
           HOLD SPACE · PRESS THE KEY OR THE SCOPE
         </span>
       </div>

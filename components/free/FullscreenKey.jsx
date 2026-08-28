@@ -11,7 +11,7 @@ import Scope from '@/components/free/Scope';
 import { MuteIcon } from '@/components/free/ScopePanel';
 import { prettyPattern } from '@/lib/morse';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 const EXIT_FADE_MS = 2000;
 const REVEAL_MS = 1200; // pop in fast, hold readable, then fall into the readout
 
@@ -132,7 +132,7 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
           style={{
             position: 'absolute', top: 'max(16px, env(safe-area-inset-top))', right: 'max(16px, env(safe-area-inset-right))',
             width: 44, height: 44, display: 'grid', placeItems: 'center', borderRadius: 12, cursor: 'pointer',
-            appearance: 'none', background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--muted)',
+            appearance: 'none', background: 'var(--field)', border: '1px solid var(--rule-strong)', color: 'var(--g5)',
             opacity: chromeVisible ? 1 : 0, transition: 'opacity 400ms', pointerEvents: chromeVisible ? 'auto' : 'none',
           }}
         >
@@ -156,8 +156,8 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
           style={{
             position: 'absolute', top: 'max(16px, env(safe-area-inset-top))', right: 'calc(max(16px, env(safe-area-inset-right)) + 56px)',
             width: 44, height: 44, display: 'grid', placeItems: 'center', borderRadius: 12, cursor: 'pointer',
-            appearance: 'none', background: muted ? 'var(--pressed-fill)' : 'var(--surface)', border: '1px solid var(--border)',
-            color: muted ? 'var(--ink)' : 'var(--muted)',
+            appearance: 'none', background: muted ? 'var(--reference-dim)' : 'var(--field)', border: `1px solid ${muted ? 'var(--reference-line)' : 'var(--rule-strong)'}`,
+            color: muted ? 'var(--reference)' : 'var(--g5)',
             opacity: chromeVisible ? 1 : 0, transition: 'opacity 400ms', pointerEvents: chromeVisible ? 'auto' : 'none',
           }}
         >
@@ -168,8 +168,8 @@ export default function FullscreenKey({ keyer, wpm, onExit }) {
       <div
         style={{
           flex: '0 0 auto', padding: '12px 18px calc(12px + env(safe-area-inset-bottom))',
-          borderTop: '1px solid var(--border-soft)', background: 'var(--surface)',
-          fontFamily: MONO, fontSize: 15, letterSpacing: '0.14em', color: 'var(--signal)',
+          borderTop: '1px solid var(--rule)', background: 'var(--field)',
+          fontFamily: MONO, fontSize: 14, letterSpacing: '0.1em', color: 'var(--reference)',
           whiteSpace: 'nowrap', overflow: 'hidden', direction: 'rtl', textAlign: 'left', minHeight: 44,
         }}
       >

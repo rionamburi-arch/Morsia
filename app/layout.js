@@ -1,18 +1,22 @@
-import { Archivo, IBM_Plex_Mono } from 'next/font/google';
+import { Chivo, Martian_Mono } from 'next/font/google';
 import AnalyticsProvider from '@/components/AnalyticsProvider';
 import Header from '@/components/Header';
 import './globals.css';
 
-const archivo = Archivo({
+// Human voice. A workhorse grotesque with enough warmth to keep a measurement
+// instrument from reading as a clinical one.
+const chivo = Chivo({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-const plexMono = IBM_Plex_Mono({
+// Machine voice. Every measured value — units, milliseconds, WPM, Hz, and the
+// Morse itself — is set in this. Engineered, wide, and unmistakably a readout.
+const martian = Martian_Mono({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['400', '500', '700'],
   variable: '--font-mono',
   display: 'swap',
 });
@@ -63,17 +67,37 @@ const siteSchema = [
   },
 ];
 
+// The direction contract. React strips JSX comments, so this ships through
+// dangerouslySetInnerHTML to survive the production build and stay greppable.
+const CONTRACT = `<!--
+THESIS: Morse is a measurement, so the interface is an instrument's reference
+chart. It refuses the two-panel translator with a dot-and-dash readout.
+OWN-WORLD: Near-black neutral field; a calibrated grey step wedge as the only
+neutral ramp; one tungsten amber for the live measure, one red for
+out-of-range. Square corners, hairline rules, printed scales. No cards, no
+eyebrow labels, no glow. Chivo for human text, Martian Mono for every measured
+value.
+STORY: Someone who searched for Morse sees it drawn true to time, types, hears
+it, and understands that a dah is exactly three dits.
+FIRST VIEWPORT: A ruled measuring field spanning the column, a printed unit
+scale across its top edge, the message as hard-edged blocks on the baseline, a
+registration gate riding the scale while it plays, the ms/unit readout at the
+scale's right.
+FORM: The Calibration Chart; candidate 1 of the safer-register list; seed bc1c8e8b.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+-->`;
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${chivo.variable} ${martian.variable}`}>
       <body>
+        <div hidden dangerouslySetInnerHTML={{ __html: CONTRACT }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema).replaceAll('<', '\\u003c') }}
         />
-        {/* Shell wrappers ported from the Claude Design export in design/cadence/ */}
-        <div style={{ minHeight: '100vh', background: 'var(--ground)', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ maxWidth: 1240, margin: '0 auto', padding: '26px 32px 56px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div className="chassis">
+          <div className="column">
             <Header />
             {children}
           </div>

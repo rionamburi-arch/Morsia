@@ -1,193 +1,408 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Morsia — colour system
-   Every colour in the app resolves from this file.
-   Source of truth: the Claude Design export in design/cadence/
-   (that project is still named "Cadence" upstream).
+   MORSIA — THE CALIBRATION CHART
+   Every colour, rule and dimension in the app resolves from here.
 
-   PALETTE
-     ground     Carbon Black    page background
-     surface    lifted carbon   panels + strip box
-     border     Charcoal        borders and dividers ONLY, never text
-     ink        Papaya Whip     primary text + Morse bars at rest
-     muted      light charcoal  secondary text, labels, counts
-     signal     Bubblegum       "transmitting" — sounding bar, Play
-     interact   Cool Sky        "you can touch this" — active tab,
-                                swap circle, focus, sliders
-     on-accent  Carbon Black    text/icons on top of pink or blue
+   The premise: Morse is a measurement. A dit is one unit, a dah is
+   exactly three, and every duration in the product derives from the
+   single constant UNIT_MS = 1200 / wpm. So the interface is built as
+   an instrument's reference chart — a ruled field with a printed
+   scale, hard-edged measured blocks, and marks rather than glows.
 
-   Pink and blue never appear on the same element.
+   Three laws:
+     1. Neutrals come from the step wedge (--g1..--g7). Nothing else.
+     2. Amber means "being measured right now". Red means out of range.
+        Nothing else is coloured, ever.
+     3. Anything representing Morse is an exact integer multiple of its
+        unit token. Width is duration; an eyeballed width is a lie.
    ============================================================ */
 
 :root {
-  /* ---------- PALETTE ---------- */
-  --ground: #1D201F;
-  --surface: #262A29;
-  --border: #575761;
-  --ink: #FDF0D5;
-  --muted: #9A9AA4;
-  --signal: #FF82A9;
-  --interact: #77B6EA;
-  --on-accent: #1D201F;
+  /* ---------- GROUND ---------- */
+  --ground: #0C0E0F;      /* the instrument's dark field */
+  --field: #121618;       /* a measuring field, one step up from ground */
+  --field-2: #171D1F;     /* inset wells and hover */
 
-  /* channels, so alpha variants stay tied to the palette above */
-  --ground-rgb: 29 32 31;
-  --surface-rgb: 38 42 41;
-  --border-rgb: 87 87 97;
-  --ink-rgb: 253 240 213;
-  --muted-rgb: 154 154 164;
-  --signal-rgb: 255 130 169;
-  --interact-rgb: 119 182 234;
+  /* ---------- THE STEP WEDGE ----------
+     The only neutral ramp. Every grey in the product is one of these
+     seven calibrated steps, and they are drawn as a real wedge on the
+     chart page rather than being a private convention. */
+  --g1: #1B2123;
+  --g2: #293134;
+  --g3: #3C4649;
+  --g4: #566266;
+  --g5: #7C888C;
+  --g6: #A7B2B5;
+  --g7: #DCE3E4;
 
-  /* ---------- LINES ---------- */
-  --border-soft: rgb(var(--border-rgb) / 0.55);   /* quiet outlines */
-  --rule: rgb(var(--border-rgb) / 0.55);          /* transport separator */
-  --divider: rgb(var(--border-rgb) / 0.70);       /* vertical divider */
-  --baseline: rgb(var(--border-rgb) / 0.85);      /* line the bars sit on */
+  --ink: var(--g7);       /* primary text and resting Morse blocks */
+  --muted: var(--g5);     /* secondary text, labels — 5.3:1 on ground */
+  --rule: var(--g2);      /* hairlines */
+  --rule-strong: var(--g3);
 
-  /* ---------- FILLS & STATES ---------- */
-  --hover-tint: rgb(var(--border-rgb) / 0.26);
-  --inset-fill: rgb(var(--border-rgb) / 0.20);
-  --pressed-fill: rgb(var(--border-rgb) / 0.45);  /* mute engaged */
-  --placeholder: rgb(var(--muted-rgb) / 0.55);
-  --selection: rgb(var(--interact-rgb) / 0.30);
+  /* ---------- REFERENCE ----------
+     Tungsten amber. The value being measured right now: the sounding
+     block, the playhead gate, the live trace, the focus ring. */
+  --reference: #E8A33C;
+  --reference-rgb: 232 163 60;
+  --reference-dim: rgb(var(--reference-rgb) / 0.20);
+  --reference-line: rgb(var(--reference-rgb) / 0.45);
 
-  /* interaction (blue) — never combined with pink on one element */
-  --interact-fill: rgb(var(--interact-rgb) / 0.14);
-  --interact-border: rgb(var(--interact-rgb) / 0.50);
-  --interact-bright: color-mix(in srgb, var(--interact) 88%, white);
-  --focus: var(--interact);
+  /* ---------- OUT OF RANGE ----------
+     Errors and characters with no Morse equivalent. Never decorative. */
+  --alert: #E2482F;
+  --alert-rgb: 226 72 47;
+  --alert-dim: rgb(var(--alert-rgb) / 0.18);
 
-  /* transmission (pink) */
-  --signal-bright: color-mix(in srgb, var(--signal) 86%, white);
+  /* ---------- BROWSER SURFACES ---------- */
+  --selection: rgb(var(--reference-rgb) / 0.28);
+  --caret: var(--reference);
+  --focus: var(--reference);
+  --placeholder: var(--g5);
+
+  /* ---------- GEOMETRY ----------
+     A reference chart has no rounded corners. Controls get 2px so a
+     pressable thing still reads as an object; nothing else is rounded. */
+  --r-0: 0px;
+  --r-1: 2px;
+  --hair: 1px;
 
   /* ---------- RHYTHM STRIP ----------
-     The only place glow is allowed, and that glow is pink. */
-  --strip-bloom: rgb(var(--signal-rgb) / 0.12);
-  --bar-rest: var(--ink);
-  --bar-active: var(--signal);
-  --bar-active-glow: rgb(var(--signal-rgb) / 0.70);
-  --bar-active-core: rgb(var(--signal-rgb) / 0.55);
+     Read once by components/Scope.jsx. Bars and gaps are exact
+     multiples of --unit: dit 1, dah 3, gaps 1 / 3 / 7. */
+  --unit: 22px;                /* one Morse unit */
+  --bar-h: 84px;               /* block height */
+  --bar-radius: 0px;           /* measured blocks are square */
+  --strip-bar-top: 30px;       /* headroom: the printed scale lives here */
+  --strip-label-size: 11px;
+  --strip-label-gap: 12px;
+  --strip-pad-x: 16px;
+  --strip-label-tracking: 0.08em;
+
+  --bar-rest: var(--g7);       /* a block at rest is data ink */
+  --bar-active: var(--reference);
+  --baseline: var(--g3);
+  --playhead: var(--reference);
+
+  /* graticule: the ruled field behind the blocks */
+  --grat-minor: rgb(60 70 73 / 0.55);   /* every unit */
+  --grat-major: rgb(86 98 102 / 0.85);  /* every 5 units */
+  --scale-label: var(--g4);
 
   /* ---------- OSCILLOSCOPE (read by the canvas) ---------- */
-  --wave: rgb(var(--signal-rgb) / 0.95);
-  --wave-ghost: rgb(var(--signal-rgb) / 0.30);
-  --wave-glow: rgb(var(--signal-rgb) / 0.55);
-  --wave-ghost-glow: rgb(var(--signal-rgb) / 0.28);
+  --wave: var(--reference);
+  --wave-ghost: rgb(var(--reference-rgb) / 0.28);
+  --wave-grid: rgb(60 70 73 / 0.5);
 
-  /* ---------- MISC ---------- */
-  --flash: var(--signal);                          /* Light mode screen flash */
-  --logo-a: var(--ink);
-  --logo-b: var(--ink);
-  --logo-c: var(--signal);
-  --placeholder-bar: rgb(var(--ink-rgb) / 0.50);
-  --placeholder-bar-dim: rgb(var(--ink-rgb) / 0.26);
-  --placeholder-bar-signal: rgb(var(--signal-rgb) / 0.55);
-
-  /* ============================================================
-     Added for the engine (not in the Claude Design export)
-     ============================================================ */
-
-  /* Rhythm strip geometry — read once by components/Scope.jsx.
-     Bars and gaps are all multiples of --unit: dit 1, dah 3, gap 1 / 3 / 7. */
-  --unit: 22px;               /* one Morse unit; the design's dot width */
-  --bar-h: 78px;              /* bar height (design) */
-  --bar-radius: 7px;          /* design's "Rounded"; 2px for "Sharp" */
-  --strip-bar-top: 6px;       /* headroom above the bars for the glow */
-  --strip-label-size: 11px;   /* letter label font size */
-  --strip-label-gap: 11px;    /* space between baseline and labels */
-  --strip-pad-x: 12px;        /* horizontal padding inside the strip */
-  --strip-label-tracking: 0.12em; /* letter-spacing of the labels (design) */
-  --bar-glow-outer: 46px;     /* sounding-bar glow radii (design's box-shadow) */
-  --bar-glow-inner: 12px;
-  --playhead: rgb(var(--ink-rgb) / 0.75);
-  --flash-opacity: 0.1;       /* Light mode flash strength */
-
-  /* Panel labels (PLAIN TEXT / MORSE CODE) — blue bold with a dark outline */
-  --panel-label-size: 12px;
-
-  /* Free Mode */
-  --scope-h: clamp(200px, 30vh, 340px);  /* windowed scope height; panels stay visible */
-  --lamp-w: 90px;                        /* lamp panel width when the row stacks tight */
-  --lamp-glow: 0 0 28px rgb(var(--ink-rgb) / 0.45); /* the key pad's papaya bloom */
-  --keypad-circle: 120px;                /* the pressable key's circle */
-
-  /* Chart */
-  --chart-bar-unit: 6px;                 /* one Morse unit in the chart's bars */
+  /* ---------- CHART & DIAGRAMS ---------- */
+  --chart-bar-unit: 6px;
   --chart-bar-h: 14px;
-  --chart-bar-radius: 2px;
-  --chart-pattern: rgb(var(--ink-rgb) / 0.7);  /* the ·− notation: secondary to the bars, still legible */
-  --diagram-unit: 10px;                  /* one Morse unit in the teaching diagrams */
+  --chart-bar-radius: 0px;
+  --chart-pattern: var(--g5);
+  --diagram-unit: 10px;
   --diagram-unit-sm: 7px;
   --diagram-bar-h: 22px;
-  --gap-tint: rgb(var(--border-rgb) / 0.18);  /* so a 7-unit silence is visible as width */
-  --measure: 596px;                      /* content panel: measures 68 characters per line plus padding */
-  --row-hover: rgb(var(--ink-rgb) / 0.06);
-  --chart-flash: rgb(var(--ink-rgb) / 0.18);
+  --gap-tint: rgb(60 70 73 / 0.28);   /* so a 7-unit silence reads as width */
+  --measure: 604px;                   /* ~68 characters of Chivo at 15px */
+  --row-hover: var(--field-2);
+
+  /* ---------- FREE MODE ---------- */
+  --scope-h: clamp(200px, 30vh, 340px);
+  --lamp-w: 90px;
+  --keypad-circle: 120px;
+
+  /* ---------- MISC ---------- */
+  --flash: var(--reference);
+  --flash-opacity: 0.10;
+  --placeholder-bar: var(--g4);
+  --placeholder-bar-dim: var(--g2);
+  --placeholder-bar-signal: var(--reference);
 
   /* Fonts are set on <html> by next/font in app/layout.js:
-     --font-sans (Archivo), --font-mono (IBM Plex Mono). */
+     --font-sans (Chivo), --font-mono (Martian Mono). */
 }
 
-/* ---------- base rules (from the design's <style>) ---------- */
+/* ============================================================
+   BASE
+   ============================================================ */
+
 html, body { margin: 0; padding: 0; background: var(--ground); }
 body {
-  font-family: var(--font-sans), Archivo, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 * { box-sizing: border-box; }
-a { color: var(--interact); text-decoration: none; }
-a:hover { color: var(--interact-bright); }
-button { font-family: inherit; }
-textarea { font-family: inherit; }
-textarea::placeholder { color: var(--placeholder); }
-::selection { background: var(--selection); }
-input[type="range"] { accent-color: var(--interact); }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-@keyframes morsia-breathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
-@keyframes morsia-toast { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
-@keyframes free-reveal {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
-  10% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  72% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, 30%) scale(0.6); }
+/* Browser surfaces belong to the design system too. */
+::selection { background: var(--selection); color: var(--ink); }
+textarea, input { caret-color: var(--caret); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 0; }
+* { scrollbar-width: thin; scrollbar-color: var(--g3) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--g3); border: 3px solid var(--ground); }
+*::-webkit-scrollbar-thumb:hover { background: var(--g4); }
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--reference-line);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+a:hover { text-decoration-color: var(--reference); }
+
+button { font-family: inherit; color: inherit; }
+textarea { font-family: inherit; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+input[type="range"] { accent-color: var(--reference); }
+
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+
+/* ============================================================
+   TYPE
+   Human text is Chivo. Every measured value is Martian Mono, with
+   tabular figures so a changing readout never reflows.
+   ============================================================ */
+
+.t-display {
+  font-size: clamp(28px, 4.2vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+.t-heading {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.25;
+}
+.t-body { font-size: 15px; line-height: 1.7; color: var(--g6); }
+
+/* The machine voice. Used for readouts, scales, units and Morse —
+   measurement, which is what monospace is actually for. */
+.t-readout {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.t-readout-lg {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.t-value { color: var(--ink); }
+.t-unit { color: var(--g4); }
+
+/* ============================================================
+   CHASSIS & FIELDS
+   Depth is a hairline rule and one tonal step. There are no cards,
+   no rounded panels and no shadows in this system.
+   ============================================================ */
+
+.chassis { min-height: 100vh; background: var(--ground); position: relative; }
+.column {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 28px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+@media (max-width: 560px) { .column { padding: 16px 16px 56px; gap: 20px; } }
+
+/* A measuring field: the container for anything drawn to scale. */
+.field {
+  background: var(--field);
+  border: var(--hair) solid var(--rule);
+  border-radius: var(--r-0);
 }
 
-/* ---------- hover states ----------
-   The design expressed these as style-hover="…" on inline-styled elements.
-   Inline styles cannot express :hover, so they live here; !important lets
-   them win over the inline state colours they sit on top of. */
-.hv-ink:hover { color: var(--ink) !important; }
-.hv-icon:hover { color: var(--interact) !important; border-color: var(--interact-border) !important; }
-.hv-tint:hover { background: var(--hover-tint) !important; }
-.hv-tint-ink:hover { background: var(--hover-tint) !important; color: var(--ink) !important; }
-.hv-signal:hover { background: var(--signal-bright) !important; }
-.hv-interact:hover { background: var(--interact-bright) !important; }
+/* A label set into a rule, the way a technical drawing calls out a
+   region. Never sits above a heading — it names a field or a control. */
+.field-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g4);
+}
 
-/* ---------- nav (four pills; must never wrap at 375px) ---------- */
-/* Reserve the header's height so a font swap can't shift the page under it. */
-.hdr-row { min-height: 46px; }
+.hr { height: var(--hair); background: var(--rule); border: 0; margin: 0; }
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: var(--r-1);
+  border: var(--hair) solid var(--rule-strong);
+  background: transparent;
+  color: var(--g6);
+  cursor: pointer;
+  transition: color 140ms linear, border-color 140ms linear, background 140ms linear;
+}
+.btn:hover { color: var(--ink); border-color: var(--g4); background: var(--field-2); }
+.btn:disabled { color: var(--g3); border-color: var(--g2); cursor: not-allowed; background: transparent; }
+
+/* The primary action reads as the instrument's live control. */
+.btn-primary {
+  background: var(--reference);
+  border-color: var(--reference);
+  color: #17120A;
+  font-weight: 700;
+}
+.btn-primary:hover { background: #F2B457; border-color: #F2B457; color: #17120A; }
+.btn-primary:disabled { background: var(--g2); border-color: var(--g2); color: var(--g4); }
+
+.btn-on { color: var(--reference); border-color: var(--reference-line); background: var(--reference-dim); }
+
+/* Transport controls: an icon over a measured caption, the way an instrument
+   labels its own switches. */
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 66px;
+  padding: 8px 4px;
+  border-radius: var(--r-1);
+  cursor: pointer;
+  background: transparent;
+  border: var(--hair) solid transparent;
+  color: var(--g5);
+  transition: color 140ms linear, background 140ms linear, border-color 140ms linear;
+}
+.tool:hover { color: var(--ink); background: var(--field-2); }
+.tool[data-on='true'] { color: var(--reference); background: var(--reference-dim); border-color: var(--reference-line); }
+.tool-cap {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-1);
+  border: var(--hair) solid var(--rule-strong);
+  background: transparent;
+  color: var(--g5);
+  cursor: pointer;
+  transition: color 140ms linear, border-color 140ms linear;
+}
+.icon-btn:hover { color: var(--reference); border-color: var(--reference-line); }
+
+/* Fullscreen Free Mode carries its own inline state colours, so its hover has
+   to outrank them. */
+.hv-ink:hover { color: var(--ink) !important; border-color: var(--g4) !important; }
+
+/* ============================================================
+   NAVIGATION
+   Tabs are drawn as positions on a scale: a rule runs under the row
+   and the active tab is marked by a solid amber underline, the way a
+   reading is marked on an instrument.
+   ============================================================ */
+
+/* The header is styled entirely from here: inline styles outrank the
+   stylesheet, so a breakpoint could never get a say if these lived in JSX. */
+.hdr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 18px;
+  min-width: 0;
+  min-height: 46px;
+}
 @media (min-width: 721px) { .hdr-row { min-height: 52px; } }
+
+.hdr-logo { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+.hdr-mark { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+.hdr-badge { display: flex; align-items: center; gap: 10px; white-space: nowrap; flex: 0 0 auto; }
+
 .nav-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; max-width: 100%; }
 .nav-scroll::-webkit-scrollbar { display: none; }
-.nav-tab { min-width: 106px; }
-/* These elements carry inline styles (ported from the design), which outrank a
-   plain rule — !important is how a breakpoint gets a say at all. */
-@media (max-width: 720px) {
-  .nav-tab { min-width: 0 !important; padding: 8px 13px !important; font-size: 12px !important; }
-  .hdr-mark { font-size: 21px !important; }
-  .hdr-logo { gap: 9px !important; }
-  .hdr-row { gap: 12px !important; }
-}
-@media (max-width: 520px) { .hdr-badge { display: none !important; } }
 
-/* ---------- chart ---------- */
-.chart-grid { display: grid; gap: 10px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.chart-grid-wide { display: grid; gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.nav-rail { position: relative; display: flex; align-items: stretch; width: max-content; }
+.nav-rail::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: var(--hair); background: var(--rule);
+}
+/* Width is scaled rather than animated: animating the width property thrashes
+   layout every frame, and the mark is a solid block so scaleX is exact. */
+.nav-mark {
+  position: absolute; bottom: 0; left: 0; height: 2px; width: 1px;
+  background: var(--reference);
+  transform-origin: left center;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+.nav-tab {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 10px 18px 12px;
+  white-space: nowrap;
+  color: var(--g5);
+  text-decoration: none;
+  transition: color 180ms linear;
+}
+.nav-tab:hover { color: var(--g7); text-decoration: none; }
+.nav-tab[aria-current='page'] { color: var(--reference); }
+@media (max-width: 720px) {
+  .nav-tab { padding: 10px 12px 12px; font-size: 10px; }
+  .hdr-mark { font-size: 19px; }
+  .hdr-logo { gap: 9px; }
+  .hdr-row { gap: 12px; }
+}
+/* Below this the row cannot hold the wordmark, four tabs and a readout. The
+   reading is repeated on the transport, so the header drops it. */
+@media (max-width: 560px) { .hdr-badge { display: none; } }
+
+/* The two editors carry their 60/40 split inline so the FLIP swap can animate
+   real widths, so the stacked layout has to outrank it. Stacked, the seam
+   between them is horizontal and centred, and the swap control moves onto it. */
+@media (max-width: 720px) {
+  .tp-slot { width: 100% !important; min-width: 0 !important; }
+  .tp-swap { left: 50% !important; }
+}
+
+/* ============================================================
+   CHART
+   ============================================================ */
+
+.chart-grid { display: grid; gap: var(--hair); grid-template-columns: repeat(6, minmax(0, 1fr)); background: var(--rule); border: var(--hair) solid var(--rule); }
+.chart-grid-wide { display: grid; gap: var(--hair); grid-template-columns: repeat(3, minmax(0, 1fr)); background: var(--rule); border: var(--hair) solid var(--rule); }
 @media (max-width: 900px) {
   .chart-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .chart-grid-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -196,33 +411,48 @@ input[type="range"] { accent-color: var(--interact); }
   .chart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .chart-grid-wide { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 }
-.chart-cell { transition: background 140ms linear; }
-.chart-cell:hover { background: var(--row-hover); }
+/* Cells sit in a hairline lattice — the grid's own rules, not gaps. */
+.chart-cell { background: var(--field); transition: background 140ms linear; }
+.chart-cell:hover { background: var(--field-2); }
 
-/* ---------- long-form content ----------
-   One column. The panel is sized to the measure itself (65-70 characters), so
-   the prose always fills it and there is no space beside the text for a hole
-   to appear in. Cards sit inline in the flow at the panel's full width.
-   Identical at every breakpoint — mobile is the same layout, not a reflow. */
+/* ============================================================
+   LONG-FORM CONTENT
+   One column at the measure, identical at every breakpoint. It is a
+   ruled region, not a card: rules above and below, no border box.
+   ============================================================ */
+
 .content-panel {
   max-width: var(--measure);
   margin-left: auto;
   margin-right: auto;
-  padding: 26px 30px 30px;
-  border-radius: 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  padding: 34px 0 8px;
+  border-top: var(--hair) solid var(--rule);
 }
-@media (max-width: 560px) { .content-panel { padding: 22px 20px 24px; } }
-
 .faq-grid { display: block; }
-.faq-item { padding: 20px 0; border-top: 1px solid var(--border-soft); }
+.faq-item { padding: 20px 0; border-top: var(--hair) solid var(--rule); }
 
-/* ---------- consent banner ---------- */
-.consent-banner { animation: morsia-consent 260ms cubic-bezier(0.22,1,0.36,1); }
-@keyframes morsia-consent { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+/* ============================================================
+   CONSENT BANNER
+   The one element that genuinely floats over the page.
+   ============================================================ */
 
-/* ---------- reduced motion ---------- */
+.consent-banner { animation: morsia-consent 240ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes morsia-consent { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes morsia-toast { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* The key pad's "signal present" indicator: a measured pulse, not a glow. */
+@keyframes morsia-live { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes free-reveal {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.94); }
+  10% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  72% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, 20%) scale(0.7); }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

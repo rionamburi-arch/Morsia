@@ -4,18 +4,21 @@
 import UnitBars, { patternSegments, wordSegments } from '@/components/home/UnitBars';
 import { TABLE } from '@/lib/morse';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 
+// A ruled figure, drawn the way the measuring field above it is drawn.
 const figure = {
-  padding: '16px 18px', borderRadius: 16, border: '1px solid var(--border-soft)', background: 'var(--inset-fill)',
+  padding: '16px 18px', borderRadius: 'var(--r-0)', border: '1px solid var(--rule)', background: 'var(--field)',
 };
 const caption = {
-  fontFamily: MONO, fontSize: 10, letterSpacing: '0.16em', color: 'var(--muted)', textTransform: 'uppercase',
+  fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', color: 'var(--g4)', textTransform: 'uppercase',
 };
 const rowLabel = { fontSize: 13, color: 'var(--ink)' };
-const units = { fontFamily: MONO, fontSize: 11, color: 'var(--muted)', whiteSpace: 'nowrap' };
+const units = {
+  fontFamily: MONO, fontSize: 11, color: 'var(--muted)', whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums',
+};
 // Longer captions must wrap rather than clip inside the scrollable figure.
-const note = { fontFamily: MONO, fontSize: 11, color: 'var(--muted)', lineHeight: 1.5 };
+const note = { fontFamily: MONO, fontSize: 10.5, color: 'var(--g4)', lineHeight: 1.6 };
 
 const RULES = [
   { label: 'dot', n: 1, segments: [{ on: true, u: 1 }] },

@@ -8,10 +8,10 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 export const alt = 'Morsia — Morse code translator, chart and trainer';
 
-const GROUND = '#1D201F';
-const INK = '#FDF0D5';
-const MUTED = '#9A9AA4';
-const SIGNAL = '#FF82A9';
+const GROUND = '#0C0E0F';
+const INK = '#DCE3E4';
+const MUTED = '#7C888C';
+const SIGNAL = '#E8A33C';
 
 const UNIT = 20; // px per Morse unit
 
@@ -49,9 +49,9 @@ export default function OpengraphImage() {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <div style={{ width: 16, height: 44, borderRadius: 4, background: INK }} />
-            <div style={{ width: 48, height: 44, borderRadius: 4, background: INK }} />
-            <div style={{ width: 16, height: 44, borderRadius: 4, background: SIGNAL }} />
+            <div style={{ width: 16, height: 44, background: INK }} />
+            <div style={{ width: 48, height: 44, background: INK }} />
+            <div style={{ width: 16, height: 44, background: SIGNAL }} />
           </div>
           <div style={{ fontSize: 86, fontWeight: 700, color: INK, letterSpacing: '-0.03em' }}>Morsia</div>
         </div>

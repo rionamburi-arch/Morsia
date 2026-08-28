@@ -16,21 +16,16 @@ import Toast from '@/components/Toast';
 import { track } from '@/lib/analytics';
 import useSessionSummary from '@/hooks/useSessionSummary';
 
-const MONO = 'var(--font-mono), monospace';
+const MONO = 'var(--font-mono), ui-monospace, monospace';
 const TOAST_MS = 1800;
 
-function Eyebrow({ children }) {
+function SectionHeading({ id, children, count }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-      <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--interact)' }} />
-      <span
-        style={{
-          fontFamily: MONO, fontSize: 'var(--panel-label-size)', fontWeight: 700, letterSpacing: '0.2em',
-          color: 'var(--interact)',
-        }}
-      >
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+      <h2 id={id} style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.015em', color: 'var(--ink)' }}>
         {children}
-      </span>
+      </h2>
+      <span className="t-readout"><span className="t-value">{count}</span></span>
     </div>
   );
 }
@@ -48,12 +43,12 @@ function Segmented({ label, options, value, onChange }) {
             onPointerDown={(e) => e.preventDefault()}
             aria-pressed={on}
             style={{
-              appearance: 'none', cursor: 'pointer', borderRadius: 999, padding: '6px 13px',
-              fontFamily: MONO, fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase',
-              background: on ? 'var(--signal)' : 'transparent',
-              border: `1px solid ${on ? 'var(--signal)' : 'var(--border)'}`,
-              color: on ? 'var(--on-accent)' : 'var(--muted)',
-              transition: 'background 160ms, color 160ms, border-color 160ms',
+              appearance: 'none', cursor: 'pointer', borderRadius: 'var(--r-1)', padding: '6px 12px',
+              fontFamily: MONO, fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase',
+              background: on ? 'var(--reference)' : 'transparent',
+              border: `1px solid ${on ? 'var(--reference)' : 'var(--rule-strong)'}`,
+              color: on ? '#17120A' : 'var(--muted)',
+              transition: 'background 140ms linear, color 140ms linear, border-color 140ms linear',
             }}
           >
             {o.label}
@@ -79,8 +74,8 @@ function Cell({ row, cellRef, onPlay, onCopy }) {
       ref={cellRef}
       className="chart-cell"
       style={{
-        position: 'relative', borderRadius: 14, border: '1px solid var(--border-soft)',
-        background: 'transparent', overflow: 'hidden',
+        position: 'relative', borderRadius: 'var(--r-0)', border: 0,
+        background: 'var(--field)', overflow: 'hidden',
       }}
     >
       <button
@@ -111,11 +106,11 @@ function Cell({ row, cellRef, onPlay, onCopy }) {
         onPointerDown={(e) => e.preventDefault()}
         title={`Copy ${row.pattern}`}
         aria-label={`Copy the pattern for ${row.label}`}
-        className="hv-icon"
+        className="icon-btn"
         style={{
           position: 'absolute', top: 8, right: 8, width: 24, height: 24, display: 'grid', placeItems: 'center',
-          borderRadius: 7, appearance: 'none', cursor: 'pointer', background: 'transparent',
-          border: '1px solid var(--border-soft)', color: 'var(--muted)', transition: 'color 180ms, border-color 180ms',
+          borderRadius: 'var(--r-1)', appearance: 'none', cursor: 'pointer', background: 'transparent',
+          border: '1px solid var(--rule-strong)', color: 'var(--g5)', transition: 'color 140ms linear, border-color 140ms linear',
         }}
       >
         <CopyIcon />
@@ -179,12 +174,12 @@ export default function Chart() {
   const sections = useMemo(() => {
     const asRow = (r) => ({ id: `${r.char}`, label: r.char, pattern: r.pattern });
     return [
-      { id: 'letters', label: 'LETTERS', rows: sortLetters(sort).map(asRow), sortable: true },
-      { id: 'numbers', label: 'NUMBERS', rows: NUMBERS.map(asRow) },
-      { id: 'punctuation', label: 'PUNCTUATION', rows: PUNCTUATION.map(asRow) },
+      { id: 'letters', label: 'Letters', rows: sortLetters(sort).map(asRow), sortable: true },
+      { id: 'numbers', label: 'Numbers', rows: NUMBERS.map(asRow) },
+      { id: 'punctuation', label: 'Punctuation', rows: PUNCTUATION.map(asRow) },
       {
         id: 'prosigns',
-        label: 'PROSIGNS',
+        label: 'Prosigns',
         wide: true,
         rows: PROSIGNS.map((p) => ({ id: p.name, label: p.name, pattern: p.pattern, meaning: p.meaning })),
       },
@@ -251,7 +246,7 @@ export default function Chart() {
     let last = null;
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      const next = sounding() ? 'var(--chart-flash)' : 'transparent';
+      const next = sounding() ? 'var(--reference-dim)' : 'var(--field)';
       if (next !== last) {
         last = next;
         el.style.background = next;
@@ -260,7 +255,7 @@ export default function Chart() {
     raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
-      el.style.background = 'transparent';
+      el.style.background = 'var(--field)';
     };
   }, [playing, sounding, active]);
 
@@ -275,7 +270,7 @@ export default function Chart() {
   return (
     <>
       <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-        <label style={{ flex: '1 1 260px', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+        <label style={{ flex: '1 1 260px', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 'var(--r-0)', background: 'var(--field)', border: '1px solid var(--rule-strong)' }}>
           <span className="sr-only" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}>
             Search the chart
           </span>
@@ -291,7 +286,7 @@ export default function Chart() {
             spellCheck={false}
             style={{
               flex: '1 1 auto', minWidth: 0, appearance: 'none', background: 'transparent', border: 0, outline: 'none',
-              color: 'var(--ink)', fontSize: 14, caretColor: 'var(--signal)',
+              color: 'var(--ink)', fontSize: 14, caretColor: 'var(--reference)',
             }}
           />
           {query ? (
@@ -309,7 +304,7 @@ export default function Chart() {
       </div>
 
           {total === 0 ? (
-            <p style={{ color: 'var(--muted)', fontSize: 14 }}>
+            <p style={{ color: 'var(--g6)', fontSize: 14 }}>
               Nothing matches “{query}”. Try a letter, a number, or a pattern like <span style={{ fontFamily: MONO }}>-.-</span>.
             </p>
           ) : null}
@@ -318,11 +313,11 @@ export default function Chart() {
             section.rows.length ? (
               <section
                 key={section.id}
-                aria-label={section.label}
-                style={{ padding: '18px 20px 18px', borderRadius: 24, background: 'var(--surface)', border: '1px solid var(--border)' }}
+                aria-labelledby={`chart-${section.id}`}
+                style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
-                  <Eyebrow>{section.label}</Eyebrow>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+                  <SectionHeading id={`chart-${section.id}`} count={section.rows.length}>{section.label}</SectionHeading>
                   {section.sortable ? <Segmented label="Sort letters" options={SORTS} value={sort} onChange={setSort} /> : null}
                 </div>
                 <div data-clarity-unmask="true" className={section.wide ? 'chart-grid-wide' : 'chart-grid'} onKeyDown={onGridKeyDown}>

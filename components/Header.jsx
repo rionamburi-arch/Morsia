@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSettings } from '@/hooks/useSettings';
@@ -19,14 +19,46 @@ function activeIndex(pathname) {
   return 0;
 }
 
+// The wordmark is itself a measured object: three blocks at 1 / 3 / 1 units
+// on a baseline — the letter R, drawn the way the product draws everything.
+function Mark() {
+  const u = 6;
+  return (
+    <span aria-hidden="true" style={{ display: 'inline-flex', flexDirection: 'column', gap: 3 }}>
+      <span style={{ display: 'flex', alignItems: 'flex-end', gap: u, height: 16 }}>
+        <span style={{ width: u, height: 16, background: 'var(--ink)' }} />
+        <span style={{ width: u * 3, height: 16, background: 'var(--ink)' }} />
+        <span style={{ width: u, height: 16, background: 'var(--reference)' }} />
+      </span>
+      <span style={{ width: u * 7, height: 1, background: 'var(--g3)' }} />
+    </span>
+  );
+}
+
 export default function Header() {
   const pathname = usePathname() || '/';
   const idx = activeIndex(pathname);
   const { settings } = useSettings();
   const navRef = useRef(null);
   const activeRef = useRef(null);
+  const [mark, setMark] = useState({ left: 0, width: 0 });
 
-  // Four pills overflow a phone: the row scrolls, so keep the active one in view.
+  // The active mark is measured from the real tab, so it stays true when the
+  // labels change width at a breakpoint or the font swaps in.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = activeRef.current;
+      if (!el) return;
+      setMark({ left: el.offsetLeft, width: el.offsetWidth });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (navRef.current) ro.observe(navRef.current);
+    document.fonts?.ready?.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [idx]);
+
+  // Four tabs overflow a phone: the row scrolls, so keep the active one in view.
   useEffect(() => {
     const nav = navRef.current;
     const active = activeRef.current;
@@ -38,53 +70,41 @@ export default function Header() {
   }, [idx]);
 
   return (
-    <header className="hdr-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 18, minWidth: 0 }}>
-      <div className="hdr-logo" style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
-        <div aria-hidden="true" style={{ display: 'flex', alignItems: 'center', gap: 4, height: 20 }}>
-          <div style={{ width: 7, height: 18, borderRadius: 2, background: 'var(--logo-a)' }} />
-          <div style={{ width: 21, height: 18, borderRadius: 2, background: 'var(--logo-b)' }} />
-          <div style={{ width: 7, height: 18, borderRadius: 2, background: 'var(--logo-c)' }} />
-        </div>
-        <div className="hdr-mark" style={{ fontSize: 27, fontWeight: 600, letterSpacing: '-0.03em', lineHeight: 1, color: 'var(--ink)' }}>Morsia</div>
+    <header className="hdr-row">
+      <div className="hdr-logo">
+        <Mark />
+        <span className="hdr-mark">Morsia</span>
       </div>
 
       <div className="nav-scroll">
-      <nav ref={navRef} aria-label="Sections" style={{ position: 'relative', display: 'flex', alignItems: 'stretch', width: 'max-content', padding: 5, borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute', top: 5, bottom: 5, left: 5, width: `calc((100% - 10px) / ${TABS.length})`, borderRadius: 999,
-            background: 'var(--interact)', transition: 'transform 380ms cubic-bezier(0.22,1,0.36,1)',
-            transform: `translateX(${idx * 100}%)`,
-          }}
-        />
-        {TABS.map((tab, i) => (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            ref={i === idx ? activeRef : null}
-            className="nav-tab"
-            aria-current={i === idx ? 'page' : undefined}
-            // A mouse click must not leave the tab focused: Free Mode's spacebar
-            // would then paint a focus ring on it. Tab-to-focus is unaffected.
-            onPointerDown={(e) => e.preventDefault()}
-            style={{
-              position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 13, fontWeight: 500, padding: '8px 20px', borderRadius: 999, flex: '1 1 0', whiteSpace: 'nowrap',
-              transition: 'color 220ms', color: i === idx ? 'var(--on-accent)' : 'var(--muted)', textDecoration: 'none',
-            }}
-          >
-            {tab.label}
-          </Link>
-        ))}
-      </nav>
+        <nav ref={navRef} aria-label="Sections" className="nav-rail">
+          <span
+            aria-hidden="true"
+            className="nav-mark"
+            style={{ transform: `translateX(${mark.left}px) scaleX(${mark.width})` }}
+          />
+          {TABS.map((tab, i) => (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              ref={i === idx ? activeRef : null}
+              className="nav-tab"
+              aria-current={i === idx ? 'page' : undefined}
+              // A mouse click must not leave the tab focused: Free Mode's spacebar
+              // would then paint a focus ring on it. Tab-to-focus is unaffected.
+              onPointerDown={(e) => e.preventDefault()}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </nav>
       </div>
 
-      <div className="hdr-badge" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)', fontFamily: 'var(--font-mono), monospace', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.04em' }}>
-        <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ink)', animation: 'morsia-breathe 2.6s ease-in-out infinite' }} />
-        <span>{settings.wpm} WPM</span>
-        <span aria-hidden="true" style={{ color: 'var(--border)' }}>/</span>
-        <span>{settings.toneHz} Hz</span>
+      <div className="hdr-badge t-readout">
+        <span aria-hidden="true" style={{ width: 5, height: 5, background: 'var(--reference)', animation: 'morsia-live 2.6s ease-in-out infinite' }} />
+        <span><span className="t-value">{settings.wpm}</span> <span className="t-unit">WPM</span></span>
+        <span aria-hidden="true" style={{ color: 'var(--g3)' }}>·</span>
+        <span><span className="t-value">{settings.toneHz}</span> <span className="t-unit">Hz</span></span>
       </div>
     </header>
   );

@@ -7,7 +7,7 @@ export default function manifest() {
     description: 'Translate text to Morse code, hear it, key it yourself, and learn to read it by ear.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#1D201F',
-    theme_color: '#1D201F',
+    background_color: '#0C0E0F',
+    theme_color: '#0C0E0F',
   };
 }

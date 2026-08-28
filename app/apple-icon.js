@@ -5,8 +5,8 @@ import { ImageResponse } from 'next/og';
 export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
 
-const GROUND = '#1D201F';
-const INK = '#FDF0D5';
+const GROUND = '#0C0E0F';
+const INK = '#DCE3E4';
 
 export default function AppleIcon() {
   return new ImageResponse(

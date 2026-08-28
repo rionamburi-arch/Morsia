@@ -1,31 +1,42 @@
 'use client';
 
-// The rhythm strip. Two stacked canvases, both sized to the VISIBLE viewport
+// The measuring field. Two stacked canvases, both sized to the VISIBLE viewport
 // (never to the whole message — long messages would exceed the browser's
 // canvas size limit). A spacer box carries the full timeline width so the
 // wrapper scrolls natively; the canvases sit in a sticky layer and draw the
 // timeline translated by -scrollLeft.
-//   static  — baseline, unit graticule, resting bars, letter labels
+//   static  — printed unit scale, graticule, baseline, resting blocks, labels
 //             (redrawn on segments / wpm / labels / size / tokens change and on scroll)
-//   dynamic — the sounding bar and playhead (rAF only while `clock` is given)
-// Props in, nothing else. Bars and gaps are exact multiples of --unit.
+//   dynamic — the sounding block and the registration gate (rAF only while `clock` is given)
+//
+// Everything is drawn to scale: blocks and gaps are exact multiples of --unit
+// (dit 1, dah 3, gaps 1 / 3 / 7), and the graticule marks every one of them, so
+// the claim that width is duration is checkable by eye against the scale.
 // Tokens are read once (mount, resize, DPR / motion-pref change) — never in the loop.
 
 import { useEffect, useRef } from 'react';
 import { unitMs, cumulativeStarts, indexAtMs } from '@/lib/timing';
 import { readTokens } from '@/components/tokens';
 
-const SIZES = [
-  '--unit', '--bar-h', '--bar-radius', '--strip-bar-top', '--strip-label-size', '--strip-label-gap', '--strip-pad-x',
-  '--bar-glow-outer', '--bar-glow-inner',
-];
-const COLORS = ['--bar-rest', '--bar-active', '--bar-active-glow', '--bar-active-core', '--baseline', '--muted', '--border-soft', '--playhead'];
+const SIZES = ['--unit', '--bar-h', '--bar-radius', '--strip-bar-top', '--strip-label-size', '--strip-label-gap', '--strip-pad-x'];
+const COLORS = ['--bar-rest', '--bar-active', '--baseline', '--muted', '--playhead', '--grat-minor', '--grat-major', '--scale-label'];
 const STRINGS = ['--font-mono', '--strip-label-tracking'];
 
 const SCROLL_THROTTLE_MS = 250;
 const MANUAL_HOLD_MS = 1500; // after a manual pan, auto-follow stays out of the way this long
+const MAJOR_EVERY = 5;       // a heavier tick and a numeral every five units
 
-function roundedRect(g, x, y, w, h, r) {
+// Scale geometry, measured up from the top of the block area (--strip-bar-top).
+const SCALE_RULE_UP = 8;     // the rule the ticks hang from
+const TICK_MINOR = 4;
+const TICK_MAJOR = 8;
+const SCALE_FONT = 9;
+
+function block(g, x, y, w, h, r) {
+  if (r <= 0) {
+    g.fillRect(x, y, w, h);
+    return;
+  }
   const rr = Math.max(0, Math.min(r, w / 2, h / 2));
   g.beginPath();
   g.moveTo(x + rr, y);
@@ -34,6 +45,7 @@ function roundedRect(g, x, y, w, h, r) {
   g.arcTo(x, y + h, x, y, rr);
   g.arcTo(x, y, x + w, y, rr);
   g.closePath();
+  g.fill();
 }
 
 function computeLayout(segments, wpm, tk, viewW) {
@@ -41,7 +53,7 @@ function computeLayout(segments, wpm, tk, viewW) {
   const starts = cumulativeStarts(segments);
   const totalPx = starts[segments.length] * pxPerMs;
   const fullWidth = Math.max(viewW, totalPx + 2 * tk['--strip-pad-x']);
-  const height = tk['--strip-bar-top'] + tk['--bar-h'] + 1 + tk['--strip-label-gap'] + tk['--strip-label-size'] + 4;
+  const height = tk['--strip-bar-top'] + tk['--bar-h'] + 1 + tk['--strip-label-gap'] + tk['--strip-label-size'] + 8;
   return {
     pxPerMs,
     starts,
@@ -82,6 +94,44 @@ function firstVisibleIndex(segments, geom, left) {
   return i;
 }
 
+/** The printed scale and the graticule behind the blocks. */
+function drawGrid(g, geom, tk, left, right) {
+  const { offsetX, totalPx } = geom;
+  if (totalPx <= 0) return;
+  const unit = tk['--unit'];
+  const barTop = tk['--strip-bar-top'];
+  const baseY = barTop + tk['--bar-h'];
+  const ruleY = barTop - SCALE_RULE_UP;
+
+  const firstIdx = Math.max(0, Math.floor((left - offsetX) / unit));
+  const lastIdx = Math.ceil((Math.min(offsetX + totalPx, right) - offsetX) / unit);
+
+  g.font = `${SCALE_FONT}px ${tk['--font-mono'] || 'monospace'}`;
+  g.textAlign = 'center';
+  g.textBaseline = 'alphabetic';
+
+  for (let n = firstIdx; n <= lastIdx; n++) {
+    const x = Math.round(offsetX + n * unit);
+    if (x < left - unit || x > right + unit) continue;
+    const major = n % MAJOR_EVERY === 0;
+
+    // graticule: every unit, down the full height of the block area
+    g.fillStyle = major ? tk['--grat-major'] : tk['--grat-minor'];
+    g.fillRect(x, barTop, 1, baseY - barTop);
+
+    // tick hanging from the scale rule
+    g.fillStyle = tk['--scale-label'];
+    const tick = major ? TICK_MAJOR : TICK_MINOR;
+    g.fillRect(x, ruleY - tick, 1, tick);
+
+    if (major) g.fillText(String(n), x, ruleY - tick - 4);
+  }
+
+  // the scale's own rule
+  g.fillStyle = tk['--grat-major'];
+  g.fillRect(Math.max(left, offsetX), ruleY, Math.min(right, offsetX + totalPx) - Math.max(left, offsetX), 1);
+}
+
 function drawStatic(canvas, geom, tk, segments, showLabels, scrollLeft) {
   const g = canvas.getContext('2d');
   const { viewW, height, offsetX, pxPerMs, starts, totalPx } = geom;
@@ -95,16 +145,11 @@ function drawStatic(canvas, geom, tk, segments, showLabels, scrollLeft) {
   g.save();
   g.translate(-scrollLeft, 0);
 
+  drawGrid(g, geom, tk, left, right);
+
+  // the line every block sits on
   g.fillStyle = tk['--baseline'];
   g.fillRect(left, baseY, viewW, 1);
-
-  if (totalPx > 0) {
-    const unit = tk['--unit'];
-    g.fillStyle = tk['--border-soft'];
-    const firstTick = offsetX + Math.max(0, Math.floor((left - offsetX) / unit)) * unit;
-    const lastTick = Math.min(offsetX + totalPx + 0.5, right + unit);
-    for (let x = firstTick; x <= lastTick; x += unit) g.fillRect(Math.round(x), baseY + 1, 1, 3);
-  }
 
   g.fillStyle = tk['--bar-rest'];
   const groups = new Map(); // charIndex → { char, x0, x1 }
@@ -116,8 +161,7 @@ function drawStatic(canvas, geom, tk, segments, showLabels, scrollLeft) {
     if (x > right && (s.charIndex < 0 || s.charIndex !== lastGroup)) break;
     if (!s.on) continue;
     const w = s.ms * pxPerMs;
-    roundedRect(g, x, barTop, w, barH, tk['--bar-radius']);
-    g.fill();
+    block(g, x, barTop, w, barH, tk['--bar-radius']);
     lastGroup = s.charIndex;
     const grp = groups.get(s.charIndex);
     if (grp) grp.x1 = x + w;
@@ -137,12 +181,17 @@ function drawStatic(canvas, geom, tk, segments, showLabels, scrollLeft) {
   g.restore();
 }
 
-/** Draws the sounding bar + playhead for time tSec; returns the playhead x in timeline px. */
-function drawDynamic(canvas, geom, tk, segments, tSec, reduced, scrollLeft) {
+/**
+ * Draws the sounding block and the registration gate for time tSec.
+ * The live element is marked, never lit: it fills amber and the gate rides the
+ * scale with crosshair caps. Returns the gate x in timeline px.
+ */
+function drawDynamic(canvas, geom, tk, segments, tSec, scrollLeft) {
   const g = canvas.getContext('2d');
   const { viewW, height, offsetX, pxPerMs, starts } = geom;
   const barTop = tk['--strip-bar-top'];
   const barH = tk['--bar-h'];
+  const baseY = barTop + barH;
   g.clearRect(0, 0, viewW, height);
   g.save();
   g.translate(-scrollLeft, 0);
@@ -153,24 +202,19 @@ function drawDynamic(canvas, geom, tk, segments, tSec, reduced, scrollLeft) {
     const x = offsetX + starts[i] * pxPerMs;
     const w = segments[i].ms * pxPerMs;
     g.fillStyle = tk['--bar-active'];
-    if (!reduced) {
-      g.shadowColor = tk['--bar-active-glow'];
-      g.shadowBlur = tk['--bar-glow-outer'];
-    }
-    roundedRect(g, x, barTop, w, barH, tk['--bar-radius']);
-    g.fill();
-    if (!reduced) {
-      g.shadowColor = tk['--bar-active-core'];
-      g.shadowBlur = tk['--bar-glow-inner'];
-      g.fill();
-    }
-    g.shadowBlur = 0;
+    block(g, x, barTop, w, barH, tk['--bar-radius']);
   }
 
+  // The registration gate: a hairline through the field with a cap top and
+  // bottom, the way a reading is marked against a scale.
   const total = starts[starts.length - 1];
-  const px = offsetX + Math.max(0, Math.min(ms, total)) * pxPerMs;
+  const px = Math.round(offsetX + Math.max(0, Math.min(ms, total)) * pxPerMs);
+  const capTop = barTop - SCALE_RULE_UP;
   g.fillStyle = tk['--playhead'];
-  g.fillRect(Math.round(px), 0, 1, barTop + barH + 1);
+  g.fillRect(px, capTop, 1, baseY - capTop + 5);
+  g.fillRect(px - 3, capTop, 7, 1);
+  g.fillRect(px - 3, baseY + 4, 7, 1);
+
   g.restore();
   return px;
 }
@@ -328,9 +372,9 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
       const t = clock();
       if (t == null) return;
       const scrollLeft = wrap.scrollLeft;
-      const px = drawDynamic(canvas, geom, tk, st.props.segments, t, st.reduced, scrollLeft);
+      const px = drawDynamic(canvas, geom, tk, st.props.segments, t, scrollLeft);
 
-      // Keep the playhead in the middle 60% of the viewport (throttled).
+      // Keep the gate in the middle 60% of the viewport (throttled).
       if (geom.fullWidth > geom.viewW + 1) {
         const rel = px - scrollLeft;
         const now = performance.now();
@@ -351,15 +395,15 @@ export default function Scope({ segments, wpm, clock, showLabels }) {
     <div
       ref={wrapRef}
       role="region"
-      aria-label="Rhythm strip: the message as timing bars"
+      aria-label="Measuring field: the message drawn as timing blocks against a unit scale"
       tabIndex={0}
-      style={{ position: 'relative', overflowX: 'auto', overflowY: 'hidden', scrollbarWidth: 'none' }}
+      style={{ position: 'relative', overflowX: 'auto', overflowY: 'hidden', scrollbarWidth: 'none', padding: '14px 0 4px' }}
     >
       <div
         ref={boxRef}
         style={{
           position: 'relative',
-          height: 'calc(var(--strip-bar-top) + var(--bar-h) + 1px + var(--strip-label-gap) + var(--strip-label-size) + 4px)',
+          height: 'calc(var(--strip-bar-top) + var(--bar-h) + 1px + var(--strip-label-gap) + var(--strip-label-size) + 8px)',
         }}
       >
         <div ref={stickyRef} style={{ position: 'sticky', left: 0, height: '100%' }}>
