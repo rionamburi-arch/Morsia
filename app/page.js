@@ -6,7 +6,7 @@ import AboutMorse from '@/components/home/AboutMorse';
 import Faq from '@/components/home/Faq';
 import { FAQ, answerText } from '@/components/home/faq';
 
-const TITLE = 'Morse Code Translator — Text to Morse with Sound | Morsia';
+const TITLE = 'Morse Code Translator — Hear and See the Timing | Morsia';
 const DESCRIPTION =
   'Translate text to Morse code and back, hear it played at any speed, and watch the rhythm as proportional timing bars. Free, instant, and no sign-up.';
 
@@ -35,6 +35,11 @@ export default function TranslatePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replaceAll('<', '\\u003c') }}
       />
+      {/* The page's only h1. It names the page for search and for screen readers;
+          the strip below is the real headline, so this stays a quiet line. */}
+      <h1 style={{ margin: '0 0 -6px', fontSize: 15, fontWeight: 600, letterSpacing: '0.01em', color: 'var(--muted)' }}>
+        Morse Code Translator
+      </h1>
       <TranslateApp />
       <AboutMorse />
       <Faq />
