@@ -1,6 +1,6 @@
-// One source for the FAQ: rendered visibly on the homepage AND used to build
-// the FAQPage JSON-LD, so the schema can never describe content that is not on
-// the page.
+// One source for the FAQ: every answer is rendered visibly on the page that
+// owns it AND used to build that page's FAQPage JSON-LD, so the schema can
+// never describe content that is not on the page.
 //
 // Rule for every answer: `lead` contains the answer. Explanation goes in `body`.
 
@@ -25,13 +25,6 @@ export const FAQ = [
     lead: 'Nothing. It isn’t an acronym.',
     body: [
       '“Save Our Souls” and “Save Our Ship” were both invented afterwards to explain a signal chosen purely for how it sounds. The letters were picked because the sequence is unambiguous and easy to send under pressure. The meaning came later.',
-    ],
-  },
-  {
-    q: 'How do I write my name in Morse code?',
-    lead: 'Type it into the translator above — each letter converts as you type, and Play sends it at your chosen speed.',
-    body: [
-      'If you are writing it down or having it tattooed, the spacing is what matters. Leave a gap of one unit between the parts of a letter and three units between letters. Without that difference, there is no way to tell where one letter ends.',
     ],
   },
   {
@@ -61,6 +54,17 @@ export const FAQ = [
     lead: 'Yes — mostly by amateur radio operators, who use it daily.',
     body: [
       'It travels further on less power than speech, so a Morse conversation is possible on a few watts where a voice would be lost in the noise. It also survives as the universal fallback: anything that can be switched on and off can carry it.',
+    ],
+  },
+];
+
+/** The tattoo question lives on /morse-code-tattoo, with the rest of that advice. */
+export const TATTOO_FAQ = [
+  {
+    q: 'How do I write my name in Morse code?',
+    lead: 'Type it into the translator — each letter converts as you type, and Play sends it at your chosen speed.',
+    body: [
+      'If you are writing it down or having it tattooed, the spacing is what matters. Leave a gap of one unit between the parts of a letter and three units between letters. Without that difference, there is no way to tell where one letter ends.',
     ],
   },
 ];

@@ -1,4 +1,5 @@
 import FreeMode from '@/components/free/FreeMode';
+import AboutSending from '@/components/free/AboutSending';
 
 const TITLE = 'Morse Code Practice — Key It Yourself | Morsia';
 const DESCRIPTION =
@@ -13,5 +14,14 @@ export const metadata = {
 };
 
 export default function FreePage() {
-  return <FreeMode />;
+  return (
+    <>
+      {/* The page's only h1, kept quiet: the key below is the loud thing. */}
+      <h1 style={{ margin: '0 0 -6px', fontSize: 15, fontWeight: 600, letterSpacing: '0.01em', color: 'var(--muted)' }}>
+        Morse Code Practice
+      </h1>
+      <FreeMode />
+      <AboutSending />
+    </>
+  );
 }

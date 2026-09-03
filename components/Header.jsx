@@ -12,11 +12,14 @@ const TABS = [
   { href: '/learn', label: 'Learn', mode: 'learn' },
 ];
 
+// -1 for a page that is not one of the four sections (the tattoo guide): the
+// pill has nowhere honest to sit, so it is not drawn at all.
 function activeIndex(pathname) {
   if (pathname.startsWith('/free')) return 1;
   if (pathname.startsWith('/chart')) return 2;
   if (pathname.startsWith('/learn')) return 3;
-  return 0;
+  if (pathname === '/' || pathname.startsWith('/m/')) return 0;
+  return -1;
 }
 
 export default function Header() {
@@ -50,14 +53,16 @@ export default function Header() {
 
       <div className="nav-scroll">
       <nav ref={navRef} aria-label="Sections" style={{ position: 'relative', display: 'flex', alignItems: 'stretch', width: 'max-content', padding: 5, borderRadius: 999, background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute', top: 5, bottom: 5, left: 5, width: `calc((100% - 10px) / ${TABS.length})`, borderRadius: 999,
-            background: 'var(--interact)', transition: 'transform 380ms cubic-bezier(0.22,1,0.36,1)',
-            transform: `translateX(${idx * 100}%)`,
-          }}
-        />
+        {idx >= 0 && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute', top: 5, bottom: 5, left: 5, width: `calc((100% - 10px) / ${TABS.length})`, borderRadius: 999,
+              background: 'var(--interact)', transition: 'transform 380ms cubic-bezier(0.22,1,0.36,1)',
+              transform: `translateX(${idx * 100}%)`,
+            }}
+          />
+        )}
         {TABS.map((tab, i) => (
           <Link
             key={tab.href}

@@ -2,6 +2,9 @@
 // divider between each, and the answer's first sentence set apart because it
 // is the answer. Everything server-rendered — nothing is hidden behind a
 // disclosure or assembled on the client.
+//
+// `items` decides which questions: the homepage passes none and gets the
+// homepage set; a page that owns a question of its own passes that one.
 
 import UnitBars, { patternSegments } from '@/components/home/UnitBars';
 import { FAQ } from '@/components/home/faq';
@@ -39,7 +42,7 @@ function Figure({ kind }) {
   );
 }
 
-export default function Faq() {
+export default function Faq({ items = FAQ }) {
   return (
     <section aria-labelledby="faq" className="content-panel">
       <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 16 }}>
@@ -58,7 +61,7 @@ export default function Faq() {
       </h2>
 
       <dl className="faq-grid" style={{ margin: 0 }}>
-        {FAQ.map((item) => (
+        {items.map((item) => (
           <div key={item.q} className="faq-item">
             <dt style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink)', marginBottom: 8, lineHeight: 1.4 }}>
               {item.q}

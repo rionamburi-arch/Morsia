@@ -12,5 +12,6 @@ export default function sitemap() {
     { url: `${SITE}/chart`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE}/free`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE}/learn`, lastModified, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${SITE}/morse-code-tattoo`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
   ];
 }

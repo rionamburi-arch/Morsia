@@ -4,6 +4,7 @@
 // on top of the same markup.
 
 import Chart from '@/components/chart/Chart';
+import AboutCharacters from '@/components/chart/AboutCharacters';
 import { TABLE, PROSIGNS, prettyPattern } from '@/lib/morse';
 
 const TITLE = 'Morse Code Chart — Full Alphabet with Sound | Morsia';
@@ -58,6 +59,7 @@ export default function ChartPage() {
       </header>
 
       <Chart />
+      <AboutCharacters />
     </main>
   );
 }
